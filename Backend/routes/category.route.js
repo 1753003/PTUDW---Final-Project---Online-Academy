@@ -7,8 +7,13 @@ router.get('/', async function(req, res) {
     res.json(list);
 })
 
-router.get('/:id', function(req, res) {
-
+router.get('/:id', async function(req, res) {
+    const category = await categoryModel.getById(req.params.id);
+  
+    if (category == null) {
+        return res.status(204).json({});
+    }
+    res.json(category);
 })
 
 router.post('/', function(req, res) {
