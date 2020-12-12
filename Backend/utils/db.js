@@ -1,11 +1,11 @@
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
-      host: '127.0.0.1',
+      host: 'pwcspfbyl73eccbn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
       port: 3306,
-      user: 'root',
-      password: 'duythongminh229',
-      database: 'online_academy'
+      user: 'knwquy6r09jn4j0q',
+      password: 'naqmb7foyvidvjjk',
+      database: 'jok7rrqgjka2fkpa'
     }
   });
   
