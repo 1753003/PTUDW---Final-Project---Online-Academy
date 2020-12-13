@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader } from 'antd';
 
 import Course from '@/components/Course';
+import { connect } from 'dva';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const Home = () => {
+const Home = ({list, dispatch}) => {
+  useEffect(() => {
+    dispatch({ type: 'course/get'});
+  }, []);
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
   const courseData = [
     {
       id: 1,
@@ -400,4 +408,6 @@ const Home = () => {
 };
 
 
-export default Home;
+export default connect(({ course }) => ({
+  list: course
+}))(Home);
