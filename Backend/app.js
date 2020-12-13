@@ -10,6 +10,7 @@ app.get('/', function(req, res) {
 })
 
 app.use('/api/category', require('./routes/category.route'));
+app.use('/api/course', require('./routes/course.route'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
