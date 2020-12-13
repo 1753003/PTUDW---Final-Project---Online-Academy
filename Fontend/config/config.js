@@ -97,10 +97,10 @@ export default {
           component: '../layouts/BasicLayout',
           authority: ['admin', 'user'],
           routes: [
-            // {
-            //   path: '/',
-            //   redirect: '/welcome',
-            // },
+            {
+              path: '/',
+              redirect: '/home',
+            },
             // {
             //   path: '/welcome',
             //   name: 'welcome',
