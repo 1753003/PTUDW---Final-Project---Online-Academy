@@ -1,5 +1,6 @@
+const knex = require('../utils/db');
 const db = require('../utils/db');
-
+knex.on('query', console.log)
 module.exports = {
   getAll() {
     return db('course');
@@ -24,5 +25,8 @@ module.exports = {
   },
   async updateById(id, data) {
     const upadteDb = await db('course').where('id', id).update(data);
+  },
+  async searchByKeyword(keyword){
+    return knex.select(knex.raw(`* FROM course WHERE MATCH(name) AGAINST('${keyword}' IN NATURAL LANGUAGE MODE)`)); 
   }
 };
