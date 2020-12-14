@@ -25,5 +25,9 @@ router.post('/favorite', async function(req, res){
   let cid = req.params.cid;
   userModel.favorite(uid, cid);
   res.status(200).json({});
-})
+}),
+router.post('/cr', async function(req, res){
+  await userModel.courseRegister(req.body.uid, req.body.cid);
+  res.status(201).json({});
+});
 module.exports = router;

@@ -46,5 +46,10 @@ module.exports = {
   },
   async favorite(uid, cid){
     return db('favoriteCourse').insert({studentId:3,courseId:5});
+  },
+  async courseRegister(uid, cid){
+    // return db.raw(`insert into student_course ('courseID', æstudentID', 'progress') VALUES ('?', '?', 'chua hoan thanh');`,uid,cid);
+    console.log(uid+" "+cid);
+    return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`) VALUES (?, ?, 'chưa hoàn thành')",[cid,uid]);
   }
 };
