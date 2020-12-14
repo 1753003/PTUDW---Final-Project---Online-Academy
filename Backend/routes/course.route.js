@@ -3,12 +3,12 @@ const courseModel = require('../models/course.model');
 
 const router = express.Router();
 
-// router.get('/', async function (req, res) {
-//   const list = await courseModel.getAll();
-//   res.json(list);
-// })
+router.get('/', async function (req, res) {
+  const list = await courseModel.getAll();
+  res.json(list);
+})
 
-router.get('/:id', async function (req, res) {
+router.get('/:id([0-9]+)', async function (req, res, next) {
   const id = req.params.id || -1;
   const course = await courseModel.singleById(id);
 
@@ -49,13 +49,16 @@ router.get('/search', async function(req, res){
   const list = await courseModel.searchByKeyword(keyword);
   res.json(list);
 })
-router.patch('/hot', async function (req, res) {
-  
+router.get('/hot', async function (req, res) {
+  const list = await courseModel.hot();
+  res.json(list);
 })
-router.patch('/trending', async function (req, res) {
-  
+router.get('/trending', async function (req, res) {
+  const list = await courseModel.trending();
+  res.json(list);
 })
-router.patch('/new', async function (req, res) {
-  
+router.get('/new', async function (req, res) {
+  const list = await courseModel.new();
+  res.json(list);
 })
 module.exports = router;
