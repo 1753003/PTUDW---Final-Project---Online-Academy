@@ -21,10 +21,14 @@ router.get('/:id', async function (req, res) {
 
 // const courseSchema = require('../schemas/course.json');
 // const validation = require('../middleware/validation.mdw');
-router.post('/', async function (req, res) {
-  const id = await courseModel.add(req.body);
-  res.status(201).json({ id: id });
-})
+// router.post('/', async function (req, res) {
+//   const id = await courseModel.add(req.body);
+//   res.status(201).json({ id: id });
+// })
+router.post('/', async function(req, res){
+  courseModel.courseRegister(req.body.uid, req.body.cid);
+  res.status(201);
+});
 router.delete('/:id', async function (req, res) {
   const id = req.params.id || -1;
   await courseModel.delById(id).then(()=>{
@@ -42,7 +46,7 @@ router.patch('/:id', async function (req, res) {
     res.status(201).json({id : id});
   })
 })
-router.get('/', async function(req, res){
+router.get('/search', async function(req, res){
   console.log(req.query.q)
   const keyword = req.query.q
   const list = await courseModel.searchByKeyword(keyword);
