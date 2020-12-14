@@ -21,7 +21,7 @@ router.post('/', function(req, res) {
 })
 
 router.delete('/:id', function(req, res) {
-
+    res.json(await categoryModel.delete(req.params.id));
 })
 
 router.patch('/:id', function(req, res) {
