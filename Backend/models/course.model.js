@@ -27,5 +27,23 @@ module.exports = {
   },
   async searchByKeyword(keyword){
     return db.select(db.raw(`* FROM course WHERE MATCH(name) AGAINST('${keyword}' IN NATURAL LANGUAGE MODE)`)); 
+  },
+  async hot(){
+    return db.select(db.raw(`COUNT((courseID)) as count, courseID
+    FROM student_course
+    WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)
+    GROUP BY courseID ORDER BY count DESC LIMIT 4`));
+  },
+  async trending(){
+    return db.select(db.raw(`id, views from course 
+    ORDER BY views DESC LIMIT 10`)); 
+  },
+  async new(){
+    return db.select(db.raw(`id, createdDate from course 
+    ORDER BY createdDate DESC LIMIT 10`)); 
   }
 };
+// select categoryID, count(categoryID) as count
+// FROM student_course INNER JOIN course on courseID = id
+// WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)
+// GROUP by categoryID ORDER by count DESC LIMIT 10
