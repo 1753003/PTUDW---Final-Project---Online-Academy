@@ -89,6 +89,41 @@ export default {
       ],
     },
     {
+      path: '/admin',
+      component: '../layouts/BlankLayout',
+      routes: [
+        {
+          path: '/admin',
+          component: '../layouts/BlankLayout',
+          authority: ['admin'],
+          routes: [
+            {
+              path: '/admin',
+              redirect: '/admin/home',
+            },
+            {
+              path: '/admin/home',
+              name: 'home',
+              icon: 'crown',
+              component: './admin/index',
+            },
+            {
+              path: '/admin/category',
+              name: 'category',
+              icon: 'crown',
+              component: './admin/category/index'
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
+          component: './404',
+        },
+      ],
+    },
+    {
       path: '/',
       component: '../layouts/SecurityLayout',
       routes: [
@@ -101,28 +136,6 @@ export default {
               path: '/',
               redirect: '/home',
             },
-            // {
-            //   path: '/welcome',
-            //   name: 'welcome',
-            //   icon: 'smile',
-            //   component: './Welcome',
-            // },
-            // {
-            //   path: '/admin',
-            //   name: 'admin',
-            //   icon: 'crown',
-            //   component: './Admin',
-            //   authority: ['admin'],
-            //   routes: [
-            //     {
-            //       path: '/admin/sub-page',
-            //       name: 'sub-page',
-            //       icon: 'smile',
-            //       component: './Welcome',
-            //       authority: ['admin'],
-            //     },
-            //   ],
-            // },
             {
               path: '/home',
               name: 'home',
