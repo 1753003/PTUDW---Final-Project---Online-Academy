@@ -110,11 +110,7 @@ export default {
               path: '/admin/category',
               name: 'category',
               icon: 'crown',
-<<<<<<< Updated upstream
-              component: './admin/category/index'
-=======
               component: './admin/category/index',
->>>>>>> Stashed changes
             },
             {
               component: './404',

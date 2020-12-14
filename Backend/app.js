@@ -1,10 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-<<<<<<< Updated upstream
-const cors = require('cors');
-=======
 var cors = require('cors')
->>>>>>> Stashed changes
 
 const app = express();
 
