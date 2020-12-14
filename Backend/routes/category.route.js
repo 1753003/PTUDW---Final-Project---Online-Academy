@@ -20,7 +20,11 @@ router.post('/', function(req, res) {
 
 })
 
+<<<<<<< Updated upstream
 router.delete('/:id', function(req, res) {
+=======
+router.delete('/:id', async function(req, res) {
+>>>>>>> Stashed changes
     res.json(await categoryModel.delete(req.params.id));
 })
 

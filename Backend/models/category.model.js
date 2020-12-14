@@ -18,4 +18,8 @@ module.exports = {
         await db('category').where('id', id).del();
         return "success";
     }
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
 };

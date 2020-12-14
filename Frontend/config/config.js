@@ -4,7 +4,6 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 import themePluginConfig from './themePluginConfig';
 import proxy from './proxy';
 import webpackPlugin from './plugin.config';
-
 const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -111,7 +110,11 @@ export default {
               path: '/admin/category',
               name: 'category',
               icon: 'crown',
+<<<<<<< Updated upstream
               component: './admin/category/index'
+=======
+              component: './admin/category/index',
+>>>>>>> Stashed changes
             },
             {
               component: './404',
@@ -190,8 +193,8 @@ export default {
         const antdProPath = match[1].replace('.less', '');
         const arr = slash(antdProPath)
           .split('/')
-          .map((a) => a.replace(/([A-Z])/g, '-$1'))
-          .map((a) => a.toLowerCase());
+          .map(a => a.replace(/([A-Z])/g, '-$1'))
+          .map(a => a.toLowerCase());
         return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
       }
 
