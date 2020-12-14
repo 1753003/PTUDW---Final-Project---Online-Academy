@@ -13,11 +13,7 @@ export function getListCategory() {
             console.log(error);
         })
     })
-<<<<<<< Updated upstream
-};
-=======
 }
->>>>>>> Stashed changes
 
 export function removeCategory(id) {
     return new Promise( (resolve, reject) => {
@@ -32,8 +28,4 @@ export function removeCategory(id) {
             console.log(error);
         })
     })
-<<<<<<< Updated upstream
-};
-=======
 }
->>>>>>> Stashed changes
