@@ -1,8 +1,7 @@
 const express = require('express');
 const courseModel = require('../models/course.model');
 
-const router = express.Router();
-
+const router = express.Router({mergeParams: true});
 router.get('/', async function (req, res) {
   const list = await courseModel.getAll();
   res.json(list);
@@ -15,7 +14,6 @@ router.get('/:id([0-9]+)', async function (req, res, next) {
   if (course === null) {
     return res.status(204).json({});
   }
-
   res.json(course);
 })
 
@@ -47,7 +45,7 @@ router.get('/search', async function(req, res){
   console.log(req.query.q)
   const keyword = req.query.q
   const list = await courseModel.searchByKeyword(keyword);
-  res.json(list);
+  res.json(list[0]);
 })
 router.get('/hot', async function (req, res) {
   const list = await courseModel.hot();
@@ -60,5 +58,25 @@ router.get('/trending', async function (req, res) {
 router.get('/new', async function (req, res) {
   const list = await courseModel.new();
   res.json(list);
+})
+router.get('/:id/sylabus', async function (req, res) {
+  const list = await courseModel.sylabus(req.params.id);
+  res.json(list);
+})
+router.get('/:id/review', async function (req, res) {
+  const list = await courseModel.review(req.params.id);
+  res.json(list);
+})
+router.get('/:id/relate', async function (req, res) {
+  const list = await courseModel.relate(req.params.id);
+  res.json(list);
+})
+router.post('/:id/sylabus', async function (req, res) {
+  const id = await courseModel.addSylabus(req.params.id, req.body);
+  res.status(201).json({ id: id });
+})
+router.patch('/:id/sylabus', async function (req, res) {
+  const id = await courseModel.updateSylabusById(req.params.id, req.body);
+  res.status(201).json({ id: id });
 })
 module.exports = router;

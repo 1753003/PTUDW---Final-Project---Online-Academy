@@ -6,7 +6,7 @@ module.exports = {
   },
 
   async singleById(id) {
-    const list = await db('course').where('id', id);
+    const list = await db('course').leftOuterJoin('user', 'user.id', 'course.lecturerID').where('course.id', id);
     if (list.length === 0) {
       return null;
     }
@@ -25,22 +25,65 @@ module.exports = {
   async updateById(id, data) {
     const upadteDb = await db('course').where('id', id).update(data);
   },
-  async searchByKeyword(keyword){
-    return db.select(db.raw(`* FROM course WHERE MATCH(name) AGAINST('${keyword}' IN NATURAL LANGUAGE MODE)`)); 
+  async searchByKeyword(keyword) {
+    return db.raw(`(SELECT *
+      FROM course 
+      LEFT JOIN category a ON course.categoryID = a.id
+      LEFT JOIN category b ON a.idTopic = b.id
+      WHERE 
+      MATCH(course.name) AGAINST('${keyword}*' IN BOOLEAN MODE) or
+      MATCH(a.name) AGAINST('${keyword}*' IN BOOLEAN MODE) OR
+      MATCH(b.name) AGAINST('${keyword}*' IN BOOLEAN MODE)
+      )
+      union 
+      (SELECT *
+      FROM course 
+      LEFT JOIN category a ON course.categoryID = a.id
+      LEFT JOIN category b ON a.idTopic = b.id
+      where course.name like '${keyword}%' or a.name like '${keyword}%' or b.name like '${keyword}%')`);
   },
-  async hot(){
+  async hot() {
     return db.select(db.raw(`COUNT((courseID)) as count, courseID
     FROM student_course
     WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)
     GROUP BY courseID ORDER BY count DESC LIMIT 4`));
   },
-  async trending(){
+  async trending() {
     return db.select(db.raw(`id, views from course 
-    ORDER BY views DESC LIMIT 10`)); 
+    ORDER BY views DESC LIMIT 10`));
   },
-  async new(){
+  async new() {
     return db.select(db.raw(`id, createdDate from course 
-    ORDER BY createdDate DESC LIMIT 10`)); 
+    ORDER BY createdDate DESC LIMIT 10`));
+  },
+  async sylabus(id) {
+    return db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE id = ${id}`));
+  },
+  async review(id) {
+    return db.select(db.raw(`* from course LEFT join student_course on student_course.courseID = course.id WHERE course.id = ${id}`));
+  },
+  async relate(id) {
+    return db.select(db.raw(`course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register"
+    from course 
+    left join student_course on course.id = student_course.courseID
+    left join category on category.id = course.categoryID 
+    WHERE category.id = (
+    SELECT categoryID from course where course.id = ${id})
+    GROUP by courseName
+    ORDER by register DESC
+    limit 5`));
+  },
+  addSylabus(id, data){
+    const sylabus = {
+      courseID: id,
+      week: data.week,
+      name: data.name,
+      videoLink: data.videoLink
+    }
+    return db('sylabus').insert(sylabus);
+  },
+  async updateSylabusById(id, data) {
+    const upadteDb = await db('sylabus').where('courseId', id).update(data);
   }
 };
 // select categoryID, count(categoryID) as count

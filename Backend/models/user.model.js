@@ -9,7 +9,14 @@ module.exports = {
 
     return list[0];
   },
+  async singleByMail(mail) {
+    const list = await db('user').where('email', mail);
+    if (list.length === 0) {
+      return null;
+    }
 
+    return list[0];
+  },
   async singleByUserName(userName) {
     const list = await db('user').where('username', userName);
     if (list.length === 0) {
@@ -41,15 +48,43 @@ module.exports = {
 
     return idList[0];
   },
-  review(cid, uid, data){
-    return db('student_course').where({studentID: 3, courseID:5}).update(data);
+  async addFavorite(uid, cid){
+    return db('favoriteCourse').insert({studentId:uid,courseId:cid});
   },
-  async favorite(uid, cid){
-    return db('favoriteCourse').insert({studentId:3,courseId:5});
+  async delFavorite(uid,cid){
+    await db('favoriteCourse').where({
+      studentId: uid,
+      courseId:  cid
+    }).del();
+  },
+  async getFavorite(uid){
+    return db('favoriteCourse').where('studentId' ,uid);
   },
   async courseRegister(uid, cid){
     // return db.raw(`insert into student_course ('courseID', æstudentID', 'progress') VALUES ('?', '?', 'chua hoan thanh');`,uid,cid);
     console.log(uid+" "+cid);
     return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`) VALUES (?, ?, 'chưa hoàn thành')",[cid,uid]);
+  },
+  async getRegisterCourse(uid){
+    return db('student_course').where('studentID' ,uid);
+  },
+  async editRegisterCourse(uid,cid, data){
+    return db('student_course').where({'studentID' :uid,'courseID':cid}).update(data);
+  },
+  async edit(uid, data){
+    return db('user').where('id' ,uid).update(data);
+  },
+  async getAllByType(type){
+    const list = await db('user').where('type', type);
+    if (list.length === 0) {
+      return null;
+    }
+    return list[0];
+  },
+  async delUser(uid){
+    await db('user').where('id', id).del();
+  },
+  async getLectureCourse(uid){
+    return db.raw(`select * from course left join user on user.id = course.lecturerID WHERE lecturerID = ${uid}`);
   }
 };
