@@ -4,6 +4,7 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 import themePluginConfig from './themePluginConfig';
 import proxy from './proxy';
 import webpackPlugin from './plugin.config';
+
 const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -89,11 +90,11 @@ export default {
     },
     {
       path: '/admin',
-      component: '../layouts/BlankLayout',
+      component: '../layouts/SecurityLayout',
       routes: [
         {
           path: '/admin',
-          component: '../layouts/BlankLayout',
+          component: '../layouts/BasicLayout',
           authority: ['admin'],
           routes: [
             {
@@ -102,14 +103,14 @@ export default {
             },
             {
               path: '/admin/home',
-              name: 'home',
+              name: 'Home',
               icon: 'crown',
               component: './admin/index',
             },
             {
               path: '/admin/category',
-              name: 'category',
-              icon: 'crown',
+              name: 'Category',
+              icon: 'check',
               component: './admin/category/index',
             },
             {
