@@ -24,8 +24,8 @@ router.delete('/:id', async function(req, res) {
     res.json(await categoryModel.delete(req.params.id));
 })
 
-router.patch('/:id', function(req, res) {
-
+router.patch('/:id', async function(req, res) {
+    await res.json(categoryModel.edit(req.params.id, req.body))
 })
 
 module.exports = router;

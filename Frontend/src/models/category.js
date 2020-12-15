@@ -1,4 +1,4 @@
-import { getListCategory, removeCategory } from '@/services/category';
+import { getListCategory, removeCategory, editCategory } from '@/services/category';
 
 const categoryModel = {
   namespace: 'category',
@@ -19,21 +19,32 @@ const categoryModel = {
           type: 'getList',
           payload: response,
       });
+    },
+    *edit(payload, { call, put }) {     
+      console.log(payload.payload);
+      const response = yield call(editCategory, payload.payload[0], payload.payload[1]);
+      yield put({
+          type: 'editItem',
+          payload: response,
+      });
   },
   },
   reducers: {
     getList(state, action) {
-      console.log("get list running");
       return {
             ...state,
             list: action.payload
         }
     },
     removeItem(state, action) {
-      console.log("remove running");
       return {
           ...state,
           //list: action.payload
+      }
+    },
+    editItem(state, action) {
+      return {
+        ...state,
       }
     }
   },

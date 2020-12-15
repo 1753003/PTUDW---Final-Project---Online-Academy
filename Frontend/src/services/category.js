@@ -29,3 +29,20 @@ export function removeCategory(id) {
         })
     })
 }
+
+export function editCategory(id, newName) {
+    console.log("service");
+    return new Promise( (resolve, reject) => {
+        axios.patch(`http://localhost:5000/api/category/${id}`, {name: newName})
+        .then((response) => {
+            // handle success
+            console.log("this");
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+            console.log(error);
+        })
+    })
+}
