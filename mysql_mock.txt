@@ -1,0 +1,175 @@
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`) VALUES ('5', 'Finance', '0');
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`) VALUES ('4', 'Business', '0');
+-- 2020-12-13 21:13:06.0890
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`) VALUES ('6', 'Office Productivity', '0');
+
+-- 2020-12-13 21:13:06.7030
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`) VALUES ('7', 'Design', '0');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('9', 'Sales', '1', '4');
+
+-- 2020-12-13 21:18:37.9730
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('10', 'Finance Modeling', '1', '5');
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('8', 'Entrepreneurship', '1', '4');
+-- 2020-12-13 21:18:38.5860
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('11', 'Investing', '1', '5');
+
+-- 2020-12-13 21:18:39.2020
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('12', 'Microsoft Word', '1', '6');
+
+-- 2020-12-13 21:18:39.8160
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('13', 'Microsoft Excel', '1', '6');
+
+-- 2020-12-13 21:18:40.4300
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('14', 'Web Design', '1', '7');
+
+-- 2020-12-13 21:18:41.0020
+INSERT INTO `jok7rrqgjka2fkpa`.`category` (`id`, `name`, `isNull`, `idTopic`) VALUES ('15', 'Game Design', '1', '7');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Entrepreneurship Beginner ', '8', '2', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Entrepreneurship Master ', '8', '2', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Sales Beginner Beginner', '9', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Sales Master Master', '9', '2', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Finance Modeling Beginner', '10', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Finance Modeling Master', '10', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Investing Beginner', '11', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Investing Master', '11', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Microsoft Word Beginner', '12', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Microsoft Word Master', '12', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Microsoft Excel Beginner', '13', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Microsoft Excel Master', '13', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Web Design Beginner', '14', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Web Design Master', '14', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Game Design Beginner', '15', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Game Design Master', '15', '1', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Branding Beginner', '18', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Branding Master', '18', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Digital Marketing Beginner', '19', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Digital Marketing Master', '19', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Vocal Beginner', '20', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Vocal Master', '20', '1', '0', '0', '567', '300','0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Music Production Beginner', '21', '2', '0', '0', '567','300', '0', 'hoàn thành');
+INSERT INTO `jok7rrqgjka2fkpa`.`course` (`name`, `categoryID`, `lecturerID`, `rating`, `numRate`, `price`,`salePrice`, `views`, `status`) VALUES ('Music Production Master', '21', '2', '0', '0', '567','300', '0', 'hoàn thành');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('4', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('4', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('4', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('4', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('5', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('5', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('5', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('5', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('6', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('6', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('6', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('6', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('7', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('7', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('7', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('7', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('8', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('8', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('8', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('8', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('9', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('9', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('9', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('9', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('10', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('10', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('10', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('10', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('11', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('11', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('11', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('11', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('12', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('12', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('12', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('12', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('13', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('13', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('13', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('13', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('14', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('14', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('14', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('14', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('15', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('15', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('15', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('15', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('16', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('16', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('16', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('16', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('17', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('17', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('17', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('17', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('18', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('18', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('18', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('18', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('19', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('19', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('19', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('19', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('20', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('20', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('20', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('20', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('21', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('21', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('21', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('21', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('22', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('22', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('22', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('22', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('23', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('23', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('23', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('23', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('24', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('24', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('24', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('24', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('25', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('25', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('25', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('25', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('26', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('26', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('26', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('26', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('27', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('27', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('27', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('27', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('28', '1', 'Nhập môn', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('28', '2', 'Kiến thức cơ bản', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('28', '3', 'Kiến thức nâng cao', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
+INSERT INTO `jok7rrqgjka2fkpa`.`sylabus` (`courseID`, `week`, `name`, `videoLink`) VALUES ('28', '4', 'Tổng Kết', 'https://www.youtube.com/watch?v=QyElbUb1QjI');
