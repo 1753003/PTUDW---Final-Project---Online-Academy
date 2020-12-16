@@ -1,0 +1,53 @@
+import { getListCategory, removeCategory, editCategory } from '@/services/category';
+
+const categoryModel = {
+  namespace: 'category',
+  state: {
+    list: [],
+  },
+  effects: {
+    *remove(payload, { call, put }) {     
+        const response = yield call(removeCategory, payload.payload);
+        yield put({
+            type: 'removeItem',
+            payload: response,
+        });
+    },
+    *get(_, { call, put }) {
+      const response = yield call(getListCategory);
+      yield put({
+          type: 'getList',
+          payload: response,
+      });
+    },
+    *edit(payload, { call, put }) {     
+      console.log(payload.payload);
+      const response = yield call(editCategory, payload.payload[0], payload.payload[1]);
+      yield put({
+          type: 'editItem',
+          payload: response,
+      });
+  },
+  },
+  reducers: {
+    getList(state, action) {
+      return {
+            ...state,
+            list: action.payload
+        }
+    },
+    removeItem(state, action) {
+      return {
+          ...state,
+          //list: action.payload
+      }
+    },
+    editItem(state, action) {
+      return {
+        ...state,
+      }
+    }
+  },
+};
+
+export default categoryModel;

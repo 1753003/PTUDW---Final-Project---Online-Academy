@@ -89,6 +89,41 @@ export default {
       ],
     },
     {
+      path: '/admin',
+      component: '../layouts/SecurityLayout',
+      routes: [
+        {
+          path: '/admin',
+          component: '../layouts/BasicLayout',
+          authority: ['admin'],
+          routes: [
+            {
+              path: '/admin',
+              redirect: '/admin/home',
+            },
+            {
+              path: '/admin/home',
+              name: 'Home',
+              icon: 'crown',
+              component: './admin/index',
+            },
+            {
+              path: '/admin/category',
+              name: 'Category',
+              icon: 'check',
+              component: './admin/category/index',
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
+          component: './404',
+        },
+      ],
+    },
+    {
       path: '/',
       component: '../layouts/SecurityLayout',
       routes: [
@@ -101,28 +136,6 @@ export default {
               path: '/',
               redirect: '/home',
             },
-            // {
-            //   path: '/welcome',
-            //   name: 'welcome',
-            //   icon: 'smile',
-            //   component: './Welcome',
-            // },
-            // {
-            //   path: '/admin',
-            //   name: 'admin',
-            //   icon: 'crown',
-            //   component: './Admin',
-            //   authority: ['admin'],
-            //   routes: [
-            //     {
-            //       path: '/admin/sub-page',
-            //       name: 'sub-page',
-            //       icon: 'smile',
-            //       component: './Welcome',
-            //       authority: ['admin'],
-            //     },
-            //   ],
-            // },
             {
               path: '/home',
               name: 'home',
@@ -177,8 +190,8 @@ export default {
         const antdProPath = match[1].replace('.less', '');
         const arr = slash(antdProPath)
           .split('/')
-          .map((a) => a.replace(/([A-Z])/g, '-$1'))
-          .map((a) => a.toLowerCase());
+          .map(a => a.replace(/([A-Z])/g, '-$1'))
+          .map(a => a.toLowerCase());
         return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
       }
 
