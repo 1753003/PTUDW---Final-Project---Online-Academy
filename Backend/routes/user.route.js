@@ -36,7 +36,7 @@ router.post('/:uid/courseRegister/:cid', async function(req, res){
   await userModel.courseRegister(req.params.uid, req.body.cid);
   res.status(201).json({});
 });
-router.get('/:uid([0-9]+)', async function(req,,res){
+router.get('/:uid([0-9]+)', async function(req,res){
   const id = req.params.uid || -1;
   const user = await userModel.singleById(id);
 
@@ -51,7 +51,7 @@ router.delete('/:uid/favorite/:cid', async function(req, res){
   await userModel.delFavorite(uid,cid);
   res.status(201).json({id : uid});
 });
-router.get('/:uid/favorite', async function(req,,res){
+router.get('/:uid/favorite', async function(req,res){
   const uid = req.params.uid || -1;
   const list = await userModel.getFavorite(uid);
   res.json(list);
@@ -94,5 +94,7 @@ router.get('/:uid/lectureList',async function(req, res){
 });
 router.post('/:uid', async function(req, res){
   // change password
+  // send mail
+  
 })
 module.exports = router;
