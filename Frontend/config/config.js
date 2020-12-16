@@ -143,6 +143,12 @@ export default {
               component: './home',
             },
             {
+              path: '/search',
+              name: 'search',
+              icon: 'crown',
+              component: './search',
+            },
+            {
               component: './404',
             },
           ],
