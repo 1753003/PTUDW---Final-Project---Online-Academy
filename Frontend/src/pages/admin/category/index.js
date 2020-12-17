@@ -144,7 +144,7 @@ const Category = ({list, dispatch}) => {
     <PageHeader>
         <h2>Category page</h2>  
         <Divider />
-        <EditableTable/> 
+        <EditableTable/>
     </PageHeader>
   )
 };

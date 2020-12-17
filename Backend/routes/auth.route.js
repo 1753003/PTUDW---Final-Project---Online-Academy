@@ -24,7 +24,7 @@ router.post('/', async function (req, res) {
   const accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
-    expiresIn: 10 * 60
+    expiresIn: 100 * 60
   });
 
   const refreshToken = randToken.generate(80);
@@ -49,7 +49,7 @@ router.post('/refresh', async function (req, res) {
     const accessToken = jwt.sign({
       userId: payload.userId
     }, 'SECRET_KEY', {
-      expiresIn: 10 * 6000
+      expiresIn: 100 * 60
     });
 
     return res.json({ accessToken });
