@@ -8,6 +8,7 @@ const categoryModel = {
   effects: {
     *remove(payload, { call, put }) {     
         const response = yield call(removeCategory, payload.payload);
+        console.log(response);
         yield put({
             type: 'removeItem',
             payload: response,
@@ -22,12 +23,12 @@ const categoryModel = {
       });
     },
     *edit(payload, { call, put }) {     
-      console.log(payload.payload);
       const response = yield call(editCategory, payload.payload[0], payload.payload[1]);
       yield put({
           type: 'editItem',
-          payload: response,
+          payload: response
       });
+
   },
   },
   reducers: {
@@ -40,13 +41,14 @@ const categoryModel = {
     removeItem(state, action) {
       return {
           ...state,
-          //list: action.payload
+          list: action.payload
       }
     },
     editItem(state, action) {
       return {
         ...state,
-      }
+        list: action.payload
+      }    
     }
   },
 };

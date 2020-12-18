@@ -6,7 +6,7 @@ const UserModel = {
     currentUser: {},
   },
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch(payload, { call, put }) {
       const response = yield call(queryUsers);
       yield put({
         type: 'save',
