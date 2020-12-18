@@ -105,6 +105,7 @@ const BasicLayout = (props) => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
+        payload: JSON.parse(sessionStorage.getItem("userData"))
       });
     }
   }, []);

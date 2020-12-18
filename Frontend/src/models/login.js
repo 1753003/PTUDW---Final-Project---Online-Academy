@@ -24,6 +24,7 @@ const Model = {
         sessionStorage.setItem("userData", JSON.stringify(response));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
+        let {redirect} = params;
         if(response.type == "admin"){
           window.location.href = "/admin"
           return;
