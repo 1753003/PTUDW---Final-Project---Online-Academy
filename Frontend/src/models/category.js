@@ -15,6 +15,7 @@ const categoryModel = {
         });
     },
     *get(_, { call, put }) {
+      console.log("get");
       const response = yield call(getListCategory);
       yield put({
           type: 'getList',

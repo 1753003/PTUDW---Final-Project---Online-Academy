@@ -20,6 +20,7 @@ const Category = ({list, dispatch}) => {
     <PageHeader>
         <h2>Category page</h2>  
         <Divider />
+
         <DrawerForm 
           onSubmit={(newData) => { console.log(newData); }}
           listData={list.list}
