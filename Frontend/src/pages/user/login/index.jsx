@@ -13,7 +13,7 @@ class Login extends Component {
 
   state = {
     type: 'account',
-    autoLogin: true,
+    autoLogin: false,
   };
 
   changeAutoLogin = (e) => {

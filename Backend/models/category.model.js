@@ -11,20 +11,21 @@ module.exports = {
         if (list.length === 0) {
           return null;
         }
-    
+    h
         return list[0];
       },
     async delete(id) {
         await db('category').where('id', id).del();
-        return "success";
     },
 
     async edit(id, category) {
-      await db("category").where("id", id)
-        .update({
+      await db("category")    
+      .where("id", id)
+      .update({
           name: category.name,
         });
-      return "success";
+      
+      return db("category");
     }
     
 };
