@@ -12,15 +12,22 @@ const Model = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      console.log(response)
+      console.log("login")
+      // const response = yield call(dbLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
 
       if (response.status === 'ok') {
+        sessionStorage.setItem("userData", JSON.stringify(response));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        let { redirect } = params;
+        if(response.type == "admin"){
+          window.location.href = "/admin"
+          return;
+        }
 
         if (redirect) {
           const redirectUrlParams = new URL(redirect);

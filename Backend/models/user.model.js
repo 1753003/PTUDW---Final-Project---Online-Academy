@@ -2,7 +2,7 @@ const db = require('../utils/db');
 
 module.exports = {
   async singleById(id) {
-    const list = await db('users').where('id', id);
+    const list = await db('user').where('id', id);
     if (list.length === 0) {
       return null;
     }

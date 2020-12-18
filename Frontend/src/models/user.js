@@ -14,8 +14,12 @@ const UserModel = {
       });
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    *fetchCurrent({payload}, { call, put }) {
+      console.log("session")
+      // console.log(payload)
+      // console.log(JSON.parse(sessionStorage.getItem("userData")))
+      const response = yield call(queryCurrent, payload.uid);
+      // console.log(response)
       yield put({
         type: 'saveCurrentUser',
         payload: response,
