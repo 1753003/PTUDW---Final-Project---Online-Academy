@@ -56,6 +56,9 @@ const Model = {
 
     *logout(_,{put}) {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+      yield put({
+        type:'user/delCurrentUser'
+      })
       localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
       setAuthority('guest');
       if (window.location.pathname !== '/user/login' && !redirect) {
@@ -66,10 +69,6 @@ const Model = {
           }),
         });
       }
-      yield put({
-        type:'user/delCurrentUser'
-      })
-
     },
   },
   reducers: {

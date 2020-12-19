@@ -126,7 +126,7 @@ const BasicLayout = (props) => {
   }; // get children authority
 
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
-    authority: undefined,
+    authority: 'guest',
   };
   return (
     <ProLayout
