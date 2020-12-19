@@ -15,9 +15,8 @@ const UserModel = {
     },
 
     *fetchCurrent({payload}, { call, put }) {
-      // console.log(JSON.parse(sessionStorage.getItem("userData")))
+      console.log("fetchCurrent")
       const response = yield call(queryCurrent, payload.uid);
-      // console.log(response)
       yield put({
         type: 'saveCurrentUser',
         payload: response,
@@ -27,6 +26,10 @@ const UserModel = {
   reducers: {
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
+    },
+    delCurrentUser(state) {
+      console.log(state)
+      return { ...state, currentUser: {} || {} };
     },
 
     changeNotifyCount(

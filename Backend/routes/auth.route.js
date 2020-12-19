@@ -31,16 +31,17 @@ router.post('/', async function (req, res) {
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
 
-  
+  // console.log(user)
   let responseData = {
     authenticated: true,
     accessToken,
     refreshToken,
     status:"ok",
-    username : user.name,
+    username : user.username,
     email: user.email,
     type:user.type,
-    uid:user.id
+    uid:user.id,
+    currentAuthority: user.type
   }
   res.json(responseData)
 })

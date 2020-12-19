@@ -7,43 +7,62 @@ import { stringify } from 'querystring';
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
+    isGuest: true
   };
 
+  constructor(props){
+    super(props);
+    if(!localStorage.getItem("userData")){
+      localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
+      localStorage.setItem('antd-pro-authority',JSON.stringify(['guest']))
+    }
+  }
   componentDidMount() {
     this.setState({
-      isReady: true,
+      isReady: false,
+      isGuest: true
     });
-    const { dispatch } = this.props;
-    
-    if (dispatch) {
+
+    const { dispatch, currentUser } = this.props;
+    const {isGuest} = this.state;
+    // console.log(this.props)
+    if (dispatch && !isGuest) {
       dispatch({
         type: 'user/fetchCurrent',
-        payload: JSON.parse(sessionStorage.getItem("userData"))
+        payload: JSON.parse(localStorage.getItem("userData"))
       });
     }
   }
 
   render() {
-    const { isReady } = this.state;
+    const { isGuest, isReady} = this.state;
+
     const { children, loading, currentUser } = this.props; // You can replace it to your authentication rule (such as check token exists)
-    // 你可以把它替换成你自己的登录认证规则（比如判断 token 是否存在）
+    // console.log(this.state)
+    // console.log(this.props)
     const isLogin = currentUser && currentUser.id;
+    if(isLogin){
+        isGuest: false
+    }
+    
     const queryString = stringify({
       redirect: window.location.href,
     });
+    if(!isGuest){
+      if ((!isLogin && loading) || !isReady) {
+        return <PageLoading />;
+      }
 
-    console.log("isLogin: ",isLogin);
-    console.log("loading: ", loading);
-    console.log("isReady: ", isReady);
-    if ((!isLogin && loading) || !isReady) {
-      return <PageLoading />;
-    }
+      if (!isLogin && window.location.pathname !== '/user/login') {
+        return <Redirect to={`/user/login?${queryString}`} />;
+      }
 
-    if (!isLogin && window.location.pathname !== '/user/login') {
-      return <Redirect to={`/user/login?${queryString}`} />;
-    }
-
+      return children;
+  }else{
+    // console.log("basic")
     return children;
+  }
+
   }
 }
 

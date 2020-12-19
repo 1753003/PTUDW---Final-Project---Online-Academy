@@ -11,7 +11,7 @@ export function queryCurrent(params) {
     axios.get(`http://localhost:5000/api/user/${params}`)
     .then((response) => {
         // handle success
-        console.log(response.data)
+        // console.log(response.data)
         resolve(response.data)
     })
     .catch((error) => {
