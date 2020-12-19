@@ -14,6 +14,7 @@ const Course = ({list, dispatch}) => {
     }, [list]);
     
     const dataSource = list.list[0];
+    
     const columns = [
         {
             title: 'ID',
@@ -34,7 +35,7 @@ const Course = ({list, dispatch}) => {
         {
             title: 'Details',
             dataIndex: 'id',
-            render: (id) => (
+            render: () => (
                 <DrawerForm course={dataSource[id]}/>
             )
         },
