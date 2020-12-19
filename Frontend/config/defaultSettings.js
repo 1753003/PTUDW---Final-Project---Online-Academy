@@ -10,7 +10,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Udemy',
+  title: 'Pondemy',
   pwa: false,
   iconfontUrl: '',
 };
