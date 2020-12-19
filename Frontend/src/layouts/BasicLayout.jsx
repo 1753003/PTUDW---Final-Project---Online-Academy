@@ -128,6 +128,7 @@ const BasicLayout = (props) => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
+  
   return (
     <ProLayout
       logo={logo}
@@ -176,7 +177,7 @@ const BasicLayout = (props) => {
     </ProLayout>
   );
 };
-
+ 
 export default connect(({ global, settings }) => ({
   collapsed: global.collapsed,
   settings,

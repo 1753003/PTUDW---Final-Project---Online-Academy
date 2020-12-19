@@ -79,4 +79,8 @@ router.patch('/:id/sylabus', async function (req, res) {
   const id = await courseModel.updateSylabusById(req.params.id, req.body);
   res.status(201).json({ id: id });
 })
+
+router.get('/getAll', async function(req, res) {
+  res.json(await courseModel.getAllInfo());
+})
 module.exports = router;
