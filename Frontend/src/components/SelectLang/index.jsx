@@ -17,7 +17,7 @@ const SelectLang = (props) => {
     'en-US': 'English',
   };
   const languageIcons = {
-    'vi_VN': 'vn',
+    'vi_VN': '🇻🇳',
     'en-US': '🇺🇸',
   };
   const langMenu = (

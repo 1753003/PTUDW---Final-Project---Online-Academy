@@ -5,7 +5,7 @@ export function getAuthority(str) {
     typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str; // authorityString could be admin, "admin", ["admin"]
 
   let authority;
-  if(authorityString ==null){
+  if(authorityString == null){
     authorityString = 'guest'
   }
 console.log('authstr', authorityString)
