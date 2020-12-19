@@ -16,16 +16,22 @@ router.get('/:id', async function(req, res) {
     res.json(category);
 })
 
+
+const schema = require('../schemas/category.json');
+//const validation = require('../middleware/validation.mdw');
+
 router.post('/', function(req, res) {
 
 })
 
 router.delete('/:id', async function(req, res) {
-    res.json(await categoryModel.delete(req.params.id));
+    await categoryModel.delete(req.params.id);
+    res.json(await categoryModel.getAll());
 })
 
 router.patch('/:id', async function(req, res) {
-    await res.json(categoryModel.edit(req.params.id, req.body))
+    const category = await categoryModel.edit(req.params.id, req.body);
+    res.json(category);
 })
 
 module.exports = router;

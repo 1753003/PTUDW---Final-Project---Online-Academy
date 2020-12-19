@@ -1,0 +1,19 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "isNull",
+    "idTopic"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "isNull": {
+      "type": "boolean"
+    },
+    "idTopic": {
+      "type": "number"
+    }
+  }
+}
