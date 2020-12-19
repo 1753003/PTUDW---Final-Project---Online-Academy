@@ -161,6 +161,12 @@ export default {
               authority: ['user','guest']
             },
             {
+              path: '/search',
+              name: 'search',
+              icon: 'crown',
+              component: './search',
+            },
+            {
               component: './404',
             },
           ],
