@@ -1,22 +1,32 @@
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button} from 'antd';
 import React from 'react';
+import { Link } from 'umi';
+import { connect } from 'dva';
 import styles from './index.less';
 const Register = () => {
-  class NormalLoginForm extends React.Component {
+
+  class Register extends React.Component {
     handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
+          const { dispatch } = this.props;
+          console.log('Received values of prop: ', this.props);
+          dispatch({
+            type: 'user/register',
+            payload: { ...values, type },
+          });
         }
       });
     };
   
     render() {
+      const { userRegister = {}} = this.props;
       const { getFieldDecorator } = this.props.form;
       return (
         <div className={styles.main}>
-        <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form onSubmit={this.handleSubmit} className="register-form">
           <Form.Item>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],
@@ -24,6 +34,16 @@ const Register = () => {
               <Input
                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Username"
+              />,
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('email', {
+              rules: [{ required: true, message: 'Please input your email!' }],
+            })(
+              <Input
+                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="Email"
               />,
             )}
           </Form.Item>
@@ -39,17 +59,21 @@ const Register = () => {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(<Checkbox>Remember me</Checkbox>)}
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
+            {getFieldDecorator('re-password', {
+              rules: [{ required: true, message: 'Please confirm your Password!' }],
+            })(
+              <Input
+                prefix={<Icon type="lock" style={{ color: 'rgba(240,0,10,.25)' }} />}
+                type="password"
+                placeholder="Re-enter your Password"
+              />,
+            )}
+          </Form.Item>
+          <Form.Item>
             <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
+              Sign Up
             </Button>
-            Or <a href="">register now!</a>
+            <a href="/user/login">Already have an account ? Login now</a>
           </Form.Item>
         </Form>
         </div>
@@ -57,10 +81,11 @@ const Register = () => {
     }
   }
   
-  const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
+  const WrappedRegisterForm = Form.create({ name: 'register' })(Register);
   return (
-    <WrappedNormalLoginForm/>
+    <WrappedRegisterForm/>
   );
 };
-
-export default Register;
+export default connect((user)=>({
+  user,
+}))(Register);

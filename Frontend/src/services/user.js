@@ -3,7 +3,11 @@ import axios from 'axios'
 
 export async function query() {
   return request('/api/users');
-} 
+}
+export async function add(params) {
+  console.log("register")
+  return request('/api/users');
+}
 export function queryCurrent(params) {
   // return request('/api/currentUser');
   // let id = params.id;

@@ -104,7 +104,7 @@ const BasicLayout = (props) => {
 
   useEffect(() => {
     const auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
-    console.log(auth[0])
+    // console.log(auth[0])
     if (dispatch&&auth[0]!='guest') {
       dispatch({
         type: 'user/fetchCurrent',

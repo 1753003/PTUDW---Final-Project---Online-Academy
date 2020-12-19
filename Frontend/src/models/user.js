@@ -13,7 +13,14 @@ const UserModel = {
         payload: response,
       });
     },
-
+    *register(payload, { call, put }) {
+      console.log('payload',payload)
+      const response = yield call(add, payload);
+      // yield put({
+      //   type: 'save',
+      //   payload: response,
+      // });
+    },
     *fetchCurrent({payload}, { call, put }) {
       console.log("fetchCurrent")
       const response = yield call(queryCurrent, payload.uid);

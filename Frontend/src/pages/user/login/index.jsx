@@ -26,6 +26,7 @@ class Login extends Component {
     const { type } = this.state;
 
     if (!err) {
+      console.log('dispatch', this.props)
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
