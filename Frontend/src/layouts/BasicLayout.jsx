@@ -33,7 +33,6 @@ const noMatch = (
 const menuDataRender = (menuList) =>
   menuList.map((item) => {
     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-    // console.log(item, localItem )
     return Authorized.check(item.authority, localItem, null);
   });
 
@@ -128,7 +127,8 @@ const BasicLayout = (props) => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: 'guest',
   };
-  
+  console.log("BasicLayout---");
+  console.log(authorized.authority);
   return (
     <ProLayout
       logo={logo}
