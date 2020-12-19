@@ -13,7 +13,7 @@ class Login extends Component {
 
   state = {
     type: 'account',
-    autoLogin: true,
+    autoLogin: false,
   };
 
   changeAutoLogin = (e) => {
@@ -105,15 +105,15 @@ class Login extends Component {
                 }),
               )}
             <UserName
-              name="userName"
+              name="username"
               placeholder={`${formatMessage({
-                id: 'user-login.login.userName',
+                id: 'user-login.login.username',
               })}: admin or user`}
               rules={[
                 {
                   required: true,
                   message: formatMessage({
-                    id: 'user-login.userName.required',
+                    id: 'user-login.username.required',
                   }),
                 },
               ]}

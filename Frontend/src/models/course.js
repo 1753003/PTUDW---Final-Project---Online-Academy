@@ -1,4 +1,4 @@
-import { getListCourses, searchByKey } from '@/services/course';
+import { getListCourses, getListCoursesWithCategory } from '@/services/course';
 
 
 const courseModel = {
@@ -8,50 +8,27 @@ const courseModel = {
   },
   effects: {
     *get(_, { call, put }) {
-      yield put({
-        type: 'setLoading',
-        payload: true
-      })
-      const response = yield call(getListCourses);
-      yield put({
-        type: 'getList',
-        payload: response,
-      });
-      yield put({
-        type: 'setLoading',
-        payload: false
-      })
+        const response = yield call(getListCourses);
+        yield put({
+            type: 'getList',
+            payload: response,
+        });
     },
-    *search({ payload }, { call, put }) {
+    *getFull(_, { call, put }) {
+      const response = yield call(getListCoursesWithCategory);
       yield put({
-        type: 'setLoading',
-        payload: true
-      })
-      const { value } = payload;
-      const response = yield call(searchByKey, value);
-      yield put({
-        type: 'getList',
-        payload: response,
+          type: 'getList',
+          payload: response,
       });
-      yield put({
-        type: 'setLoading',
-        payload: false
-      })
-    },
+  },
   },
   reducers: {
-    getList(state, { payload }) {
-      return {
-        ...state,
-        list: payload
-      }
+    getList(state, action) {
+        return {
+            ...state,
+            list: action.payload
+        }
     },
-    setLoading(state, { payload }) {
-      return {
-        ...state,
-        loading: payload
-      }
-    }
   },
 };
 export default courseModel;

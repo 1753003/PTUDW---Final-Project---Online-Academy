@@ -34,6 +34,7 @@ export const getAuthorityFromRouter = (router = [], pathname) => {
       (path && pathRegexp(path).exec(pathname)) ||
       (routes && getAuthorityFromRouter(routes, pathname)),
   );
+  console.log(authority)
   if (authority) return authority;
   return undefined;
 };

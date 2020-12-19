@@ -4,9 +4,9 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-  },
+  }, 
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch(payload, { call, put }) {
       const response = yield call(queryUsers);
       yield put({
         type: 'save',
@@ -14,8 +14,9 @@ const UserModel = {
       });
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    *fetchCurrent({payload}, { call, put }) {
+      console.log("fetchCurrent")
+      const response = yield call(queryCurrent, payload.uid);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
@@ -25,6 +26,10 @@ const UserModel = {
   reducers: {
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
+    },
+    delCurrentUser(state) {
+      console.log(state)
+      return { ...state, currentUser: {} || {} };
     },
 
     changeNotifyCount(

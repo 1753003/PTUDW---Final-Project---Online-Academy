@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const randToken = require('rand-token');
 
 const userModel = require('../models/user.model');
+const { response } = require('express');
 
 const router = express.Router();
 router.post('/', async function (req, res) {
@@ -24,17 +25,25 @@ router.post('/', async function (req, res) {
   const accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
-    expiresIn: 10000 * 60
+    expiresIn: 100 * 60
   });
 
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
 
-  res.json({
+  // console.log(user)
+  let responseData = {
     authenticated: true,
     accessToken,
-    refreshToken
-  })
+    refreshToken,
+    status:"ok",
+    username : user.username,
+    email: user.email,
+    type:user.type,
+    uid:user.id,
+    currentAuthority: user.type
+  }
+  res.json(responseData)
 })
 
 // req.body = {
@@ -49,7 +58,7 @@ router.post('/refresh', async function (req, res) {
     const accessToken = jwt.sign({
       userId: payload.userId
     }, 'SECRET_KEY', {
-      expiresIn: 10000 * 60
+      expiresIn: 100 * 60
     });
 
     return res.json({ accessToken });

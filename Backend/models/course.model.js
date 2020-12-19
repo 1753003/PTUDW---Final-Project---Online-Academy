@@ -84,6 +84,12 @@ module.exports = {
   },
   async updateSylabusById(id, data) {
     const upadteDb = await db('sylabus').where('courseId', id).update(data);
+  },
+
+  async getAllInfo() {
+    return await db.raw(`select course.*, category.name as categoryName, user.name as lecturerName 
+    from course, category, user
+    where category.id = course.categoryID and user.id = course.lecturerID`);
   }
 };
 // select categoryID, count(categoryID) as count

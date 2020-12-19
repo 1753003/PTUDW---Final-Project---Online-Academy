@@ -1,16 +1,20 @@
 import { reloadAuthorized } from './Authorized'; // use localStorage to store the authority info, which might be sent from server in actual project.
 
 export function getAuthority(str) {
-  const authorityString =
+  let authorityString =
     typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str; // authorityString could be admin, "admin", ["admin"]
 
   let authority;
-
+  if(authorityString ==null){
+    authorityString = 'guest'
+  }
+console.log('authstr', authorityString)
   try {
     if (authorityString) {
       authority = JSON.parse(authorityString);
     }
   } catch (e) {
+    console.log(e)
     authority = authorityString;
   }
 
