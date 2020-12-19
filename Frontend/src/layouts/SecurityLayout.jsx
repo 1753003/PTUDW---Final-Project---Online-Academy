@@ -14,6 +14,7 @@ class SecurityLayout extends React.Component {
       isReady: true,
     });
     const { dispatch } = this.props;
+    
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
@@ -31,6 +32,9 @@ class SecurityLayout extends React.Component {
       redirect: window.location.href,
     });
 
+    console.log("isLogin: ",isLogin);
+    console.log("loading: ", loading);
+    console.log("isReady: ", isReady);
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
     }

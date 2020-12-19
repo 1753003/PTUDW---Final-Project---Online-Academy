@@ -10,7 +10,7 @@ import PromiseRender from './PromiseRender';
  * @param { 你的权限 | Your permission description } currentAuthority
  * @param { 通过的组件 | Passing components } target
  * @param { 未通过的组件 | no pass components } Exception
- */
+ */ 
 const checkPermissions = (authority, currentAuthority, target, Exception) => {
   // 没有判定权限.默认查看所有
   // Retirement authority, return target;

@@ -4,7 +4,7 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-  },
+  }, 
   effects: {
     *fetch(payload, { call, put }) {
       const response = yield call(queryUsers);
@@ -15,8 +15,6 @@ const UserModel = {
     },
 
     *fetchCurrent({payload}, { call, put }) {
-      console.log("session")
-      // console.log(payload)
       // console.log(JSON.parse(sessionStorage.getItem("userData")))
       const response = yield call(queryCurrent, payload.uid);
       // console.log(response)

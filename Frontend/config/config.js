@@ -114,6 +114,12 @@ export default {
               component: './admin/category/index',
             },
             {
+              path: '/admin/course',
+              name: 'Course',
+              icon: 'star',
+              component: './admin/course/index'
+            },
+            {
               component: './404',
             },
           ],

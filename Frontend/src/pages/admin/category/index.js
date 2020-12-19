@@ -14,17 +14,15 @@ const Category = ({list, dispatch}) => {
   useEffect(() => {
   }, [list]);
 
-  const data = list.list;
-  
   return (
     <PageHeader>
         <h2>Category page</h2>  
         <Divider />
-
         <DrawerForm 
-          onSubmit={(newData) => { console.log(newData); }}
+          onSubmit={(newData) => { dispatch({ type: 'category/add', payload: newData}); }}
           listData={list.list}
         />
+        <Divider />
         <MyTable listData={list.list}/>
     </PageHeader>
   )

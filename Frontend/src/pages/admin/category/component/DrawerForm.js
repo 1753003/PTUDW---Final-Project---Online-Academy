@@ -19,6 +19,8 @@ export class DrawerForm extends React.Component {
   }
   
   createOptions = () => {
+    console.log("create options");
+    console.log(this.state.data);
     this.state.options.push(<Option key={-1}> Null </Option>);
     for (let i = 0; i < this.state.data.length; i++){
       if (this.state.data[i].idTopic === null) {
@@ -32,7 +34,8 @@ export class DrawerForm extends React.Component {
       data: this.props.listData,
       visible: true,
     })
-    this.createOptions();    
+    this.createOptions();   
+    console.log(this.state.options); 
   };
 
   saveOption = (value) => {
@@ -54,7 +57,7 @@ export class DrawerForm extends React.Component {
   }; 
 
   onSubmit = () => {
-    const returnData = [this.state.newIDTopic, this.state.newName];
+    const returnData = [this.state.newName, this.state.newIDTopic == -1 ? null : this.state.newIDTopic ];
     this.props.onSubmit(returnData);
     this.setState({
       visible: false,
