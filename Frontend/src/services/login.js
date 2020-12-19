@@ -11,7 +11,7 @@ export function fakeAccountLogin(params){
     axios.post(`http://localhost:5000/api/auth`, params)
     .then((response) => {
         // handle success
-        console.log("this");
+        // console.log("this");
         resolve(response.data)
     })
     .catch((error) => {

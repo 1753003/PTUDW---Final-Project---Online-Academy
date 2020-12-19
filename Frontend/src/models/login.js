@@ -12,7 +12,7 @@ const Model = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      console.log(response)
+      // console.log(response)
       console.log("login")
       // const response = yield call(dbLogin, payload);
       yield put({
@@ -21,16 +21,17 @@ const Model = {
       }); // Login successfully
 
       if (response.status === 'ok') {
-        sessionStorage.setItem("userData", JSON.stringify(response));
+        localStorage.setItem("userData", JSON.stringify(response));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let {redirect} = params;
         if(response.type == "admin"){
           window.location.href = "/admin"
           return;
+        }else if(redirect && redirect.includes("/admin")){
+          redirect = null;
         }
-
-        if (redirect) {
+        else if(redirect) {
           const redirectUrlParams = new URL(redirect);
 
           if (redirectUrlParams.origin === urlParams.origin) {
@@ -53,9 +54,10 @@ const Model = {
       yield call(getFakeCaptcha, payload);
     },
 
-    logout() {
+    *logout(_,{put}) {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
-
+      localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
+      setAuthority('guest');
       if (window.location.pathname !== '/user/login' && !redirect) {
         router.replace({
           pathname: '/user/login',
@@ -64,9 +66,14 @@ const Model = {
           }),
         });
       }
+      yield put({
+        type:'user/delCurrentUser'
+      })
+
     },
   },
   reducers: {
+
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
       return { ...state, status: payload.status, type: payload.type };

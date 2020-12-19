@@ -86,11 +86,17 @@ export default {
           path: '/user/login',
           component: './user/login',
         },
+        {
+          name: 'register',
+          path: '/user/register',
+          component: './user/register/',
+        },
       ],
     },
     {
       path: '/admin',
       component: '../layouts/SecurityLayout',
+      authority: ['admin'],
       routes: [
         {
           path: '/admin',
@@ -100,18 +106,21 @@ export default {
             {
               path: '/admin',
               redirect: '/admin/home',
+              authority: ['admin']
             },
             {
               path: '/admin/home',
               name: 'Home',
               icon: 'crown',
               component: './admin/index',
+              authority: ['admin']
             },
             {
               path: '/admin/category',
               name: 'Category',
               icon: 'check',
               component: './admin/category/index',
+              authority: ['admin']
             },
             {
               component: './404',
@@ -126,21 +135,24 @@ export default {
     {
       path: '/',
       component: '../layouts/SecurityLayout',
+      authority: ['user','guest'],
       routes: [
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['user'],
+          authority: ['user','guest'],
           routes: [
             {
               path: '/',
               redirect: '/home',
+              authority: ['user','guest']
             },
             {
               path: '/home',
               name: 'home',
               icon: 'crown',
               component: './home',
+              authority: ['user','guest']
             },
             {
               component: './404',

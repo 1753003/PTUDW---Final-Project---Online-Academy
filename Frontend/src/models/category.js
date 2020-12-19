@@ -22,7 +22,7 @@ const categoryModel = {
       });
     },
     *edit(payload, { call, put }) {     
-      console.log(payload.payload);
+      // console.log(payload.payload);
       const response = yield call(editCategory, payload.payload[0], payload.payload[1]);
       yield put({
           type: 'editItem',
