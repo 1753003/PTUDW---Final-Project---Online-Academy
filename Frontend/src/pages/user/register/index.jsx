@@ -3,8 +3,6 @@ import React from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import styles from './index.less';
-const Register = () => {
-
   class Register extends React.Component {
     handleSubmit = e => {
       e.preventDefault();
@@ -22,7 +20,6 @@ const Register = () => {
     };
   
     render() {
-      const { userRegister = {}} = this.props;
       const { getFieldDecorator } = this.props.form;
       return (
         <div className={styles.main}>
@@ -80,12 +77,5 @@ const Register = () => {
       );
     }
   }
-  
-  const WrappedRegisterForm = Form.create({ name: 'register' })(Register);
-  return (
-    <WrappedRegisterForm/>
-  );
-};
-export default connect((user)=>({
-  user,
+export default connect((undefined, mapDispatchToProps)=>({
 }))(Register);
