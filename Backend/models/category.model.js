@@ -24,6 +24,10 @@ module.exports = {
         });
       
       return db("category");
-    }
+    },
     
+    async add(category) {
+      await db('category')
+      .insert(category);
+    }
 };

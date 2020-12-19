@@ -27,7 +27,6 @@ class SecurityLayout extends React.Component {
     const {isGuest} = this.state;
     // console.log(this.props)
     if (dispatch && !isGuest) {
-      
       dispatch({
         type: 'user/fetchCurrent',
         payload: JSON.parse(localStorage.getItem("userData"))

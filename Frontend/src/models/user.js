@@ -4,7 +4,7 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-  },
+  }, 
   effects: {
     *fetch(payload, { call, put }) {
       const response = yield call(queryUsers);

@@ -18,10 +18,10 @@ router.get('/:id', async function(req, res) {
 
 
 const schema = require('../schemas/category.json');
-//const validation = require('../middleware/validation.mdw');
 
-router.post('/', function(req, res) {
-
+router.post('/', async function(req, res) {
+    const list = await categoryModel.add(req.body);
+    res.json(await categoryModel.getAll());
 })
 
 router.delete('/:id', async function(req, res) {
@@ -32,6 +32,10 @@ router.delete('/:id', async function(req, res) {
 router.patch('/:id', async function(req, res) {
     const category = await categoryModel.edit(req.params.id, req.body);
     res.json(category);
+})
+
+router.get('/getAll', function(req, res) {
+    res.json(categoryModel.getAllInfo());
 })
 
 module.exports = router;
