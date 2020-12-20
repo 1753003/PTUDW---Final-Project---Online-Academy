@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate } from 'antd';
-
+import { Redirect, Route, useHistory } from 'umi';
 import { connect } from 'dva';
 
 const { Search } = Input;
@@ -19,14 +19,14 @@ const { SubMenu } = Menu;
 //     });
 // }
 
-const SearchPage = ({ dispatch, list, loading }) => {
+const SearchPage = ({ dispatch, list, loading, history }) => {
     const [searchKey, setSearchKey] = useState('');
     useEffect(() => {
         dispatch({ type: 'course/get' });
     }, [])
 
     useEffect(() => {
-
+        console.log(list);
     }, [list])
     const topicList = [
         {
@@ -45,13 +45,13 @@ const SearchPage = ({ dispatch, list, loading }) => {
             number: 5
         },
     ]
-    
+
     const onSearch = (value) => {
         const payload = {
             value
         }
         setSearchKey(value);
-        dispatch({type: 'course/search', payload})
+        dispatch({ type: 'course/search', payload })
     }
     return (
         <PageHeader>
@@ -110,7 +110,14 @@ const SearchPage = ({ dispatch, list, loading }) => {
                                     title={<a href={item.href}>{item.title}</a>}
                                     description={item.description}
                                 /> */}
-                                <Row>
+                                <Row onDoubleClick={() => {
+                                    history.push({
+                                        pathname: `/detail`,
+                                        query: {
+                                            courseId: item.id,
+                                        },
+                                    });
+                                }}>
                                     <Col span={7}>
                                         <img
                                             width={272}
