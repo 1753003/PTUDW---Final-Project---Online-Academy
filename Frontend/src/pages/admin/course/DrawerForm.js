@@ -38,7 +38,10 @@ export class DrawerForm extends React.Component {
   showDrawer = () => {
     this.setState({
       visible: true,
+      data: this.props.course,
     });
+
+    console.log(this.state.data);
   };
 
   onClose = () => {
@@ -46,12 +49,6 @@ export class DrawerForm extends React.Component {
       visible: false,
     });
   };
-
-  componentDidMount() {
-    this.setState({
-      data: this.props.course,
-    });
-  }
 
   render() {
     return (

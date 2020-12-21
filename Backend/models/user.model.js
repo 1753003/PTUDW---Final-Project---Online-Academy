@@ -79,12 +79,16 @@ module.exports = {
     if (list.length === 0) {
       return null;
     }
-    return list[0];
+    return list;
   },
   async delUser(uid){
-    await db('user').where('id', id).del();
+    await db('user').where('id', uid).del();
   },
   async getLectureCourse(uid){
     return db.raw(`select * from course left join user on user.id = course.lecturerID WHERE lecturerID = ${uid}`);
+  },
+
+  async getEmail (uid) {
+    return await db('user').select('email').where('id',uid);  
   }
 };
