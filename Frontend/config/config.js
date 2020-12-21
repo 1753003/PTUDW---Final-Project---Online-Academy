@@ -93,13 +93,7 @@ export default {
           path: '/user/register',
           component: './user/register/',
           authority: ['guest'],
-        },
-        {
-          name: 'register2',
-          path: '/user/register2',
-          component: './user/register2/',
-          authority: ['guest'],
-        },
+        }
       ],
     },
     {
