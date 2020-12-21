@@ -31,7 +31,7 @@ class RegisterForm extends React.Component {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('email', {
-            rules: [{ required: true, message: 'Please input your email!' }],
+            rules: [{ type:'email', required: true, message: 'Please input your email!' }],
           })(
             <Input
               prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -84,6 +84,4 @@ const Register = ({dispatch}) => {
   );
 }
 
-export default connect((user) => ({
-  user,
-}))(Register);
+export default connect()(Register);

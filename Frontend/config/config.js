@@ -80,16 +80,19 @@ export default {
     {
       path: '/user',
       component: '../layouts/UserLayout',
+      authority: ['user, guest'],
       routes: [
         {
           name: 'login',
           path: '/user/login',
           component: './user/login',
+          authority: ['guest'],
         },
         {
           name: 'register',
           path: '/user/register',
           component: './user/register/',
+          authority: ['guest'],
         },
       ],
     },
@@ -126,7 +129,8 @@ export default {
               path: '/admin/course',
               name: 'Course',
               icon: 'star',
-              component: './admin/course/index'
+              component: './admin/course/index',
+              authority: ['admin']
             },
             {
               component: './404',
@@ -165,6 +169,7 @@ export default {
               name: 'search',
               icon: 'crown',
               component: './search',
+              authority: ['user','guest']
             },
             {
               component: './404',
