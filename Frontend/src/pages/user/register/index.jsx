@@ -84,6 +84,4 @@ const Register = ({dispatch}) => {
   );
 }
 
-export default connect((user) => ({
-  user,
-}))(Register);
+export default connect()(Register);

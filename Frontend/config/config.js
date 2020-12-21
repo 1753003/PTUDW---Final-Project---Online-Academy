@@ -129,6 +129,12 @@ export default {
               component: './admin/course/index'
             },
             {
+              path: '/admin/user',
+              name: 'User',
+              icon: 'user',
+              component: './admin/user/index'
+            },
+            {
               component: './404',
             },
           ],
