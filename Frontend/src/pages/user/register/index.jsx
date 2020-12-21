@@ -4,22 +4,51 @@ import { Link } from 'umi';
 import { connect } from 'dva';
 import styles from './index.less';
 
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 class RegisterForm extends React.Component {
+  componentDidMount() {
+    // To disable submit button at the beginning.
+    this.props.form.validateFields();
+  }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.onSignUp(values);
+        // this.props.onSignUp(values);
+        this.props.dispatch({
+          type: 'user/register',
+          payload: values
+        })
       }
     });
   };
-
+  validateToNextPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['re-password'], { force: true });
+    }
+    callback();
+  };
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const usernameError = isFieldTouched('username') && getFieldError('username');
+    const passwordError = isFieldTouched('password') && getFieldError('password');
+    const emailError = isFieldTouched('email') && getFieldError('email');
+    const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
     return (
       <div className={styles.main}>
-      <Form onSubmit={this.handleSubmit} className="register-form">
-        <Form.Item>
+      <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
+        <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
@@ -29,9 +58,9 @@ class RegisterForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
           {getFieldDecorator('email', {
-            rules: [{ type:'email', required: true, message: 'Please input your email!' }],
+            rules: [{ type:'email', required: true, message: 'Please input a valid email!' }],
           })(
             <Input
               prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -39,9 +68,9 @@ class RegisterForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [{ required: true, message: 'Please input your Password!' },{validator:this.validateToNextPassword}],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -50,9 +79,9 @@ class RegisterForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item validateStatus={rePasswordError ? 'error' : ''} help={rePasswordError || ''}>
           {getFieldDecorator('re-password', {
-            rules: [{ required: true, message: 'Please confirm your Password!' }],
+            rules: [{ required: true, message: 'Please confirm your Password!' },{validator:this.compareToFirstPassword}],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: 'rgba(240,0,10,.25)' }} />}
@@ -62,10 +91,10 @@ class RegisterForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())}>
             Sign Up
           </Button>
-          <a href="/user/login">Already have an account ? Login now</a>
+          <a style={{float:'right'}} href="/user/login">Already have an account ? Login now</a>
         </Form.Item>
       </Form>
       </div>
@@ -73,15 +102,6 @@ class RegisterForm extends React.Component {
   }
 }
 
-const WrappedRegisterForm = Form.create({name: 'register'})(RegisterForm);
-
-const Register = ({dispatch}) => {
-  return (
-    <WrappedRegisterForm onSignUp = {(value) => dispatch({
-      type: 'user/register',
-      payload: value,
-    })}/>
-  );
-}
+const Register = Form.create({name: 'register'})(RegisterForm);
 
 export default connect()(Register);

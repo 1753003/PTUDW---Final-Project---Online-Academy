@@ -25,7 +25,6 @@ class SecurityLayout extends React.Component {
 
     const { dispatch, currentUser } = this.props;
     const {isGuest} = this.state;
-    // console.log(this.props)
     if (dispatch && !isGuest) {
       dispatch({
         type: 'user/fetchCurrent',
@@ -38,8 +37,6 @@ class SecurityLayout extends React.Component {
     const { isGuest, isReady} = this.state;
 
     const { children, loading, currentUser } = this.props; // You can replace it to your authentication rule (such as check token exists)
-    // console.log(this.state)
-    // console.log(this.props)
     const isLogin = currentUser && currentUser.id;
     if(isLogin){
         isGuest: false
@@ -59,7 +56,6 @@ class SecurityLayout extends React.Component {
 
       return children;
   }else{
-    // console.log("basic")
     return children;
   }
 
