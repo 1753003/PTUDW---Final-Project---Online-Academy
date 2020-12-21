@@ -8,21 +8,32 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 class RegisterForm extends React.Component {
-  componentDidMount() {
-    // To disable submit button at the beginning.
-    this.props.form.validateFields();
+  state={
+    first:true,
+    confirmDirty: false,
   }
+  componentDidUpdate(){
+    if(this.state.first == true)
+      {this.setState({first:false})
+      this.props.form.validateFields();}
+  }
+  
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // this.props.onSignUp(values);
         this.props.dispatch({
           type: 'user/register',
           payload: values
         })
+      } else {
+        console.log(err)
       }
     });
+  };
+  handleConfirmBlur = e => {
+    const { value } = e.target;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
@@ -68,22 +79,22 @@ class RegisterForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
+        <Form.Item hasFeedback validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your Password!' },{validator:this.validateToNextPassword}],
           })(
-            <Input
+            <Input.Password
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
               type="password"
               placeholder="Password"
             />,
           )}
         </Form.Item>
-        <Form.Item validateStatus={rePasswordError ? 'error' : ''} help={rePasswordError || ''}>
+        <Form.Item hasFeedback validateStatus={rePasswordError ? 'error' : ''} help={rePasswordError || ''}>
           {getFieldDecorator('re-password', {
             rules: [{ required: true, message: 'Please confirm your Password!' },{validator:this.compareToFirstPassword}],
           })(
-            <Input
+            <Input.Password onBlur={this.handleConfirmBlur}
               prefix={<Icon type="lock" style={{ color: 'rgba(240,0,10,.25)' }} />}
               type="password"
               placeholder="Re-enter your Password"
@@ -91,7 +102,7 @@ class RegisterForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())}>
+          <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
             Sign Up
           </Button>
           <a style={{float:'right'}} href="/user/login">Already have an account ? Login now</a>

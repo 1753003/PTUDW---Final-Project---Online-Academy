@@ -8,7 +8,8 @@ const router = express.Router({mergeParams: true});
 
 router.post('/', async function (req, res) {
   const user = req.body;
-  const check = await userModel.singleByMail(req.body.mail);
+  console.log(req.body)
+  const check = await userModel.singleByMail(req.body.email);
   if (check != null) {
     return res.status(200).json({
       signup: "failed"

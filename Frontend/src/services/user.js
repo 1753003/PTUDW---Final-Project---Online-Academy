@@ -4,9 +4,26 @@ import axios from 'axios'
 export async function query() {
   return request('/api/users');
 }
-export async function add(params) {
-  console.log("register")
-  return request('/api/users');
+export function add(params) {
+  console.log("add", params.payload)
+  return new Promise( (resolve, reject) => {
+    axios.post(`http://localhost:5000/api/user`,
+      {
+        username:params.payload.username,
+        email:params.payload.email,
+        password:params.payload.password,
+      })
+    .then((response) => {
+        // handle success
+        console.log(response)
+        resolve(response)
+    })
+    .catch((error) => {
+        // handle error
+        reject(error);
+        console.log(error);
+    })
+  })
 }
 export function queryCurrent(params) {
   // return request('/api/currentUser');
