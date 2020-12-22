@@ -105,7 +105,7 @@ class RegisterForm extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
             Sign Up
           </Button>
-          <a style={{float:'right'}} href="/user/login">Already have an account ? Login now</a>
+          <Link style={{float:'right'}} to="/user/login">Already have an account ? Login now</Link>
         </Form.Item>
       </Form>
       </div>
