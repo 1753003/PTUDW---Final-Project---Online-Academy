@@ -1,4 +1,5 @@
 import { queryCurrent, add} from '@/services/user';
+import { router } from 'umi';
 
 const UserModel = {
   namespace: 'user',
@@ -7,15 +8,17 @@ const UserModel = {
   }, 
   effects: {
     *register(payload, { call, put }) {
-      console.log('payload',payload)
+      // console.log('payload',payload)
       const response = yield call(add, payload);
       // yield put({
       //   type: 'save',
       //   payload: response,
       // });
+      router.replace('/');
+      return response;
     },
     *fetchCurrent({payload}, { call, put }) {
-      console.log("fetchCurrent")
+      // console.log("fetchCurrent")
       const response = yield call(queryCurrent, payload.uid);
       yield put({
         type: 'saveCurrentUser',
@@ -28,7 +31,7 @@ const UserModel = {
       return { ...state, currentUser: action.payload || {} };
     },
     delCurrentUser(state) {
-      console.log(state)
+      // console.log(state)
       return { ...state, currentUser: {} || {} };
     },
 

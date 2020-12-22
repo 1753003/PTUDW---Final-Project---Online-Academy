@@ -41,7 +41,7 @@ export class DrawerForm extends React.Component {
       data: this.props.course,
     });
 
-    console.log(this.state.data);
+    // console.log(this.state.data);
   };
 
   onClose = () => {

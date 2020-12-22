@@ -8,13 +8,13 @@ export function getAuthority(str) {
   if(authorityString == null){
     authorityString = 'guest'
   }
-console.log('authstr', authorityString)
+// console.log('authstr', authorityString)
   try {
     if (authorityString) {
       authority = JSON.parse(authorityString);
     }
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     authority = authorityString;
   }
 

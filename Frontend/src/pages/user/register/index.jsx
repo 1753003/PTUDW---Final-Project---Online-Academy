@@ -27,7 +27,7 @@ class RegisterForm extends React.Component {
           payload: values
         })
       } else {
-        console.log(err)
+        // console.log(err)
       }
     });
   };
@@ -51,7 +51,7 @@ class RegisterForm extends React.Component {
     }
   };
   render() {
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, submitting } = this.props.form;
     const usernameError = isFieldTouched('username') && getFieldError('username');
     const passwordError = isFieldTouched('password') && getFieldError('password');
     const emailError = isFieldTouched('email') && getFieldError('email');
@@ -101,7 +101,7 @@ class RegisterForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item loading={submitting}>
           <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
             Sign Up
           </Button>
@@ -115,4 +115,6 @@ class RegisterForm extends React.Component {
 
 const Register = Form.create({name: 'register'})(RegisterForm);
 
-export default connect()(Register);
+export default connect(({loading})=>({
+  submitting: loading.effects['user/register'],
+}))(Register);

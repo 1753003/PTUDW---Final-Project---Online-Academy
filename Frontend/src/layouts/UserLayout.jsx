@@ -7,7 +7,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import SelectLang from '@/components/SelectLang';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
-
+import {Icon} from 'antd'
 const UserLayout = (props) => {
   const {
     route = {
@@ -44,14 +44,30 @@ const UserLayout = (props) => {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
+                <span className={styles.title}>Pondemy</span>
               </Link>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>Let's learn with Ponn</div>
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter
+    copyright="2019 Die Sieben Todsunden"
+    links={[
+      {
+        key: 'Die Sieben Todsunden',
+        title: 'Die Sieben Todsunden',
+        href: 'https://pro.ant.design',
+        blankTarget: true,
+      },
+      {
+        key: 'github',
+        title: <Icon type="github" />,
+        href: 'https://github.com/1753003/PTUDW---Final-Project---Online-Academy',
+        blankTarget: true,
+      }
+    ]}
+  />
       </div>
     </>
   );

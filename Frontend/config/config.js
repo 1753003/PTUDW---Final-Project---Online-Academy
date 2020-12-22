@@ -80,7 +80,7 @@ export default {
     {
       path: '/user',
       component: '../layouts/UserLayout',
-      authority: ['user, guest'],
+      authority: ['student', 'lecturer', 'guest'],
       routes: [
         {
           name: 'login',
@@ -151,31 +151,31 @@ export default {
     {
       path: '/',
       component: '../layouts/SecurityLayout',
-      authority: ['user','guest'],
+      authority: ['student', 'lecturer', 'guest'],
       routes: [
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['user','guest'],
+          authority: ['student', 'lecturer','guest'],
           routes: [
             {
               path: '/',
               redirect: '/home',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               path: '/home',
               name: 'home',
               icon: 'crown',
               component: './home',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               path: '/search',
               name: 'search',
               icon: 'crown',
               component: './search',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               component: './404',

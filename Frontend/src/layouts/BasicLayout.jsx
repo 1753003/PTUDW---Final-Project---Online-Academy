@@ -41,23 +41,17 @@ const defaultFooterDom = (
     copyright="2019 Die Sieben Todsunden"
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
+        key: 'Die Sieben Todsunden',
+        title: 'Die Sieben Todsunden',
         href: 'https://pro.ant.design',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <Icon type="github" />,
-        href: 'https://github.com/ant-design/ant-design-pro',
+        href: 'https://github.com/1753003/PTUDW---Final-Project---Online-Academy',
         blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
+      }
     ]}
   />
 );
@@ -127,8 +121,8 @@ const BasicLayout = (props) => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: 'guest',
   };
-  console.log("BasicLayout---");
-  console.log(authorized.authority);
+  // console.log("BasicLayout---");
+  // console.log(authorized.authority);
   return (
     <ProLayout
       logo={logo}

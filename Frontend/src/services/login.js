@@ -17,7 +17,7 @@ export function fakeAccountLogin(params){
     .catch((error) => {
         // handle error
         reject(error);
-        console.log(error);
+        // console.log(error);
     })
 })
 };

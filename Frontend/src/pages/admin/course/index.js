@@ -21,7 +21,7 @@ const Course = ({list, dispatch}) => {
             key[dataSource[i].id] = i;
         }
     
-    console.log(key);
+    // console.log(key);
     const columns = [
         {
             title: 'ID',

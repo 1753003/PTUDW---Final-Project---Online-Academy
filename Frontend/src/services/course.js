@@ -10,7 +10,7 @@ export function getListCourses() {
         .catch((error) => {
             // handle error
             reject(error);
-            console.log(error);
+            // console.log(error);
         })
     })
 }
@@ -25,7 +25,7 @@ export function getListCoursesWithCategory() {
         .catch((error) => {
             // handle error
             reject(error);
-            console.log(error);
+            // console.log(error);
         })
     })
 }
@@ -40,7 +40,7 @@ export function deleteCourse(id) {
         .catch((error) => {
             // handle error
             reject(error);
-            console.log(error);
+            // console.log(error);
         })
     })
 }

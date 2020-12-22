@@ -96,7 +96,7 @@ const SearchPage = ({ dispatch, list, loading }) => {
                         loading={loading}
                         pagination={{
                             onChange: page => {
-                                console.log(page);
+                                // console.log(page);
                             },
                             pageSize: 10,
                         }}

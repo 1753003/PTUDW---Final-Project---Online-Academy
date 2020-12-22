@@ -5,7 +5,7 @@ export async function query() {
   return request('/api/users');
 }
 export function add(params) {
-  console.log("add", params.payload)
+  // console.log("add", params.payload)
   return new Promise( (resolve, reject) => {
     axios.post(`http://localhost:5000/api/user`,
       {
@@ -38,7 +38,7 @@ export function queryCurrent(params) {
     .catch((error) => {
         // handle error
         reject(error);
-        console.log(error);
+        // console.log(error);
     })
   })
 }
