@@ -11,12 +11,14 @@ class SecurityLayout extends React.Component {
   };
 
   constructor(props){
+    console.log("Constructor security");
     super(props);
     if(!localStorage.getItem("userData")){
       localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
       localStorage.setItem('antd-pro-authority',JSON.stringify(['guest']))
     }
   }
+
   componentDidMount() {
     this.setState({
       isReady: false,
@@ -44,7 +46,7 @@ class SecurityLayout extends React.Component {
     if(isLogin){
         isGuest: false
     }
-    
+    console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
     });

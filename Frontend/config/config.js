@@ -145,6 +145,38 @@ export default {
       ],
     },
     {
+      path: '/lecturer',
+      component: '../layouts/SecurityLayout',
+      authority: ['lecturer'],
+      routes: [
+        {
+          path: '/lecturer',
+          component: '../layouts/BasicLayout',
+          authority: ['lecturer'],
+          routes: [
+            {
+              path: '/lecturer',
+              redirect: '/lecturer/home',
+              authority: ['lecturer']
+            },
+            {
+              path: '/lecturer/home',
+              name: 'Home',
+              icon: 'crown',
+              component: './lecturer/index',
+              authority: ['lecturer']
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
+          component: './404',
+        },
+      ],
+    },
+    {
       path: '/',
       component: '../layouts/SecurityLayout',
       authority: ['user','guest'],
