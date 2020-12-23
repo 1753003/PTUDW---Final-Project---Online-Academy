@@ -154,6 +154,23 @@ export default {
       authority: ['student', 'lecturer', 'guest'],
       routes: [
         {
+          path: '/course',
+          component: '../layouts/BasicLayout',
+          authority: ['user','guest'],
+          routes: [
+            {
+              path: '/detail',
+              name: 'Detail',
+              icon: 'crown',
+              component: './detail',
+              authority: ['user','guest']
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
           path: '/',
           component: '../layouts/BasicLayout',
           authority: ['student', 'lecturer','guest'],
@@ -165,17 +182,24 @@ export default {
             },
             {
               path: '/home',
-              name: 'home',
+              name: 'Home',
               icon: 'crown',
               component: './home',
               authority: ['student', 'lecturer','guest']
             },
             {
               path: '/search',
-              name: 'search',
+              name: 'Search',
               icon: 'crown',
               component: './search',
               authority: ['student', 'lecturer','guest']
+            },
+            {
+              path: '/detail',
+              name: 'Detail',
+              icon: 'crown',
+              component: './detail',
+              authority: ['user','guest']
             },
             {
               component: './404',
