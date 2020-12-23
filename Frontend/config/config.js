@@ -23,7 +23,7 @@ const plugins = [
         // default false
         enable: true,
         // default zh-CN
-        default: 'zh-CN',
+        default: 'en-US',
         // default true, when it is true, will use `navigator.language` overwrite default
         baseNavigator: true,
       },
@@ -80,17 +80,20 @@ export default {
     {
       path: '/user',
       component: '../layouts/UserLayout',
+      authority: ['student', 'lecturer', 'guest'],
       routes: [
         {
           name: 'login',
           path: '/user/login',
           component: './user/login',
+          authority: ['guest'],
         },
         {
           name: 'register',
           path: '/user/register',
           component: './user/register/',
-        },
+          authority: ['guest'],
+        }
       ],
     },
     {
@@ -126,7 +129,14 @@ export default {
               path: '/admin/course',
               name: 'Course',
               icon: 'star',
-              component: './admin/course/index'
+              component: './admin/course/index',
+              authority: ['admin']
+            },
+            {
+              path: '/admin/user',
+              name: 'User',
+              icon: 'user',
+              component: './admin/user/index'
             },
             {
               component: './404',
@@ -141,7 +151,7 @@ export default {
     {
       path: '/',
       component: '../layouts/SecurityLayout',
-      authority: ['user','guest'],
+      authority: ['student', 'lecturer', 'guest'],
       routes: [
         {
           path: '/course',
@@ -163,25 +173,26 @@ export default {
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['user','guest'],
+          authority: ['student', 'lecturer','guest'],
           routes: [
             {
               path: '/',
               redirect: '/home',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               path: '/home',
               name: 'Home',
               icon: 'crown',
               component: './home',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               path: '/search',
               name: 'Search',
               icon: 'crown',
               component: './search',
+              authority: ['student', 'lecturer','guest']
             },
             {
               path: '/detail',

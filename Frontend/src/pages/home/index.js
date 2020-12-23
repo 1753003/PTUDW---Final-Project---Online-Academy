@@ -13,7 +13,7 @@ const Home = ({list, dispatch}) => {
   }, []);
 
   useEffect(() => {
-    console.log(list);
+    // console.log(list);
   }, [list]);
   const courseData = [
     {

@@ -26,10 +26,11 @@ router.post('/', async function (req, res) {
 
 router.delete('/:id', async function (req, res) {
   const id = req.params.id || -1;
-  await courseModel.delById(id).then(()=>{
-    res.status(201).json({id : id});
-  }).catch(()=>{
-    res.status(201).json({id : "error"});
+  await courseModel.delById(id).then(async()=>{
+    const list = await courseModel.getAll();
+    res.status(201).json(list);
+  }).catch(async()=>{
+    res.status(201).json(await courseModel.getAll());
   })
 })
 
@@ -82,5 +83,9 @@ router.patch('/:id/sylabus', async function (req, res) {
 
 router.get('/getAll', async function(req, res) {
   res.json(await courseModel.getAllInfo());
+})
+
+router.get('/getWithCategory', async function(req, res) {
+  
 })
 module.exports = router;

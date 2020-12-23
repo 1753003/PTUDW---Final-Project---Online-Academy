@@ -22,7 +22,29 @@ class AvatarDropdown extends React.Component {
       return;
     }
 
-    router.push(`/account/${key}`);
+    if (key === 'login') {
+      // const { dispatch } = this.props;
+
+      // if (dispatch) {
+      //   dispatch({
+      //     type: 'login/login',
+      //   });
+      // }
+      router.replace('/user/login');
+      return;
+    }
+    if (key === 'signup') {
+      // const { dispatch } = this.props;
+
+      // if (dispatch) {
+      //   dispatch({
+      //     type: 'login/signup',
+      //   });
+      // }
+      router.replace('/user/register');
+      return;
+    }
+    // router.push(`/account/${key}`);
   };
 
   render() {
@@ -48,13 +70,24 @@ class AvatarDropdown extends React.Component {
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
-
         <Menu.Item key="logout">
           <Icon type="logout" />
-          <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
+          <FormattedMessage id="menu.account.logout" defaultMessage="Logout" />
         </Menu.Item>
       </Menu>
     );
+    const menuGuest = (
+      <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
+        <Menu.Item key="login">
+          <Icon type="user" />
+          <FormattedMessage id="menu.account.login" defaultMessage="Login" />
+        </Menu.Item>
+        <Menu.Item key="signup">
+          <Icon type="user" />
+          <FormattedMessage id="menu.account.signup" defaultMessage="Sign Up" />
+        </Menu.Item>
+      </Menu>
+    )
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
@@ -63,13 +96,19 @@ class AvatarDropdown extends React.Component {
         </span>
       </HeaderDropdown>
     ) : (
-      <Spin
-        size="small"
-        style={{
-          marginLeft: 8,
-          marginRight: 8,
-        }}
-      />
+      // <Spin
+      //   size="small"
+      //   style={{
+      //     marginLeft: 8,
+      //     marginRight: 8,
+      //   }}
+      // />
+      <HeaderDropdown overlay={menuGuest}>
+        <span className={`${styles.action} ${styles.account}`}>
+          <Avatar size="small" className={styles.avatar} src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png' alt="avatar" />
+          <span className={styles.name}>Guest</span>
+        </span>
+      </HeaderDropdown>
     );
   }
 }
