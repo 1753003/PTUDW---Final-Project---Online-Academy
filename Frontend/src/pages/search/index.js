@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate } from 'antd';
-import { Redirect, Route, useHistory } from 'umi';
+import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate } from 'antd';
 import { connect } from 'dva';
-import { query } from '@/services/user';
 
-const { Search } = Input;
 const { SubMenu } = Menu;
 
 // const listData = [];
@@ -20,7 +17,7 @@ const { SubMenu } = Menu;
 //     });
 // }
 
-const SearchPage = ({  list, loading, history, searchList, location, dispatch }) => {
+const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
     const [searchKey, setSearchKey] = useState('');
     useEffect(() => {
         setSearchKey(location.query.q)
@@ -57,7 +54,6 @@ const SearchPage = ({  list, loading, history, searchList, location, dispatch })
     return (
         <PageHeader>
             <Typography.Title level={1}>{searchList?.length} results for '{searchKey}'</Typography.Title>
-            <Search placeholder='Please input searchh text' onSearch={onSearch} />
             <Alert
                 description="Not sure? All courses have a 30-day money-back guarantee"
                 type="info"
@@ -96,9 +92,6 @@ const SearchPage = ({  list, loading, history, searchList, location, dispatch })
                         size="large"
                         loading={loading}
                         pagination={{
-                            onChange: page => {
-                                // console.log(page);
-                            },
                             pageSize: 10,
                         }}
                         dataSource={searchList}
