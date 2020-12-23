@@ -81,4 +81,4 @@ const UserLayout = (props) => {
   );
 };
 
-export default connect(({ settings }) => ({ ...settings }))(UserLayout);
+export default connect(({ settings, user }) => ({ ...settings, currentUser: user.currentUser }))(UserLayout);

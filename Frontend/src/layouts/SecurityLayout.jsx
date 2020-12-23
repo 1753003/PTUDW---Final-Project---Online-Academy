@@ -11,8 +11,10 @@ class SecurityLayout extends React.Component {
   };
 
   constructor(props){
+    console.log("Constructor security");
     super(props);
   }
+
   componentDidMount() {
     this.setState({
       isReady: false,
@@ -37,7 +39,7 @@ class SecurityLayout extends React.Component {
     if(isLogin){
         isGuest: false
     }
-    
+    console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
     });
