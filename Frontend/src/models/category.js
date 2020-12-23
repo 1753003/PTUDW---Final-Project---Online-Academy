@@ -8,14 +8,14 @@ const categoryModel = {
   effects: {
     *remove(payload, { call, put }) {     
         const response = yield call(removeCategory, payload.payload);
-        console.log(response);
+        // console.log(response);
         yield put({
             type: 'removeItem',
             payload: response,
         });
     },
     *get(_, { call, put }) {
-      console.log("get");
+      // console.log("get");
       const response = yield call(getListCategory);
       yield put({
           type: 'getList',
@@ -30,7 +30,7 @@ const categoryModel = {
       });
     },
     *add(payload, { call, put }) {     
-      console.log("add ", payload.payload);
+      // console.log("add ", payload.payload);
       const response = yield call(addCategory, payload.payload[0], payload.payload[1]);
       yield put({
           type: 'addItem',

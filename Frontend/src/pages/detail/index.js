@@ -121,7 +121,6 @@ const Detail = ({ dispatch, list, loading, location }) => {
                         <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
                         <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
                         <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
-                        
                         <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
 
                     </div>

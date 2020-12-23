@@ -13,7 +13,7 @@ const Model = {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       // console.log(response)
-      console.log("login")
+      // console.log("login")
       // const response = yield call(dbLogin, payload);
       yield put({
         type: 'changeLoginStatus',
@@ -26,7 +26,8 @@ const Model = {
         const params = getPageQuery();
         let {redirect} = params;
         if(response.type == "admin"){
-          window.location.href = "/admin"
+          // window.location.href = "/admin"
+          router.replace('/admin');
           return;
         }else if(redirect && redirect.includes("/admin")){
           redirect = null;
@@ -41,7 +42,8 @@ const Model = {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
-            window.location.href = '/';
+            // window.location.href = '/';
+            router.replace('/');
             return;
           }
         }

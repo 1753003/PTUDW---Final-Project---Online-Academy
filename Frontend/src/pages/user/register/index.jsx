@@ -1,66 +1,120 @@
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button} from 'antd';
 import React from 'react';
+import { Link } from 'umi';
+import { connect } from 'dva';
 import styles from './index.less';
-const Register = () => {
-  class NormalLoginForm extends React.Component {
-    handleSubmit = e => {
-      e.preventDefault();
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
-      });
-    };
-  
-    render() {
-      const { getFieldDecorator } = this.props.form;
-      return (
-        <div className={styles.main}>
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <Form.Item>
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }],
-            })(
-              <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Username"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
-            })(
-              <Input
-                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                type="password"
-                placeholder="Password"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(<Checkbox>Remember me</Checkbox>)}
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
-            </Button>
-            Or <a href="">register now!</a>
-          </Form.Item>
-        </Form>
-        </div>
-      );
-    }
+
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+class RegisterForm extends React.Component {
+  state={
+    first:true,
+    confirmDirty: false,
+  }
+  componentDidUpdate(){
+    if(this.state.first == true)
+      {this.setState({first:false})
+      this.props.form.validateFields();}
   }
   
-  const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
-  return (
-    <WrappedNormalLoginForm/>
-  );
-};
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'user/register',
+          payload: values
+        })
+      } else {
+        // console.log(err)
+      }
+    });
+  };
+  handleConfirmBlur = e => {
+    const { value } = e.target;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  };
+  validateToNextPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['re-password'], { force: true });
+    }
+    callback();
+  };
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
+  render() {
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, submitting } = this.props.form;
+    const usernameError = isFieldTouched('username') && getFieldError('username');
+    const passwordError = isFieldTouched('password') && getFieldError('password');
+    const emailError = isFieldTouched('email') && getFieldError('email');
+    const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
+    return (
+      <div className={styles.main}>
+      <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
+        <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Username"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
+          {getFieldDecorator('email', {
+            rules: [{ type:'email', required: true, message: 'Please input a valid email!' }],
+          })(
+            <Input
+              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Email"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item hasFeedback validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input your Password!' },{validator:this.validateToNextPassword}],
+          })(
+            <Input.Password
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="Password"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item hasFeedback validateStatus={rePasswordError ? 'error' : ''} help={rePasswordError || ''}>
+          {getFieldDecorator('re-password', {
+            rules: [{ required: true, message: 'Please confirm your Password!' },{validator:this.compareToFirstPassword}],
+          })(
+            <Input.Password onBlur={this.handleConfirmBlur}
+              prefix={<Icon type="lock" style={{ color: 'rgba(240,0,10,.25)' }} />}
+              type="password"
+              placeholder="Re-enter your Password"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item loading={submitting}>
+          <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
+            Sign Up
+          </Button>
+          <a style={{float:'right'}} href="/user/login">Already have an account ? Login now</a>
+        </Form.Item>
+      </Form>
+      </div>
+    );
+  }
+}
 
-export default Register;
+const Register = Form.create({name: 'register'})(RegisterForm);
+
+export default connect(({loading})=>({
+  submitting: loading.effects['user/register'],
+}))(Register);

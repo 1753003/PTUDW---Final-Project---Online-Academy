@@ -8,7 +8,7 @@ let CURRENT = 'NULL';
  * @param {string|()=>String} currentAuthority
  */
 const renderAuthorize = (Authorized) => (currentAuthority) => {
-  console.log(currentAuthority)
+  // console.log(currentAuthority)
   if (currentAuthority) {
     if (typeof currentAuthority === 'function') {
       CURRENT = currentAuthority();

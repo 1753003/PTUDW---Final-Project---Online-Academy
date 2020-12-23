@@ -26,21 +26,23 @@ module.exports = {
     const upadteDb = await db('course').where('id', id).update(data);
   },
   async searchByKeyword(keyword) {
-    return db.raw(`(SELECT *
-      FROM course 
-      LEFT JOIN category a ON course.categoryID = a.id
+    return db.raw(`(SELECT c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views
+      FROM course c
+      LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
+      LEFT JOIN user u ON lecturerID = u.id
       WHERE 
-      MATCH(course.name) AGAINST('${keyword}*' IN BOOLEAN MODE) or
+      MATCH(c.name) AGAINST('${keyword}*' IN BOOLEAN MODE) or
       MATCH(a.name) AGAINST('${keyword}*' IN BOOLEAN MODE) OR
       MATCH(b.name) AGAINST('${keyword}*' IN BOOLEAN MODE)
       )
       union 
-      (SELECT *
-      FROM course 
-      LEFT JOIN category a ON course.categoryID = a.id
+      (SELECT c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views
+      FROM course c
+      LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
-      where course.name like '${keyword}%' or a.name like '${keyword}%' or b.name like '${keyword}%')`);
+      LEFT JOIN user u ON lecturerID = u.id
+      where c.name like '${keyword}%' or a.name like '${keyword}%' or b.name like '${keyword}%')`);
   },
   async hot() {
     return db.select(db.raw(`COUNT((courseID)) as count, courseID

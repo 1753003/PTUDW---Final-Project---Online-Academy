@@ -19,8 +19,8 @@ export class DrawerForm extends React.Component {
   }
   
   createOptions = () => {
-    console.log("create options");
-    console.log(this.state.data);
+    // console.log("create options");
+    // console.log(this.state.data);
     this.state.options.push(<Option key={-1}> Null </Option>);
     for (let i = 0; i < this.state.data.length; i++){
       if (this.state.data[i].idTopic === null) {

@@ -4,16 +4,24 @@ import React, { useEffect } from 'react';
 import { Icon, Table, PageHeader, Button, Divider, Popconfirm, Input, Form, InputNumber} from 'antd';
 import { connect } from 'dva';
 import { DrawerForm } from '@/pages/admin/course/DrawerForm';
+
 const Course = ({list, dispatch}) => {
     useEffect(() => {
         dispatch({ type: 'course/getFull'});
     }, []);
 
     useEffect(() => {
-        console.log(list.list);
-    }, [list]);
-    
+    }, [list])
+   
     const dataSource = list.list[0];
+    let key = [];
+    
+    if (dataSource !== undefined)
+        for (let i = 0; i < dataSource.length; i++) {
+            key[dataSource[i].id] = i;
+        }
+    
+    // console.log(key);
     const columns = [
         {
             title: 'ID',
@@ -33,16 +41,15 @@ const Course = ({list, dispatch}) => {
         },
         {
             title: 'Details',
-            dataIndex: 'id',
-            render: (id) => (
-                <DrawerForm course={dataSource[id]}/>
+            render: (item) => (
+                <DrawerForm course={item}/>
             )
         },
         {
             title: 'Remove',
             key: 'remove',
             render: (item) => (
-                <Button onClick={() => { }}>
+                <Button onClick={() => {dispatch({type: 'course/delete', payload: item.id})}}>
                     <Icon type = 'delete' />
                 </Button>
             )
