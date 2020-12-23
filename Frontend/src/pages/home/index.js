@@ -7,14 +7,13 @@ import { connect } from 'dva';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const Home = ({list, dispatch}) => {
+const Home = ({ list, dispatch, listHot, listNew, history }) => {
   useEffect(() => {
-    dispatch({ type: 'course/get'});
+    dispatch({ type: 'course/get' });
+    dispatch({ type: 'course/getHot' });
+    dispatch({ type: 'course/getNew' });
   }, []);
 
-  useEffect(() => {
-    // console.log(list);
-  }, [list]);
   const courseData = [
     {
       id: 1,
@@ -39,65 +38,6 @@ const Home = ({list, dispatch}) => {
     },
     {
       id: 4,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    }
-  ]
-
-  const courseData2 = [
-    {
-      id: 1,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 2,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 3,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 4,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 5,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 6,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 7,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 8,
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       title: 'AWS Certified Solutions Architect - Associate 2020',
       author: 'Phu Vinh Hung',
@@ -151,10 +91,17 @@ const Home = ({list, dispatch}) => {
   return (
     <PageHeader>
       <Carousel autoplay>
-        <img src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' height='400px' alt='hinh' />
-        <img src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' height='400px' alt='hinh' />
-        <img src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' height='400px' alt='hinh' />
-        <img src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' height='400px' alt='hinh' />
+        {
+          listHot?.map((item) =>
+            <img src={item.URL} height='400px' alt='hinh' onClick={() => {
+              history.push({
+                pathname: `/detail`,
+                query: {
+                  courseId: item.courseID,
+                },
+              });
+            }} />
+          )}
       </Carousel>
       <Row className="note" style={{ marginTop: "25px" }}>
         <Col span={9}>
@@ -335,17 +282,21 @@ const Home = ({list, dispatch}) => {
         <Title level={3}>Top bán chạy</Title>
         <List
           grid={{ gutter: 16, column: 4 }}
-          dataSource={courseData2}
+          dataSource={listNew}
           renderItem={item => (
-            <List.Item>
-              <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+            <List.Item onClick={() => {
+              history.push({
+                pathname: `/detail`,
+                query: {
+                  courseId: item.id,
+                },
+              });
+            }}>
+              <Course url={item.URL} title={item.name} author={item.author} price={item.price} />
             </List.Item>
           )}
         />
       </div>
-
-
-
       <Divider />
 
       <Row className="note" style={{ marginTop: "25px" }} gutter={16}>
@@ -409,5 +360,7 @@ const Home = ({list, dispatch}) => {
 
 
 export default connect(({ course }) => ({
-  list: course
+  list: course,
+  listHot: course.listHot,
+  listNew: course.listNew
 }))(Home);
