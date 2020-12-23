@@ -5,7 +5,7 @@ import ShowMore from '@/components/ShowMore';
 
 import { connect } from 'dva';
 
-const { Search } = Input;
+const { TextArea } = Input;
 const { SubMenu } = Menu;
 
 // const listData = [];
@@ -117,10 +117,11 @@ const Detail = ({ dispatch, list, loading, location }) => {
 
                     <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
                         <Typography.Title level={3}>Course content</Typography.Title>
-                        <ShowMore/>
-                        <ShowMore/>
-                        <ShowMore/>
-                        <ShowMore/>
+                        <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
+                        <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
+                        <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
+                        <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
+                        <ShowMore title="WEB" info="Hom nay la mot ngay dep troi"/>
 
                     </div>
 
@@ -155,6 +156,12 @@ const Detail = ({ dispatch, list, loading, location }) => {
                                 </List.Item>
                             )}
                         />
+                        <Typography.Title level={4}>Write your comment here</Typography.Title>
+                        <Rate style={{paddingBottom: "10px"}}/>
+                        <Row>
+                            <Col span={20}><TextArea rows={1} /></Col>
+                            <Col span={4}><Button style={{width: "100%"}}>Submit</Button></Col>
+                        </Row>
                     </div>
 
                     <div className="great-courses" style={{ marginTop: '50px' }}>
