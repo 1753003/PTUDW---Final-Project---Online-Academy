@@ -2,10 +2,7 @@ const express = require('express');
 const courseModel = require('../models/course.model');
 
 const router = express.Router({mergeParams: true});
-router.get('/', async function (req, res) {
-  const list = await courseModel.getAll();
-  res.json(list);
-})
+
 
 router.get('/:id([0-9]+)', async function (req, res, next) {
   const id = req.params.id || -1;
@@ -86,6 +83,10 @@ router.get('/getAll', async function(req, res) {
 })
 
 router.get('/getWithCategory', async function(req, res) {
-  
+  res.json(await courseModel.getWithCategory(req.query.c));
+})
+router.get('/', async function (req, res) {
+  const list = await courseModel.getAll();
+  res.json(list);
 })
 module.exports = router;
