@@ -6,12 +6,9 @@ module.exports = {
   },
 
   async singleById(id) {
-    const list = await db('course').leftOuterJoin('user', 'user.id', 'course.lecturerID').where('course.id', id);
-    if (list.length === 0) {
-      return null;
-    }
-
-    return list[0];
+    return await db.raw(`select course.*, category.name as categoryName, user.name as lecturerName 
+    from course, category, user
+    where category.id = course.categoryID and user.id = course.lecturerID and course.id = ${id}`);
   },
 
   add(course) {

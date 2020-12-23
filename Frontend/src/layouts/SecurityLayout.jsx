@@ -11,12 +11,10 @@ class SecurityLayout extends React.Component {
   };
 
   constructor(props){
+    console.log("Constructor security");
     super(props);
-    if(!localStorage.getItem("userData")){
-      localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
-      localStorage.setItem('antd-pro-authority',JSON.stringify(['guest']))
-    }
   }
+
   componentDidMount() {
     this.setState({
       isReady: false,
@@ -35,13 +33,13 @@ class SecurityLayout extends React.Component {
 
   render() {
     const { isGuest, isReady} = this.state;
-
     const { children, loading, currentUser } = this.props; // You can replace it to your authentication rule (such as check token exists)
+    
     const isLogin = currentUser && currentUser.id;
     if(isLogin){
         isGuest: false
     }
-    
+    console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
     });

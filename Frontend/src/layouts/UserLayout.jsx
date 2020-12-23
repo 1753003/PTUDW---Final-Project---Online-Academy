@@ -1,6 +1,6 @@
 import { DefaultFooter, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
-import { Link } from 'umi';
+import { Link, Redirect } from 'umi';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -8,6 +8,7 @@ import SelectLang from '@/components/SelectLang';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 import {Icon} from 'antd'
+import router from 'umi/router'
 const UserLayout = (props) => {
   const {
     route = {
@@ -28,6 +29,13 @@ const UserLayout = (props) => {
     formatMessage,
     ...props,
   });
+  if(localStorage.getItem('isLogin')){
+    if(localStorage.getItem('isLogin').includes('true')){
+  if (localStorage.getItem('antd-pro-authority').includes('admin'))
+    return <Redirect to='/admin'/>
+  if (!localStorage.getItem('antd-pro-authority').includes('guest'))
+    return <Redirect to='/'/>
+  }}
   return (
     <>
       <Helmet>
@@ -73,4 +81,4 @@ const UserLayout = (props) => {
   );
 };
 
-export default connect(({ settings }) => ({ ...settings }))(UserLayout);
+export default connect(({ settings, user }) => ({ ...settings, currentUser: user.currentUser }))(UserLayout);

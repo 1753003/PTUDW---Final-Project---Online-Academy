@@ -6,7 +6,7 @@ export async function fakeqAccountLogin(params) {
     data: params,
   });
 }
-export function fakeAccountLogin(params){
+export function realAccountLogin(params){
   return new Promise( (resolve, reject) => {
     axios.post(`http://localhost:5000/api/auth`, params)
     .then((response) => {

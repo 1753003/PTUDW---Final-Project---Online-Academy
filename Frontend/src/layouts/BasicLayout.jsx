@@ -96,9 +96,10 @@ const BasicLayout = (props) => {
    */
 
   useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
+    let auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
     // console.log(auth[0])
-    if (dispatch&&auth[0]!='guest') {
+    auth = auth?auth:'guest'
+    if (dispatch&&(auth[0]!='guest'||auth !='guest')) {
       dispatch({
         type: 'user/fetchCurrent',
         payload: JSON.parse(localStorage.getItem("userData"))
