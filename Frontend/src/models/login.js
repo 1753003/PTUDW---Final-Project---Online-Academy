@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { router } from 'umi';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import { realAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
@@ -11,7 +11,12 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      if(payload.autoLogin)
+      {
+        console.log('auto')
+
+      }
+      const response = yield call(realAccountLogin, payload);
       // console.log(response)
       // console.log("login")
       // const response = yield call(dbLogin, payload);
@@ -21,6 +26,7 @@ const Model = {
       }); // Login successfully
 
       if (response.status === 'ok') {
+        localStorage.setItem("isLogin", JSON.stringify("true"));
         localStorage.setItem("userData", JSON.stringify(response));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -61,7 +67,7 @@ const Model = {
       yield put({
         type:'user/delCurrentUser'
       })
-      localStorage.setItem("userData",JSON.stringify({currentAuthority:'guest'}))
+      localStorage.setItem("isLogin",JSON.stringify('false'))
       setAuthority('guest');
       if (window.location.pathname !== '/user/login' && !redirect) {
         router.replace({
