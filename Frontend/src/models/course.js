@@ -1,5 +1,4 @@
-import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, searchCourses } from '@/services/course';
-
+import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, searchCourses, addCourse } from '@/services/course';
 
 const courseModel = {
   namespace: 'course',
@@ -59,6 +58,13 @@ const courseModel = {
         payload: response,
       });
     },
+    *add(payload, { call, put }) {
+      const response = yield call(addCourse, payload.payload);
+      yield put({
+          type: 'add',
+          payload: response,
+      });
+    },
     *getSingleCourse({ payload }, { call, put }) {
       yield put({
         type: 'loadingStatus',
@@ -112,6 +118,12 @@ const courseModel = {
         list: action.payload
       }
     },
+    add(state, action) {
+      return {
+        ...state,
+        list: action.payload
+      }
+    },
     updateCourseInfo(state, { payload }) {
       return {
         ...state,
@@ -130,7 +142,6 @@ const courseModel = {
         searchList: payload
       }
     },
-
   },
 };
 export default courseModel;
