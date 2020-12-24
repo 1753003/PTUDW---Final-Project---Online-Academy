@@ -21,7 +21,7 @@ router.get('/:id([0-9]+)', async function (req, res, next) {
 // const validation = require('../middleware/validation.mdw');
 router.post('/', async function (req, res) {
   const id = await courseModel.add(req.body);
-  res.status(201).json({ id: id });
+  res.status(201).json(await courseModel.getAll());
 })
 
 router.delete('/:id', async function (req, res) {

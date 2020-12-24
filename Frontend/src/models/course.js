@@ -1,4 +1,4 @@
-import { getListCourses, getListCoursesWithCategory, deleteCourse } from '@/services/course';
+import { getListCourses, getListCoursesWithCategory, deleteCourse, addCourse } from '@/services/course';
 
 
 const courseModel = {
@@ -28,6 +28,13 @@ const courseModel = {
           payload: response,
       });
     },
+    *add(payload, { call, put }) {
+      const response = yield call(addCourse, payload.payload);
+      yield put({
+          type: 'add',
+          payload: response,
+      });
+    },
   },
   reducers: {
     getList(state, action) {
@@ -37,6 +44,12 @@ const courseModel = {
       }
     },
     delete(state, action) {
+      return {
+        ...state,
+        list: action.payload
+      }
+    },
+    add(state, action) {
       return {
         ...state,
         list: action.payload
