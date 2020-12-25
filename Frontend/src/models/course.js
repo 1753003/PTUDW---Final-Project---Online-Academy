@@ -1,5 +1,5 @@
 import { getListCourses, getListCoursesWithCategory, deleteCourse } from '@/services/course';
-
+import Cookies from 'js-cookie';
 
 const courseModel = {
   namespace: 'course',
@@ -8,7 +8,9 @@ const courseModel = {
   },
   effects: {
     *get(_, { call, put }) {
+      console.log('cookies',Cookies.get('aToken'))
         const response = yield call(getListCourses);
+
         yield put({
             type: 'getList',
             payload: response,

@@ -13,6 +13,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import Cookies from 'js-cookie';
 
 const noMatch = (
   <Result
@@ -100,6 +101,7 @@ const BasicLayout = (props) => {
     // console.log(auth[0])
     auth = auth?auth:'guest'
     if (dispatch&&(auth[0]!='guest'||auth !='guest')) {
+      // console.log('cookies',Cookies.get('aToken'))
       dispatch({
         type: 'user/fetchCurrent',
         payload: JSON.parse(localStorage.getItem("userData"))

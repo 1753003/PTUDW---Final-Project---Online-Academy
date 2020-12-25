@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect } from 'umi';
 import { stringify } from 'querystring';
-
+import Cookies from 'js-cookie';
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
@@ -11,7 +11,7 @@ class SecurityLayout extends React.Component {
   };
 
   constructor(props){
-    console.log("Constructor security");
+    // console.log("Constructor security");
     super(props);
   }
 
@@ -39,7 +39,7 @@ class SecurityLayout extends React.Component {
     if(isLogin){
         isGuest: false
     }
-    console.log(isGuest);
+    // console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
     });

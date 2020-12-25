@@ -25,23 +25,22 @@ router.post('/', async function (req, res) {
   const accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
-    expiresIn: 100 * 60
+    expiresIn: "2h"
   });
 
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
-
+  res.cookie('rfToken', refreshToken);
+  res.cookie('aToken', accessToken);
   // console.log(user)
   let responseData = {
     authenticated: true,
-    accessToken,
-    refreshToken,
     status:"ok",
     username : user.username,
     email: user.email,
     type:user.type,
     uid:user.id,
-    currentAuthority: user.type
+    currentAuthority: user.type,
   }
   res.json(responseData)
 })
@@ -51,6 +50,7 @@ router.post('/', async function (req, res) {
 //   refreshToken: ''
 // }
 router.post('/refresh', async function (req, res) {
+  console.log(req.body)
   const payload = jwt.verify(req.body.accessToken, 'SECRET_KEY', { ignoreExpiration: true });
   const refreshToken = req.body.refreshToken;
   const ret = await userModel.isRefreshTokenExisted(payload.userId, refreshToken);
@@ -58,7 +58,7 @@ router.post('/refresh', async function (req, res) {
     const accessToken = jwt.sign({
       userId: payload.userId
     }, 'SECRET_KEY', {
-      expiresIn: 100 * 60
+      expiresIn: "2h"
     });
 
     return res.json({ accessToken });

@@ -3,6 +3,7 @@ import { router } from 'umi';
 import { realAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import Cookies from 'js-cookie';
 
 const Model = {
   namespace: 'login',
@@ -14,7 +15,6 @@ const Model = {
       if(payload.autoLogin)
       {
         console.log('auto')
-
       }
       const response = yield call(realAccountLogin, payload);
       // console.log(response)
@@ -24,7 +24,7 @@ const Model = {
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
-
+      console.log(response)
       if (response.status === 'ok') {
         localStorage.setItem("isLogin", JSON.stringify("true"));
         localStorage.setItem("userData", JSON.stringify(response));
@@ -68,6 +68,9 @@ const Model = {
         type:'user/delCurrentUser'
       })
       localStorage.setItem("isLogin",JSON.stringify('false'))
+      localStorage.setItem("userData",JSON.stringify({}))
+      Cookies.remove('aToken')
+      Cookies.remove('rfToken')
       setAuthority('guest');
       if (window.location.pathname !== '/user/login' && !redirect) {
         router.replace({
