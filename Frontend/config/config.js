@@ -216,6 +216,7 @@ export default {
               path: '/home',
               name: 'Home',
               icon: 'crown',
+              hideInMenu: true,
               component: './home',
               authority: ['student', 'lecturer','guest']
             },
@@ -223,6 +224,7 @@ export default {
               path: '/search',
               name: 'Search',
               icon: 'crown',
+              hideInMenu: true,
               component: './search',
               authority: ['student', 'lecturer','guest']
             },
@@ -231,7 +233,8 @@ export default {
               name: 'Detail',
               icon: 'crown',
               component: './detail',
-              authority: ['user','guest']
+              hideInMenu: true,
+              authority: ['student', 'lecturer','guest']
             },
             {
               component: './404',

@@ -9,7 +9,7 @@ const Course = ({ url, title, author, price }) => {
     >   
         <Typography style={{fontWeight: 'bold'}}>{title}</Typography> 
         <Typography style={{fontSize: '11px'}}>{author}</Typography>  
-        <Rate style={{fontSize: '15px'}} defaultValue={5}/>
+        <Rate disabled style={{fontSize: '15px'}} defaultValue={5}/>
         <Typography style={{fontWeight: 'bold'}}>${price}</Typography>
         <Tag color="#f50">Bestseller</Tag>
        

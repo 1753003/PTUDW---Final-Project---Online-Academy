@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate } from 'antd';
-import { Redirect, Route, useHistory } from 'umi';
+import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate } from 'antd';
 import { connect } from 'dva';
 
-const { Search } = Input;
 const { SubMenu } = Menu;
 
 // const listData = [];
@@ -19,15 +17,15 @@ const { SubMenu } = Menu;
 //     });
 // }
 
-const SearchPage = ({ dispatch, list, loading, history }) => {
+const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
     const [searchKey, setSearchKey] = useState('');
     useEffect(() => {
-        dispatch({ type: 'course/get' });
-    }, [])
-
-    useEffect(() => {
-        console.log(list);
-    }, [list])
+        setSearchKey(location.query.q)
+        const payload = {
+            value: location.query.q
+        }
+        dispatch({ type: 'course/search', payload })
+    }, [location.query])
     const topicList = [
         {
             key: 1,
@@ -55,8 +53,7 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
     }
     return (
         <PageHeader>
-            <Typography.Title level={1}>{list.length} results for '{searchKey}'</Typography.Title>
-            <Search placeholder='Please input searchh text' onSearch={onSearch} />
+            <Typography.Title level={1}>{searchList?.length} results for '{searchKey}'</Typography.Title>
             <Alert
                 description="Not sure? All courses have a 30-day money-back guarantee"
                 type="info"
@@ -95,12 +92,9 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
                         size="large"
                         loading={loading}
                         pagination={{
-                            onChange: page => {
-                                // console.log(page);
-                            },
                             pageSize: 10,
                         }}
-                        dataSource={list}
+                        dataSource={searchList}
                         renderItem={item => (
                             <List.Item
                                 key={item.title}
@@ -122,11 +116,11 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
                                         <img
                                             width={272}
                                             alt="logo"
-                                            src={item.url}
+                                            src={item.URL}
                                         />
                                     </Col>
                                     <Col span={15}>
-                                        <Typography.Title level={4}>{item.name}</Typography.Title>
+                                        <Typography.Title level={4}>{item.courseName}</Typography.Title>
                                         <Typography>{item.briefDescription}</Typography>
 
                                         <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
@@ -135,7 +129,7 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
                                                 <Typography style={{ fontSize: '14px' }}>{item.rating}</Typography>
                                             </Col>
                                             <Col span={4}>
-                                                <Rate defaultValue={item.rating} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />
+                                                <Rate disabled defaultValue={item.rating} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />
                                             </Col>
                                             <Col span={1}>
                                                 <Typography style={{ fontSize: '12px' }}>{item.views}</Typography>
@@ -144,8 +138,9 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
 
                                     </Col>
                                     <Col span={2}>
-                                        <Typography>{item.price}$</Typography>
-                                        <Typography.Text delete>{item.salePrice}$</Typography.Text>
+                                       
+                                        <Typography>{item.salePrice}$</Typography>
+                                        <Typography.Text delete>{item.price}$</Typography.Text>
                                     </Col>
                                 </Row>
                             </List.Item>
@@ -161,5 +156,6 @@ const SearchPage = ({ dispatch, list, loading, history }) => {
 
 export default connect(({ course }) => ({
     list: course.list,
+    searchList: course.searchList,
     loading: course.loading
 }))(SearchPage);

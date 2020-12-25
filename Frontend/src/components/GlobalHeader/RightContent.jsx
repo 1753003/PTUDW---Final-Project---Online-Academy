@@ -2,6 +2,7 @@ import { Icon, Tooltip, Tag } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
+import { router } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
@@ -25,23 +26,16 @@ const GlobalHeaderRight = (props) => {
     <div className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder={formatMessage({
-          id: 'component.globalHeader.search',
-        })}
-        defaultValue="umi ui"
+        placeholder="Type here"
         dataSource={[
-          formatMessage({
-            id: 'component.globalHeader.search.example1',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example2',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example3',
-          }),
+          "Design", "IT", "Business"
         ]}
-        onSearch={() => {}}
-        onPressEnter={() => {}}
+        onSearch={(value) => {
+          router.replace(`/search?q=${value}`)
+        }}
+        onPressEnter={() => {
+          
+        }}
       />
       <Tooltip
         title={formatMessage({
