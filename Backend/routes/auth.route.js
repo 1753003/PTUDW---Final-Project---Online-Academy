@@ -21,12 +21,19 @@ router.post('/', async function (req, res) {
       authenticated: false
     });
   }
-
-  const accessToken = jwt.sign({
+if(req.body.autoLogin){
+  var accessToken = jwt.sign({
+    userId: user.id
+  }, 'SECRET_KEY', {
+    expiresIn: "30d"
+  });
+}else{
+  var accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
     expiresIn: "2h"
   });
+}
 
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
