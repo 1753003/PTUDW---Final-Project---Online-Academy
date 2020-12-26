@@ -25,18 +25,22 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     useEffect(() => {
         if (addToFavoriteStatus === "SUCCESS") {
             message.success('Add to Favorite successfully');
+            dispatch({ type: 'user/resetStatus' });
         }
         if (addToFavoriteStatus === "FAIL") {
             message.error('Add to Favorite fail');
+            dispatch({ type: 'user/resetStatus' });
         }
     }, [addToFavoriteStatus]);
 
     useEffect(() => {
         if (registCourseStatus === "SUCCESS") {
             message.success('Regist Course successfully');
+            dispatch({ type: 'user/resetStatus' });
         }
         if (registCourseStatus === "FAIL") {
             message.error('Regist Course fail');
+            dispatch({ type: 'user/resetStatus' });
         }
     }, [registCourseStatus]);
 

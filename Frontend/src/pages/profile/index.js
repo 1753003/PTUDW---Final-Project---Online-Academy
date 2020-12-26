@@ -23,9 +23,11 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
     useEffect(() => {
         if (deleteFavoriteStatus === "SUCCESS") {
             message.success('Remove course successfully');
+            dispatch({ type: 'user/resetStatus' });
         }
         if (deleteFavoriteStatus === "FAIL") {
             message.error('Remove course fail');
+            dispatch({ type: 'user/resetStatus' });
         }
     }, [deleteFavoriteStatus])
 
