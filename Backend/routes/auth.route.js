@@ -21,27 +21,33 @@ router.post('/', async function (req, res) {
       authenticated: false
     });
   }
-
-  const accessToken = jwt.sign({
+if(req.body.autoLogin){
+  var accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
-    expiresIn: 100 * 60
+    expiresIn: "30d"
   });
-
+}else{
+  var accessToken = jwt.sign({
+    userId: user.id
+  }, 'SECRET_KEY', {
+    expiresIn: "30s"
+  });
+}
+const stay = req.body.autoLogin == true? 1000*60*60*24*365:1000*60*60*2
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
-
+  res.cookie('rfToken', refreshToken,{ expires: new Date(Date.now() + stay)});
+  res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + stay)});
   // console.log(user)
   let responseData = {
     authenticated: true,
-    accessToken,
-    refreshToken,
     status:"ok",
     username : user.username,
     email: user.email,
     type:user.type,
     uid:user.id,
-    currentAuthority: user.type
+    currentAuthority: user.type,
   }
   res.json(responseData)
 })
@@ -51,16 +57,18 @@ router.post('/', async function (req, res) {
 //   refreshToken: ''
 // }
 router.post('/refresh', async function (req, res) {
+  console.log(req.body)
   const payload = jwt.verify(req.body.accessToken, 'SECRET_KEY', { ignoreExpiration: true });
   const refreshToken = req.body.refreshToken;
-  const ret = await userModel.isRefreshTokenExisted(payload.userId, refreshToken);
-  if (ret === true) {
-    const accessToken = jwt.sign({
-      userId: payload.userId
-    }, 'SECRET_KEY', {
-      expiresIn: 100 * 60
-    });
-
+  if(refreshToken)
+    {const ret = await userModel.isRefreshTokenExisted(payload.userId, refreshToken);
+    if (ret === true) {
+      const accessToken = jwt.sign({
+        userId: payload.userId
+      }, 'SECRET_KEY', {
+        expiresIn: "30s"
+      });
+      res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + 1000*30*30)});}
     return res.json({ accessToken });
   }
 

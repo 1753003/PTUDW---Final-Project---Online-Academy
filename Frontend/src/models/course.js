@@ -1,4 +1,6 @@
+import Cookies from 'js-cookie';
 import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, searchCourses, addCourse } from '@/services/course';
+
 
 const courseModel = {
   namespace: 'course',

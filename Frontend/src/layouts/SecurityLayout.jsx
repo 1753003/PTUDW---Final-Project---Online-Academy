@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect } from 'umi';
 import { stringify } from 'querystring';
-
+import Cookies from 'js-cookie';
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
@@ -11,7 +11,7 @@ class SecurityLayout extends React.Component {
   };
 
   constructor(props){
-    console.log("Constructor security");
+    // console.log("Constructor security");
     super(props);
   }
 
@@ -20,9 +20,19 @@ class SecurityLayout extends React.Component {
       isReady: false,
       isGuest: true
     });
-
     const { dispatch, currentUser } = this.props;
     const {isGuest} = this.state;
+    let accessToken=Cookies.get('aToken')
+    let refreshToken=Cookies.get('rfToken')
+    let isLogin = localStorage.getItem("isLogin")
+    // console.log(isLogin, accessToken, refreshToken)
+    if(isLogin.includes("true")){
+      if(typeof(refreshToken)=='undefined')
+      dispatch({
+        type: 'login/logoutHome',
+      });
+    }
+    
     if (dispatch && !isGuest) {
       dispatch({
         type: 'user/fetchCurrent',
@@ -39,7 +49,7 @@ class SecurityLayout extends React.Component {
     if(isLogin){
         isGuest: false
     }
-    console.log(isGuest);
+    // console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
     });

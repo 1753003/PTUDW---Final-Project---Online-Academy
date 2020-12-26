@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';
 
+
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 
 class Login extends Component {
@@ -26,8 +27,9 @@ class Login extends Component {
     const { type,autoLogin } = this.state;
 
     if (!err) {
-      console.log('dispatch', values)
+      // console.log('dispatch', values)
       const { dispatch } = this.props;
+      
       dispatch({
         type: 'login/login',
         payload: { ...values, type, autoLogin },
@@ -145,7 +147,7 @@ class Login extends Component {
               style={{
                 float: 'right',
               }}
-              href=""
+              href="/user/resetPasswordRequest"
             >
               <FormattedMessage id="user-login.login.forgot-password" />
             </a>

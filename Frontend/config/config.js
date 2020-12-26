@@ -93,6 +93,12 @@ export default {
           path: '/user/register',
           component: './user/register/',
           authority: ['guest'],
+        },
+        {
+          name: 'resetRequest',
+          path: '/user/resetPasswordRequest',
+          component: './user/resetPassword/index',
+          authority: ['guest'],
         }
       ],
     },
@@ -195,14 +201,14 @@ export default {
         {
           path: '/course',
           component: '../layouts/BasicLayout',
-          authority: ['user','guest'],
+          authority: ['student', 'lecturer','guest'],
           routes: [
             {
               path: '/detail',
               name: 'Detail',
               icon: 'crown',
               component: './detail',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               component: './404',
@@ -240,6 +246,14 @@ export default {
               name: 'Detail',
               icon: 'crown',
               component: './detail',
+              hideInMenu: true,
+              authority: ['student', 'lecturer','guest']
+            },
+            {
+              path: '/profile',
+              name: 'Profile',
+              icon: 'crown',
+              component: './profile',
               hideInMenu: true,
               authority: ['student', 'lecturer','guest']
             },

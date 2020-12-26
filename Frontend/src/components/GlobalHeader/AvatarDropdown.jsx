@@ -44,6 +44,10 @@ class AvatarDropdown extends React.Component {
       router.replace('/user/register');
       return;
     }
+    if (key === 'profile') {
+      router.replace('/profile');
+      return;
+    }
     // router.push(`/account/${key}`);
   };
 
@@ -70,6 +74,10 @@ class AvatarDropdown extends React.Component {
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
+        <Menu.Item key="profile">
+          <Icon type="profile" />
+          <FormattedMessage id="menu.account.Profile" defaultMessage="Profile" />
+        </Menu.Item>
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="Logout" />
@@ -103,10 +111,9 @@ class AvatarDropdown extends React.Component {
       //     marginRight: 8,
       //   }}
       // />
-      <HeaderDropdown overlay={menuGuest}>
+      <HeaderDropdown overlay={menuGuest} >
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png' alt="avatar" />
-          <span className={styles.name}></span>
+          <Icon type="smile" />
         </span>
       </HeaderDropdown>
     );

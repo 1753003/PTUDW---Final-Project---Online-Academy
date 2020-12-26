@@ -4,18 +4,6 @@ import { connect } from 'dva';
 
 const { SubMenu } = Menu;
 
-// const listData = [];
-// for (let i = 0; i < 23; i++) {
-//     listData.push({
-//         url: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-//         name: 'Hello! Programming with Python for Kids and Beginners',
-//         description: 'Beginner, Basics, Foundation, Code, Coding, Graphics, Game, Data, Computer Science, Scratch, Kids, Teens, K12, Children',
-//         author: 'Phu Vinh Hung',
-//         rating: 4,
-//         price: 15,
-//         discountPrice: 19.9
-//     });
-// }
 
 const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
     const [searchKey, setSearchKey] = useState('');
@@ -105,10 +93,11 @@ const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
                                     description={item.description}
                                 /> */}
                                 <Row onDoubleClick={() => {
+                                    console.log(item);
                                     history.push({
                                         pathname: `/detail`,
                                         query: {
-                                            courseId: item.id,
+                                            courseId: item.courseID,
                                         },
                                     });
                                 }}>
@@ -145,7 +134,7 @@ const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
                                 </Row>
                             </List.Item>
                         )}
-                    />,
+                    />
             </Col>
             </Row>
 
