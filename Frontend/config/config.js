@@ -243,6 +243,14 @@ export default {
               authority: ['student', 'lecturer','guest']
             },
             {
+              path: '/profile',
+              name: 'Profile',
+              icon: 'crown',
+              component: './profile',
+              hideInMenu: true,
+              authority: ['student', 'lecturer','guest']
+            },
+            {
               component: './404',
             },
           ],

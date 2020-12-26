@@ -38,7 +38,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
-  await userModel.courseRegister(req.params.uid, req.body.cid);
+  await userModel.courseRegister(req.params.uid, req.params.cid);
   res.status(201).json({});
 });
 

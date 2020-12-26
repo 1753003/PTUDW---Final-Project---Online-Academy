@@ -1,11 +1,13 @@
-import { queryCurrent, add} from '@/services/user';
+import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse } from '@/services/user';
+import { getCourseById } from '@/services/course';
+
 import { router } from 'umi';
 
 const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-  }, 
+  },
   effects: {
     *resetPassword(payload, {call, put}){
       console.log("resetRequest", payload);
@@ -25,13 +27,98 @@ const UserModel = {
       router.replace('/');
       return response;
     },
-    *fetchCurrent({payload}, { call, put }) {
+    *fetchCurrent({ payload }, { call, put }) {
       // console.log("fetchCurrent")
       const response = yield call(queryCurrent, payload.uid);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
       });
+    },
+    *fetchCurrentFavorite({ payload }, { call, put }) {
+      // console.log("fetchCurrent")
+      const response = yield call(queryCurrentFavoriteCourse, payload.uid);
+      const favoriteCourses = [];
+      for (let i = 0; i < response.length; i++) {
+        const course = yield call(getCourseById, response[i].courseId);
+        favoriteCourses.push(course[0][0]);
+      }
+      yield put({
+        type: 'updateFavorite',
+        payload: favoriteCourses,
+      });
+    },
+    *fetchCurrentRegister({ payload }, { call, put }) {
+      // console.log("fetchCurrent")
+      const registedCourses = [];
+      const response = yield call(queryCurrentRegistedCourse, payload.uid);
+      console.log(response);
+      for (let i = 0; i < response.length; i++) {
+        const course = yield call(getCourseById, response[i].courseID);
+        const finalCourse = {
+          ...response[i],
+          ...course[0][0]
+        }
+        registedCourses.push(finalCourse);
+      }
+      yield put({
+        type: 'updateRegister',
+        payload: registedCourses,
+      });
+    },
+    *registCourse({ payload }, { call, put }) {
+      yield put({
+        type: 'registCourseStatus',
+        payload: { status: 'UPLOADING' },
+      });
+      try {
+        yield call(addCourseToRegister, payload); 
+        yield put({
+          type: 'registCourseStatus',
+          payload: { status: 'SUCCESS' },
+        });
+      } catch (e) {
+        yield put({
+          type: 'registCourseStatus',
+          payload: { status: 'FAIL' },
+        });
+      }
+    },
+    *addToFavorite({ payload }, { call, put }) {
+      yield put({
+        type: 'addToFavoriteStatus',
+        payload: { status: 'UPLOADING' },
+      });
+      try {
+        yield call(addCourseToFavorite, payload); 
+        yield put({
+          type: 'addToFavoriteStatus',
+          payload: { status: 'SUCCESS' },
+        });
+      } catch (e) {
+        yield put({
+          type: 'addToFavoriteStatus',
+          payload: { status: 'FAIL' },
+        });
+      }
+    },
+    *delFavorite({ payload }, { call, put }) {
+      yield put({
+        type: 'deleteFavoriteStatus',
+        payload: { status: 'UPLOADING' },
+      });
+      try {
+        yield call(delFavoriteCourse, payload); 
+        yield put({
+          type: 'deleteFavoriteStatus',
+          payload: { status: 'SUCCESS' },
+        });
+      } catch (e) {
+        yield put({
+          type: 'deleteFavoriteStatus',
+          payload: { status: 'FAIL' },
+        });
+      }
     },
   },
   reducers: {
@@ -61,6 +148,22 @@ const UserModel = {
         },
       };
     },
+    updateFavorite(state, { payload }) {
+      return { ...state, favoriteCourses: payload }
+    },
+    updateRegister(state, { payload }) {
+      return { ...state, registedCourses: payload }
+    },
+    registCourseStatus(state, { payload }) {
+      return { ...state, registCourseStatus: payload.status }
+    },
+    addToFavoriteStatus(state, { payload }) {
+      return { ...state, addToFavoriteStatus: payload.status }
+    },
+    deleteFavoriteStatus(state, { payload }) {
+      return { ...state, deleteFavoriteStatus: payload.status }
+    }
   },
+
 };
 export default UserModel;
