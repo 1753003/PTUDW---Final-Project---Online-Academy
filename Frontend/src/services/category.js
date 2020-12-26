@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 export function getListCategory() {
+    console.log("call api");
     return new Promise( (resolve, reject) => {
-        axios.get('http://localhost:5000/api/category',
-        {headers:{'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTYwODEwMzQwNCwiZXhwIjoxNjA4MTA5NDA0fQ.SrfkU7AWEew5J-OqTT4sYNEz8vrWNUDbEP5U44dvmDY'}})
+        axios.get('http://localhost:5000/api/category')
         .then((response) => {
             // handle success
             resolve(response.data)

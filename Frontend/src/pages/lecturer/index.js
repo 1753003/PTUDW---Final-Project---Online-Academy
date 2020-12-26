@@ -76,21 +76,21 @@ class Avatar extends React.Component {
 }
 
 class MyForm extends React.Component {
-  state = {options: [], url: ''};
+  state = {url: ''};
 
   constructor(props) {
-      super(props);
-      this.props.dispatch({type:'category/get'});
-      console.log(this.props);
-      this.createOptions();
+    super(props);
+    this.props.dispatch({type:'category/get'});
   }
 
   createOptions = () => {
-    for (let i = 0; i < this.props.category.list.length; i++){
-      if (this.props.category.list[i].idTopic !== null) {
-        this.state.options.push(<Option key={this.props.category.list[i].id}> {this.props.category.list[i].name} </Option>);
-      }
-    }
+    console.log(this.props.category);
+    const { category = {} } = this.props;
+    const { list = [] } = category;
+
+    return list
+      .filter(i => i.idTopic != null)
+      .map(i => (<Option key={i.id}> {i.name} </Option>));
   }
 
   handleSubmit = e => {
@@ -110,7 +110,7 @@ class MyForm extends React.Component {
   render() {
     const { getFieldDecorator, } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form" layout="horizontal">
+      <Form onSubmit={this.handleSubmit.bind(this)} className="login-form" layout="horizontal">
         <Row gutter={16}>
             <Col span={4} />
             <Col span={14}>
@@ -131,7 +131,7 @@ class MyForm extends React.Component {
                             placeholder="Please select a topic"
                             onChange={this.saveOption}
                         >
-                            {this.state.options}
+                            {this.createOptions()}
                         </Select>
                     )}
                 </Form.Item>       

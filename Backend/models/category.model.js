@@ -1,7 +1,7 @@
 const db = require('../utils/db');
 module.exports = {
-    getAll() {
-        return db('category');
+    async getAll() {
+        return  await db('category');
     },
 
     async getById(id) {
