@@ -7,6 +7,14 @@ const UserModel = {
     currentUser: {},
   }, 
   effects: {
+    *resetPassword(payload, {call, put}){
+      console.log("resetRequest", payload);
+      const response = true;
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+    },
     *register(payload, { call, put }) {
       // console.log('payload',payload)
       const response = yield call(add, payload);
@@ -27,6 +35,9 @@ const UserModel = {
     },
   },
   reducers: {
+    requestStatus(state, action){
+      return { ...state, status: action.paload || false}
+    },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
     },

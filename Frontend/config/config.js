@@ -93,6 +93,12 @@ export default {
           path: '/user/register',
           component: './user/register/',
           authority: ['guest'],
+        },
+        {
+          name: 'resetRequest',
+          path: '/user/resetPasswordRequest',
+          component: './user/resetPassword/index',
+          authority: ['guest'],
         }
       ],
     },

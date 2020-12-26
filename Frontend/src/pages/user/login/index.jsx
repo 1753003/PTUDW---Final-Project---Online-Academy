@@ -147,7 +147,7 @@ class Login extends Component {
               style={{
                 float: 'right',
               }}
-              href=""
+              href="/user/resetPasswordRequest"
             >
               <FormattedMessage id="user-login.login.forgot-password" />
             </a>
