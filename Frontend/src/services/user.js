@@ -8,15 +8,12 @@ export async function query() {
 export function resetRequest(params) {
   // console.log("add", params.payload)
   return new Promise((resolve, reject) => {
-    axios.post(`/api/user/changePassword/4`,
+    axios.post(`/api/user/forgotPassword`,
       {
-        username: "ponpon",
-        email: "pupipinpon@gmail.com",
-        password: "123",
+        email: params,
       })
       .then((response) => {
         // handle success
-        console.log(response)
         resolve(response)
       })
       .catch((error) => {
@@ -36,8 +33,7 @@ export function add(params) {
         password: params.payload.password,
       })
       .then((response) => {
-        // handle success
-        console.log(response)
+        // handle succes
         resolve(response)
       })
       .catch((error) => {

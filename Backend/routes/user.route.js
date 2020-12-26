@@ -192,6 +192,47 @@ router.get('/changeEmail/:uid', async function(req, res){
   res.json(result);
 });
 
+router.post('/forgotPassword', function(req, res){
+  var nodemailer = require('nodemailer');
+  const email = req.body.email.email;
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'group7.17clc@gmail.com',
+      pass: 'group7.17clc'
+    }
+  });
+  
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < 6; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  var mailOptions = {
+    from: 'group7.17clc@gmail.com',
+    to: email,
+    subject: 'Pondemy team - Confirm your email',
+    html: `<h2>Confirm your email on Pondemy website!</h2> 
+    <p>Here are your code to confirm your email: ${result}</p>
+    <p>Ignoring this email if it is not you.</p>
+    <hr/>
+    <p>Best,</p>
+    <p>Pondemy team.</p>`
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
+  res.json(result);
+});
+
 router.post('/confirmEmail', function(req, res){
   var nodemailer = require('nodemailer');
   const email = req.body.email;

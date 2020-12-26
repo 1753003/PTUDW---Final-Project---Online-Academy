@@ -39,6 +39,7 @@ class ResetPasswordForm extends Component {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
+
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
     const { submitting, status} = this.props;
@@ -73,5 +74,5 @@ class ResetPasswordForm extends Component {
 
 const Reset = Form.create()(ResetPasswordForm);
 export default connect(({user})=>({
-  status: user.requestStatus,
+  status: user.status,
 }))(Reset);
