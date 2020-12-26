@@ -120,6 +120,12 @@ const UserModel = {
         });
       }
     },
+    *resetStatus(_, { put }) {
+      yield put({
+        type: 'deleteFavoriteStatus',
+        payload: { status: 'UPLOADING' },
+      });
+    },
   },
   reducers: {
     requestStatus(state, action){
@@ -162,6 +168,9 @@ const UserModel = {
     },
     deleteFavoriteStatus(state, { payload }) {
       return { ...state, deleteFavoriteStatus: payload.status }
+    },
+    resetStatus(state) {
+      return { ...state, registCourseStatus: '', addToFavoriteStatus: '', deleteFavoriteStatus: '' }
     }
   },
 

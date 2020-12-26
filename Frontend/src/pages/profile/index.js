@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate, Avatar, Form, DatePicker, Card, Button, Progress, message } from 'antd';
+import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message } from 'antd';
 import { connect } from 'dva';
 
 
@@ -22,10 +22,12 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
 
     useEffect(() => {
         if (deleteFavoriteStatus === "SUCCESS") {
-            message.success('Add to Favorite successfully');
+            message.success('Remove course successfully');
+            dispatch({ type: 'user/resetStatus' });
         }
         if (deleteFavoriteStatus === "FAIL") {
-            message.error('Add to Favorite fail');
+            message.error('Remove course fail');
+            dispatch({ type: 'user/resetStatus' });
         }
     }, [deleteFavoriteStatus])
 
