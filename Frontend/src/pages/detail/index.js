@@ -33,10 +33,10 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
     useEffect(() => {
         if (registCourseStatus === "SUCCESS") {
-            message.success('Add to Favorite successfully');
+            message.success('Regist Course successfully');
         }
         if (registCourseStatus === "FAIL") {
-            message.error('Add to Favorite fail');
+            message.error('Regist Course fail');
         }
     }, [registCourseStatus]);
 
