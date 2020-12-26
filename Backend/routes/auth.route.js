@@ -38,7 +38,7 @@ const stay = req.body.autoLogin == true? 1000*60*60*24*365:1000*60*60*2
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
   res.cookie('rfToken', refreshToken,{ expires: new Date(Date.now() + stay)});
-  res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + 1000*30*30)});
+  res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + stay)});
   // console.log(user)
   let responseData = {
     authenticated: true,
