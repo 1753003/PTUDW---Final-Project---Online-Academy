@@ -93,10 +93,11 @@ const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
                                     description={item.description}
                                 /> */}
                                 <Row onDoubleClick={() => {
+                                    console.log(item);
                                     history.push({
                                         pathname: `/detail`,
                                         query: {
-                                            courseId: item.id,
+                                            courseId: item.courseID,
                                         },
                                     });
                                 }}>

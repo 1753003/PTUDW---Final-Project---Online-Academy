@@ -241,6 +241,7 @@ export default {
               name: 'Profile',
               icon: 'crown',
               component: './profile',
+              hideInMenu: true,
               authority: ['student', 'lecturer','guest']
             },
             {

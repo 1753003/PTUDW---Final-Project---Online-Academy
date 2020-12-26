@@ -44,6 +44,10 @@ class AvatarDropdown extends React.Component {
       router.replace('/user/register');
       return;
     }
+    if (key === 'profile') {
+      router.replace('/profile');
+      return;
+    }
     // router.push(`/account/${key}`);
   };
 
@@ -70,6 +74,10 @@ class AvatarDropdown extends React.Component {
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
+        <Menu.Item key="profile">
+          <Icon type="profile" />
+          <FormattedMessage id="menu.account.Profile" defaultMessage="Profile" />
+        </Menu.Item>
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="Logout" />

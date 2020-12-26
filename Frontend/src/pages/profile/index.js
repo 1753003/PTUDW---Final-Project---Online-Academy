@@ -1,45 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate, Avatar, Form, DatePicker, Card, Button } from 'antd';
+import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate, Avatar, Form, DatePicker, Card, Button, Progress, message } from 'antd';
 import { connect } from 'dva';
 
 
 
 
 
-const Profile = ({ loading, history, searchList, location, dispatch }) => {
+const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, registedCourses, deleteFavoriteStatus }) => {
     const [menuKey, setMenuKey] = useState('profile');
 
-    const list = [
-        {
-            URL: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-            courseName: "lfajsdflkja",
-            briefDescription: "faskdfjklasdjflajsdf",
-            lecturer: 'flkasdjflasjdf'
-        },
-        {
-            URL: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-            courseName: "lfajsdflkja",
-            briefDescription: "faskdfjklasdjflajsdf",
-            lecturer: 'flkasdjflasjdf'
-        },
-        {
-            URL: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-            courseName: "lfajsdflkja",
-            briefDescription: "faskdfjklasdjflajsdf",
-            lecturer: 'flkasdjflasjdf'
-        },
-        {
-            URL: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-            courseName: "lfajsdflkja",
-            briefDescription: "faskdfjklasdjflajsdf",
-            lecturer: 'flkasdjflasjdf'
-        },
-    ]
+    // useEffect
+    useEffect(() => {
+        if(currentUser.id) {
+            const payload = {
+                uid: currentUser.id
+            }
+            dispatch({ type: 'user/fetchCurrentFavorite', payload });
+            dispatch({ type: 'user/fetchCurrentRegister', payload });
+        }
+    }, [currentUser])
 
+    useEffect(() => {
+        if (deleteFavoriteStatus === "SUCCESS") {
+            message.success('Add to Favorite successfully');
+        }
+        if (deleteFavoriteStatus === "FAIL") {
+            message.error('Add to Favorite fail');
+        }
+    }, [deleteFavoriteStatus])
 
     const handleClick = e => {
         setMenuKey(e.key);
     };
+
+    const handleRemoveFavorite = (id) => {
+        const payload = {
+            uid: currentUser.id,
+            cid: id
+        };
+        dispatch({ type: 'user/delFavorite', payload });
+    }
 
 
     return (
@@ -49,11 +49,11 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
                 <Row>
                     <Col span={6} style={{ alignItems: 'center' }}>
                         <div style={{ width: '100%' }}>
-                            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                            <Avatar size={130} icon="user" style={{ alignItems: 'center' }} />
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Avatar size={130} src={currentUser.avatar} style={{ alignItems: 'center' }} />
 
                             </div>
-                            <Typography.Title level={4} style={{ textAlign: 'center' }}>Phu Vinh Hung</Typography.Title>
+                            <Typography.Title level={4} style={{ textAlign: 'center' }}>{currentUser.name}</Typography.Title>
                         </div>
 
                         <Menu
@@ -89,7 +89,7 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
                                     pagination={{
                                         pageSize: 5,
                                     }}
-                                    dataSource={list}
+                                    dataSource={favoriteCourses}
                                     renderItem={item => (
                                         <List.Item
                                             key={item.title}
@@ -110,12 +110,14 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
                                                     />
                                                 </Col>
                                                 <Col span={13}>
-                                                    <Typography.Title level={4}>{item.courseName}</Typography.Title>
+                                                    <Typography.Title level={4}>{item.name}</Typography.Title>
                                                     <Typography>{item.briefDescription}</Typography>
                                                     <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
                                                 </Col>
                                                 <Col span={2}>
-                                                    <Button>Remove</Button>
+                                                    <Button onClick={()=>{
+                                                        handleRemoveFavorite(item.id);
+                                                    }}>Remove</Button>
                                                 </Col>
                                             </Row>
                                         </List.Item>
@@ -126,7 +128,7 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
 
                         {
                             menuKey === "signed" &&
-                            <Card title="Signed Courses">
+                            <Card title="Registed Courses">
                                 <List
                                     itemLayout="vertical"
                                     size="large"
@@ -134,7 +136,7 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
                                     pagination={{
                                         pageSize: 5,
                                     }}
-                                    dataSource={list}
+                                    dataSource={registedCourses}
                                     renderItem={item => (
                                         <List.Item
                                             key={item.title}
@@ -155,12 +157,10 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
                                                     />
                                                 </Col>
                                                 <Col span={13}>
-                                                    <Typography.Title level={4}>{item.courseName}</Typography.Title>
+                                                    <Typography.Title level={4}>{item.name}</Typography.Title>
                                                     <Typography>{item.briefDescription}</Typography>
                                                     <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
-                                                </Col>
-                                                <Col span={2}>
-                                                    <Button>Remove</Button>
+                                                    <Progress percent={30} />
                                                 </Col>
                                             </Row>
                                         </List.Item>
@@ -177,8 +177,9 @@ const Profile = ({ loading, history, searchList, location, dispatch }) => {
 };
 
 
-export default connect(({ course }) => ({
-    list: course.list,
-    searchList: course.searchList,
-    loading: course.loading
+export default connect(({ user }) => ({
+    currentUser: user.currentUser,
+    favoriteCourses: user.favoriteCourses,
+    registedCourses: user.registedCourses,
+    deleteFavoriteStatus: user.deleteFavoriteStatus
 }))(Profile);
