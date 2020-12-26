@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+
 db.on('query', console.log)
 module.exports = {
   getAll() {
@@ -96,6 +97,10 @@ module.exports = {
   async getWithCategory(category) {
     return await db.select(db.raw(`id, views from course where categoryID = ${category} 
     ORDER BY views DESC LIMIT 10`));
+  },
+  
+  async getLecturerCourse(lecturerID) {
+    return db('course').where("lecturerID", lecturerID);
   }
 };
 // select categoryID, count(categoryID) as count

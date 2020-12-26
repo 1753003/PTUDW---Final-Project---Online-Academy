@@ -85,6 +85,11 @@ router.get('/getAll', async function(req, res) {
 router.get('/getWithCategory', async function(req, res) {
   res.json(await courseModel.getWithCategory(req.query.c));
 })
+
+router.get('/getLecturerCourse/:id', async function(req, res) {
+  res.json(await courseModel.getLecturerCourse(req.params.id));
+})
+
 router.get('/', async function (req, res) {
   const list = await courseModel.getAll();
   res.json(list);

@@ -177,6 +177,13 @@ export default {
               authority: ['lecturer']
             },
             {
+              path: '/lecturer/listCourse',
+              name: 'Courses',
+              icon: 'book',
+              component: './lecturer/listCourse',
+              authority: ['lecturer']
+            },
+            {
               component: './404',
             },
           ],
