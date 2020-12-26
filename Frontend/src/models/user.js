@@ -7,14 +7,14 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
+    status: ''
   },
   effects: {
     *resetPassword(payload, {call, put}){
-      console.log("resetRequest", payload);
-      const response = yield call(resetRequest, payload)
+      const response = yield call(resetRequest, payload.payload)
       yield put({
         type: 'requestStatus',
-        payload: {status : response},
+        payload: response,
       });
       // router.replace('/');
     },
@@ -130,8 +130,7 @@ const UserModel = {
   },
   reducers: {
     requestStatus(state, action){
-      console.log("stttore")
-      return { ...state, status: action.payload.status}
+      return { ...state, status: action.payload}
     },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
