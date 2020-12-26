@@ -89,7 +89,7 @@ class AvatarDropdown extends React.Component {
       </Menu>
     )
     return currentUser && currentUser.name ? (
-      <HeaderDropdown overlay={menuHeaderDropdown}>
+      <HeaderDropdown overlay={menuHeaderDropdown} loading ={submitting}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
           <span className={styles.name}>{currentUser.name}</span>
@@ -103,16 +103,16 @@ class AvatarDropdown extends React.Component {
       //     marginRight: 8,
       //   }}
       // />
-      <HeaderDropdown overlay={menuGuest}>
+      <HeaderDropdown overlay={menuGuest} >
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png' alt="avatar" />
-          <span className={styles.name}></span>
+          <Icon type="smile" />
         </span>
       </HeaderDropdown>
     );
   }
 }
 
-export default connect(({ user }) => ({
+export default connect(({ user, loading }) => ({
   currentUser: user.currentUser,
+  submitting: loading.effects['user/fetchCurrent']
 }))(AvatarDropdown);

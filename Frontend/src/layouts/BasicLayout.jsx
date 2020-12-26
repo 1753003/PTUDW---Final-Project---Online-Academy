@@ -97,11 +97,20 @@ const BasicLayout = (props) => {
    */
 
   useEffect(() => {
+    let accessToken=Cookies.get('aToken')
+    let refreshToken=Cookies.get('rfToken')
+    let isLogin = localStorage.getItem("isLogin")
+
+    if(isLogin.includes("true")){
+      if(typeof(refreshToken)=='undefined')
+      dispatch({
+        type: 'login/logoutHome',
+      });
+    }
     let auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
     // console.log(auth[0])
     auth = auth?auth:'guest'
     if (dispatch&&(auth[0]!='guest'||auth !='guest')) {
-      // console.log('cookies',Cookies.get('aToken'))
       dispatch({
         type: 'user/fetchCurrent',
         payload: JSON.parse(localStorage.getItem("userData"))

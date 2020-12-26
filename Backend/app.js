@@ -5,7 +5,7 @@ var cors = require('cors')
 
 const app = express();
 app.use(express.json());
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(cors({credentials: true}));
 app.use(cookieParser()); 
 const auth = require('./middleware/auth.mdw');

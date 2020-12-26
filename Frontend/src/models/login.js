@@ -12,14 +12,7 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      if(payload.autoLogin)
-      {
-        console.log('auto')
-      }
       const response = yield call(realAccountLogin, payload);
-      // console.log(response)
-      // console.log("login")
-      // const response = yield call(dbLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -80,6 +73,20 @@ const Model = {
           }),
         });
       }
+    },
+    *logoutHome(_,{put}) {
+      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+      yield put({
+        type:'user/delCurrentUser'
+      })
+      localStorage.setItem("isLogin",JSON.stringify('false'))
+      localStorage.setItem("userData",JSON.stringify({}))
+      Cookies.remove('aToken')
+      Cookies.remove('rfToken')
+      setAuthority('guest');
+      if (window.location.pathname !== '/user/login' && !redirect) {
+          window.location.pathname = window.location.pathname
+        }
     },
   },
   reducers: {

@@ -20,9 +20,19 @@ class SecurityLayout extends React.Component {
       isReady: false,
       isGuest: true
     });
-
     const { dispatch, currentUser } = this.props;
     const {isGuest} = this.state;
+    let accessToken=Cookies.get('aToken')
+    let refreshToken=Cookies.get('rfToken')
+    let isLogin = localStorage.getItem("isLogin")
+    // console.log(isLogin, accessToken, refreshToken)
+    if(isLogin.includes("true")){
+      if(typeof(refreshToken)=='undefined')
+      dispatch({
+        type: 'login/logoutHome',
+      });
+    }
+    
     if (dispatch && !isGuest) {
       dispatch({
         type: 'user/fetchCurrent',

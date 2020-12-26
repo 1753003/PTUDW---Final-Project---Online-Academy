@@ -14,7 +14,7 @@ export function realAccountLogin(params){
     axios.post(`/api/auth`, params,{withCredentials: true, credentials: 'include'})
     .then((response) => {
         // handle success
-        console.log("res",response);
+        // console.log("res",response);
         resolve(response.data)
     })
     .catch((error) => {
