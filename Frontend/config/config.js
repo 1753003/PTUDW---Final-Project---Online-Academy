@@ -188,14 +188,14 @@ export default {
         {
           path: '/course',
           component: '../layouts/BasicLayout',
-          authority: ['user','guest'],
+          authority: ['student', 'lecturer','guest'],
           routes: [
             {
               path: '/detail',
               name: 'Detail',
               icon: 'crown',
               component: './detail',
-              authority: ['user','guest']
+              authority: ['student', 'lecturer','guest']
             },
             {
               component: './404',

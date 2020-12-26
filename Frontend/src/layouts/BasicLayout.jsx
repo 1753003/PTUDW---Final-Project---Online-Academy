@@ -13,6 +13,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import Cookies from 'js-cookie';
 
 const noMatch = (
   <Result
@@ -96,6 +97,16 @@ const BasicLayout = (props) => {
    */
 
   useEffect(() => {
+    let accessToken=Cookies.get('aToken')
+    let refreshToken=Cookies.get('rfToken')
+    let isLogin = localStorage.getItem("isLogin")
+
+    if(isLogin.includes("true")){
+      if(typeof(refreshToken)=='undefined')
+      dispatch({
+        type: 'login/logoutHome',
+      });
+    }
     let auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
     // console.log(auth[0])
     auth = auth?auth:'guest'

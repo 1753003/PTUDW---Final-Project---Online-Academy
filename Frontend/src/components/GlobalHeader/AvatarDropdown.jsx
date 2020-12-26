@@ -103,10 +103,9 @@ class AvatarDropdown extends React.Component {
       //     marginRight: 8,
       //   }}
       // />
-      <HeaderDropdown overlay={menuGuest}>
+      <HeaderDropdown overlay={menuGuest} >
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png' alt="avatar" />
-          <span className={styles.name}></span>
+          <Icon type="smile" />
         </span>
       </HeaderDropdown>
     );
