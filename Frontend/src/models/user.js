@@ -1,4 +1,4 @@
-import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse } from '@/services/user';
+import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -11,11 +11,12 @@ const UserModel = {
   effects: {
     *resetPassword(payload, {call, put}){
       console.log("resetRequest", payload);
-      const response = true;
+      const response = yield call(resetRequest, payload)
       yield put({
         type: 'requestStatus',
-        payload: response,
+        payload: {status : response},
       });
+      // router.replace('/');
     },
     *register(payload, { call, put }) {
       // console.log('payload',payload)
@@ -129,7 +130,8 @@ const UserModel = {
   },
   reducers: {
     requestStatus(state, action){
-      return { ...state, status: action.paload || false}
+      console.log("stttore")
+      return { ...state, status: action.payload.status}
     },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };

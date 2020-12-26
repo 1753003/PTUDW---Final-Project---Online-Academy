@@ -1,5 +1,5 @@
 import { Form, Icon, Input, Button} from 'antd';
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import styles from './index.less';
@@ -7,16 +7,16 @@ import styles from './index.less';
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
-class ResetPasswordForm extends React.Component {
-  state={
-    first:true,
-    confirmDirty: false,
-    requestDone : false
+class ResetPasswordForm extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      first:true,
+      confirmDirty: false,
+    }
   }
-  
+
   componentDidUpdate(){
-    
-    // console.log(requestDone)
     if(this.state.first == true)
       {this.setState({first:false})
       this.props.form.validateFields();}
@@ -24,14 +24,11 @@ class ResetPasswordForm extends React.Component {
   
   handleSubmit = e => {
     e.preventDefault(); 
-    const {status } = this.props.form;
-    if(typeof(status)=='undefined') this.setState({requestDone : false});
-    else this.setState({requestDone : status})
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.dispatch({
           type: 'user/resetPassword',
-          payload: values
+          payload: {...values}
         })
       } else {
         // console.log(err)
@@ -42,14 +39,13 @@ class ResetPasswordForm extends React.Component {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
-
   render() {
-
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, submitting, status } = this.props.form;
-    
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const { submitting, status} = this.props;
+    console.log('s',this.props)
     const emailError = isFieldTouched('email') && getFieldError('email');
-    return (this.state.requestDone? <p>succcess</p>:
-      <div className={styles.main}>
+    return (status ? <p>succcess</p>:
+      <div className={styles.main} >
         <p>Type your email and wwwe will send you skjdhfl</p>
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
         <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
@@ -62,7 +58,7 @@ class ResetPasswordForm extends React.Component {
             />,
           )}
         </Form.Item>
-        <Form.Item loading={submitting}>
+        <Form.Item loading={submitting} status={status}>
           <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
             Confirm
           </Button>
@@ -75,9 +71,7 @@ class ResetPasswordForm extends React.Component {
   }
 }
 
-const Reset = Form.create({name: 'resetPassword'})(ResetPasswordForm);
-
-export default connect(({loading, status})=>({
-  submitting: loading.effects['user/resetPassword'],
-  status: status,
+const Reset = Form.create()(ResetPasswordForm);
+export default connect(({user})=>({
+  status: user.requestStatus,
 }))(Reset);

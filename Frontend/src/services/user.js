@@ -5,6 +5,27 @@ import Cookies from 'js-cookie';
 export async function query() {
   return request('/api/users');
 }
+export function resetRequest(params) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/changePassword/4`,
+      {
+        username: "ponpon",
+        email: "pupipinpon@gmail.com",
+        password: "123",
+      })
+      .then((response) => {
+        // handle success
+        console.log(response)
+        resolve(response)
+      })
+      .catch((error) => {
+        // handle error
+        reject(error);
+        console.log(error);
+      })
+  })
+}
 export function add(params) {
   // console.log("add", params.payload)
   return new Promise((resolve, reject) => {
