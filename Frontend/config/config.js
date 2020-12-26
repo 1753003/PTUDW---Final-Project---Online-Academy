@@ -99,6 +99,12 @@ export default {
           path: '/user/resetPasswordRequest',
           component: './user/resetPassword/index',
           authority: ['guest'],
+        },
+        {
+          name: 'confirmNewPassword',
+          path: '/user/confirmNewPassword',
+          component: './user/confirm/index',
+          authority: ['guest'],
         }
       ],
     },

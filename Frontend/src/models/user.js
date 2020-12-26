@@ -11,6 +11,7 @@ const UserModel = {
   },
   effects: {
     *resetPassword(payload, {call, put}){
+      console.log('model')
       const response = yield call(resetRequest, payload.payload)
       yield put({
         type: 'requestStatus',

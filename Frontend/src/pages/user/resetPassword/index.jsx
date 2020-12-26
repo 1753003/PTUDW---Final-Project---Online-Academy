@@ -1,9 +1,9 @@
-import { Form, Icon, Input, Button} from 'antd';
+import { Alert, Form, Icon, Input, Button} from 'antd';
 import React, { Component } from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import styles from './index.less';
-
+import router from 'umi'
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
@@ -43,11 +43,14 @@ class ResetPasswordForm extends Component {
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
     const { submitting, status} = this.props;
-    console.log('s',this.props)
     const emailError = isFieldTouched('email') && getFieldError('email');
-    return (status ? <p>succcess</p>:
+    let msg = ""
+    console.log('status', status)
+    if (status) msg = status?(  <Alert message="Email has been send" type="success" />):(  <Alert message="Email send failed" type="error" />)
+    return (
       <div className={styles.main} >
-        <p>Type your email and wwwe will send you skjdhfl</p>
+        {msg}
+        <h4>Type your email and we will send you a mail with confirm code</h4>
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
         <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
           {getFieldDecorator('email', {
@@ -63,8 +66,15 @@ class ResetPasswordForm extends Component {
           <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
             Confirm
           </Button>
-          <Link style={{float:'right'}} to="/user/login">Don't wanna change your password anymore ? Login now</Link>
+          <Link style={{float:'right'}} to="/user/login">Change your mind? Login now</Link>
         </Form.Item>
+        {status&&
+        <Link to='/user/confirmNewPassword'>
+          <Button type="primary" block>
+            Next
+            <Icon type="right" />
+          </Button></Link>
+        }
       </Form>
       </div>
     
