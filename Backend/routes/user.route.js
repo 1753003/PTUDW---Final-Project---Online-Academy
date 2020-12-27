@@ -16,7 +16,8 @@ router.post('/', async function (req, res) {
     });
   }
   user.password = bcrypt.hashSync(user.password, 10);
-
+  user.type = 'student'
+  user.name = user.username
   user.id = await userModel.add(user);
   delete user.password;
   res.status(201).json(user);
@@ -274,4 +275,11 @@ router.post('/confirmEmail', function(req, res){
 
   res.json(result);
 });
+router.post('/resetConfirm', async function(req,res){
+  console.log(req.body)
+  const password = bcrypt.hashSync(req.body.password, 10);
+  const user = await userModel.singleByMail(req.body.email);
+  const ret = await userModel.edit(user.id, {password: password})
+  res.json(ret)
+})
 module.exports = router;

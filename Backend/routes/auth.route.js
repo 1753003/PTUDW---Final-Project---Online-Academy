@@ -34,7 +34,7 @@ if(req.body.autoLogin){
     expiresIn: "30s"
   });
 }
-const stay = req.body.autoLogin == true? 1000*60*60*24*365:1000*60*60*2
+const stay = req.body.autoLogin == true? 315360000000:1000*60*60*24
   const refreshToken = randToken.generate(80);
   await userModel.updateRefreshToken(user.id, refreshToken);
   res.cookie('rfToken', refreshToken,{ expires: new Date(Date.now() + stay)});

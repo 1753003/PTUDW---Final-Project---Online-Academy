@@ -19,7 +19,26 @@ export function resetRequest(params) {
       .catch((error) => {
         // handle error
         reject(error);
-        console.log(error);
+        // console.log(error);
+      })
+  })
+}
+export function resetConfirm(params) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/resetConfirm`,
+      {
+        email: params.email,
+        password: params.password
+      })
+      .then((response) => {
+        // handle success
+        resolve(response)
+      })
+      .catch((error) => {
+        // handle error
+        reject(error);
+        // console.log(error);
       })
   })
 }

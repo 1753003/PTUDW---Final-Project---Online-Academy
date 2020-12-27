@@ -13,6 +13,7 @@ class ResetPasswordForm extends Component {
     this.state={
       first:true,
       confirmDirty: false,
+      fail: null,
     }
   }
 
@@ -27,11 +28,12 @@ class ResetPasswordForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.dispatch({
-          type: 'user/resetPassword',
+          type: 'user/resetPasswordRequest',
           payload: {...values}
         })
       } else {
         // console.log(err)
+        this.setState({fail: true})
       }
     });
   };
@@ -45,8 +47,8 @@ class ResetPasswordForm extends Component {
     const { submitting, status} = this.props;
     const emailError = isFieldTouched('email') && getFieldError('email');
     let msg = ""
-    console.log('status', status)
-    if (status) msg = status?(  <Alert message="Email has been send" type="success" />):(  <Alert message="Email send failed" type="error" />)
+
+    if (status!='' && this.state.fail!=null) msg = status!='' && !this.state.fail?(  <Alert message="Email has been sent." type="success" showIcon/>):(  <Alert message="Email sent failed" type="error" showIcon/>)
     return (
       <div className={styles.main} >
         {msg}

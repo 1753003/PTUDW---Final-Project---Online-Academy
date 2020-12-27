@@ -12,6 +12,7 @@ class ConfirmPasswordForm extends Component {
     this.state={
       first:true,
       confirmDirty: false,
+      fail: null,
     }
   }
 
@@ -20,19 +21,28 @@ class ConfirmPasswordForm extends Component {
       {this.setState({first:false})
       this.props.form.validateFields();}
   }
-  
+
   handleSubmit = e => {
     e.preventDefault(); 
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('code',status.data)
-        console.log('email',status.config.data.email)
-        // this.props.dispatch({
-        //   type: 'user/resetPassword',
-        //   payload: {...values}
-        // })
-      } else {
-        // console.log(err)
+        const code = this.props.status.data
+        const email = JSON.parse(this.props.status.config.data).email.email
+        if(code === values.code)
+        {
+          this.setState({fail: false})
+          this.props.dispatch({
+            type: 'user/resetPasswordConfirm',
+            payload: {
+              password: values.password,
+              email: email
+            }
+          })}
+        else{
+          this.setState({fail: true})
+        }
+      } else{
+        this.setState({fail: true})
       }
     });
   };
@@ -58,16 +68,17 @@ class ConfirmPasswordForm extends Component {
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-    const { submitting, status} = this.props;
+    const {status} = this.props;
     const passwordError = isFieldTouched('password') && getFieldError('password');
     const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
     const codeError = isFieldTouched('code') && getFieldError('code');
     let msg = ""
-    if (status) msg = status?(  <Alert message="Success" type="success" />):(  <Alert message="Failed" type="error" />)
+    if (status!='' && this.state.fail!=null) msg = status!='' && !this.state.fail?(< Alert message="Change password success" type="success" showIcon><Icon type="smile" /></Alert>):(  <Alert message="Check your reset code " type="error" showIcon><Icon type="frown" /></Alert>)
     return (
       <div className={styles.main} >
+        {msg}
+        <h4 >Please think twice before type your new password<Icon style={{paddingLeft:'10px'}} type="smile" theme="outlined" /></h4>
         
-        <h4>Think twice before type your new password</h4>
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
       <Form.Item hasFeedback validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
           {getFieldDecorator('password', {
