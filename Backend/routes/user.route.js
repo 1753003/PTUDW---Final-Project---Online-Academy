@@ -71,7 +71,12 @@ router.get('/:uid/courseRegister', async function(req, res){
   const list = await userModel.getRegisterCourse(uid);
   res.json(list);
 });
-
+router.get('/:uid/courseRegister/:cid', async function(req, res){
+  const uid = req.params.uid || -1;
+  const cid = req.params.cid || -1;
+  const list = await userModel.getRegisterCourseDetail(uid, cid);
+  res.json(list);
+});
 router.patch('/:uid/courseRegister/:cid', async function(req, res){
   const uid = req.params.uid || -1;
   const cid = req.params.cid || -1;

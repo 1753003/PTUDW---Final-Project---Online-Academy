@@ -68,6 +68,9 @@ module.exports = {
   async getRegisterCourse(uid){
     return db('student_course').where('studentID' ,uid);
   },
+  async getRegisterCourseDetail(uid, cid){
+    return db('student_course').where({'studentID' :uid,'courseID':cid});
+  },
   async editRegisterCourse(uid,cid, data){
     return db('student_course').where({'studentID' :uid,'courseID':cid}).update(data);
   },
