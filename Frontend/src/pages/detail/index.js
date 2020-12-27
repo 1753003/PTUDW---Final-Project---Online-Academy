@@ -23,6 +23,10 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     }, []);
 
     useEffect(() => {
+        console.log(detail)
+    },[detail]);
+
+    useEffect(() => {
         if (addToFavoriteStatus === "SUCCESS") {
             message.success('Add to Favorite successfully');
             dispatch({ type: 'user/resetStatus' });
@@ -57,9 +61,22 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     const handleAddToRegister = () => {
         console.log("hello");
         const { query } = location;
+        const sylabus = []
+        detail.courseSylabus.forEach((item) => {
+            const session = {
+                week: item.week,
+                isDone: false,
+                description: item.detailDescription,
+                lecturerID: item.lecturerID,
+                videoLink: item.videoLink,
+                name: item.name,
+            }
+            sylabus.push(session);
+        })
         const payload = {
             uid: currentUser?.id,
-            cid: query.courseId
+            cid: query.courseId,
+            sylabus
         }
         dispatch({ type: 'user/registCourse', payload });
     }

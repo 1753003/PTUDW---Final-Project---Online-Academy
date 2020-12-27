@@ -11,7 +11,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
 
     // useEffect
     useEffect(() => {
-        if(currentUser.id) {
+        if (currentUser.id) {
             const payload = {
                 uid: currentUser.id
             }
@@ -117,7 +117,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                                     <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
                                                 </Col>
                                                 <Col span={2}>
-                                                    <Button onClick={()=>{
+                                                    <Button onClick={() => {
                                                         handleRemoveFavorite(item.id);
                                                     }}>Remove</Button>
                                                 </Col>
@@ -139,34 +139,48 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                         pageSize: 5,
                                     }}
                                     dataSource={registedCourses}
-                                    renderItem={item => (
-                                        <List.Item
-                                            key={item.title}
-                                        >
-                                            <Row onDoubleClick={() => {
-                                                history.push({
-                                                    pathname: `/detail`,
-                                                    query: {
-                                                        courseId: item.id,
-                                                    },
-                                                });
-                                            }}>
-                                                <Col span={9}>
-                                                    <img
-                                                        width={272}
-                                                        alt="logo"
-                                                        src={item.URL}
-                                                    />
-                                                </Col>
-                                                <Col span={13}>
-                                                    <Typography.Title level={4}>{item.name}</Typography.Title>
-                                                    <Typography>{item.briefDescription}</Typography>
-                                                    <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
-                                                    <Progress percent={30} />
-                                                </Col>
-                                            </Row>
-                                        </List.Item>
-                                    )}
+                                    renderItem={item => {
+                                        let progress = 0;
+
+                                        if (item.sylabus) {
+                                            let count = 0;
+                                            console.log(item);
+                                            item.sylabus.forEach(element => {
+                                                if (element.isDone === true) {
+                                                    count++;
+                                                }
+                                            });
+                                            progress=(count/item.sylabus.length)*100;
+                                        }
+                                        return (
+                                            <List.Item
+                                                key={item.title}
+                                            >
+                                                <Row onDoubleClick={() => {
+                                                    history.push({
+                                                        pathname: `/studentCourse`,
+                                                        query: {
+                                                            courseId: item.id,
+                                                        },
+                                                    });
+                                                }}>
+                                                    <Col span={9}>
+                                                        <img
+                                                            width={272}
+                                                            alt="logo"
+                                                            src={item.URL}
+                                                        />
+                                                    </Col>
+                                                    <Col span={13}>
+                                                        <Typography.Title level={4}>{item.name}</Typography.Title>
+                                                        <Typography>{item.briefDescription}</Typography>
+                                                        <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
+                                                        <Progress percent={progress} />
+                                                    </Col>
+                                                </Row>
+                                            </List.Item>
+                                        )
+                                    }}
                                 />
                             </Card>
                         }
