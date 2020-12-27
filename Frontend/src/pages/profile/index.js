@@ -150,7 +150,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                                     count++;
                                                 }
                                             });
-                                            progress=(count/item.sylabus.length)*100;
+                                            progress=Number(((count/item.sylabus.length)*100).toFixed(2));;
                                         }
                                         return (
                                             <List.Item

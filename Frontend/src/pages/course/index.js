@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message, Tabs, Icon } from 'antd';
+import { Typography, Menu, Row, Col, Avatar, Tabs, Icon } from 'antd';
 import { connect } from 'dva';
 import ReactPlayer from 'react-player';
 import { PageLoading } from '@ant-design/pro-layout';
+
 const { TabPane } = Tabs;
 
 
 
 
 
-const Course = ({ location, dispatch, loading, history, currentUser, favoriteCourses, registedCourses, deleteFavoriteStatus, singleRegistedCourse }) => {
+const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse }) => {
     const { query } = location;
     const [key, setKey] = useState(0);
     const [url, setUrl] = useState('');
@@ -136,9 +137,6 @@ const Course = ({ location, dispatch, loading, history, currentUser, favoriteCou
 
 export default connect(({ user, loading }) => ({
     currentUser: user.currentUser,
-    favoriteCourses: user.favoriteCourses,
-    registedCourses: user.registedCourses,
-    deleteFavoriteStatus: user.deleteFavoriteStatus,
     singleRegistedCourse: user.singleRegistedCourse,
     loading: loading.effects['user/getRegisterById'],
 }))(Course);
