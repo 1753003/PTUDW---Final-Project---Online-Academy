@@ -39,7 +39,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
-  const available = await userModel.getRegisterCourseDetail(uid, cid);
+  const available = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
   if (!available)
     await userModel.courseRegister(req.params.uid, req.params.cid);
   res.status(201).json({available});
