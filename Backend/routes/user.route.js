@@ -39,8 +39,10 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
-  await userModel.courseRegister(req.params.uid, req.params.cid);
-  res.status(201).json({});
+  const available = await userModel.getRegisterCourseDetail(uid, cid);
+  if (!available)
+    await userModel.courseRegister(req.params.uid, req.params.cid);
+  res.status(201).json({available});
 });
 
 router.get('/:uid([0-9]+)', async function(req,res){

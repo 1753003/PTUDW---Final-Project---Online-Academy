@@ -68,7 +68,7 @@ router.post('/refresh', async function (req, res) {
       }, 'SECRET_KEY', {
         expiresIn: "30s"
       });
-      res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + 1000*30*30)});}
+      res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + 315360000000)});}
     return res.json({ accessToken });
   }
 
