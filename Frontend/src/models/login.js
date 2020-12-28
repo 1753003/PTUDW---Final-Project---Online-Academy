@@ -13,17 +13,19 @@ const Model = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(realAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      }); // Login successfully
-      console.log(response)
+       // Login successfully
+      // console.log(response)
       if (response.status === 'ok') {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: response,
+        });
         localStorage.setItem("isLogin", JSON.stringify("true"));
         localStorage.setItem("userData", JSON.stringify(response));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let {redirect} = params;
+        console.log(response)
         if(response.type == "admin"){
           // window.location.href = "/admin"
           router.replace('/admin');
@@ -48,7 +50,12 @@ const Model = {
         }
 
         router.replace(redirect || '/');
-      }
+      } else
+        {yield put({
+          type: 'changeLoginStatus',
+          payload: {status:"fail"},
+        });}
+      
     },
 
     *getCaptcha({ payload }, { call }) {
