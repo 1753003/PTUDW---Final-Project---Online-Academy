@@ -19,6 +19,26 @@ export function resetRequest(params) {
       .catch((error) => {
         // handle error
         reject(error);
+        // console.log(error);
+      })
+  })
+}
+export function resetConfirm(params) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/resetConfirm`,
+      {
+        email: params.email,
+        password: params.password
+      })
+      .then((response) => {
+        // handle success
+        resolve(response)
+      })
+      .catch((error) => {
+        // handle error
+        reject(error);
+        // console.log(error);
       })
   })
 }
@@ -116,9 +136,36 @@ export function queryCurrentRegistedCourse(uid) {
       })
   })
 }
+
+export function getRegistedCourseById(payload) {
+  const { uid, cid } = payload;
+  return new Promise((resolve) => {
+    axios.get(`/api/user/${uid}/courseRegister/${cid}`, { headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // console.log(`Hello ${response.data}`);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        // reject(error);
+        const body = {
+          accessToken: Cookies.get('aToken'),
+          refreshToken: Cookies.get('rfToken')
+        }
+        axios.post('/api/auth/refresh', body).then((responseRF) => {
+          // handle success
+          resolve(responseRF.data)
+          console.log(responseRF)
+        })
+        console.log('axios error', error);
+      })
+  })
+}
+
 export function addCourseToRegister(payload) {
   return new Promise((resolve, reject) => {
-    axios.post(`api/user/${payload.uid}/courseRegister/${payload.cid}`)
+    console.log(JSON.stringify(payload.sylabus));
+    axios.post(`api/user/${payload.uid}/courseRegister/${payload.cid}`, payload.sylabus)
       .then((response) => {
         // handle success
         console.log(response)
@@ -171,6 +218,25 @@ export function delFavoriteCourse(payload) {
       })
   })
 }
+
+export function setDone(payload) {
+  return new Promise((resolve, reject) => {
+    axios.patch(`api/user/${payload.uid}/courseRegister/${payload.cid}`, {
+      sylabus: payload.sylabus
+    })
+      .then((response) => {
+        // handle success
+        console.log(response)
+        resolve(response)
+      })
+      .catch((error) => {
+        // handle error
+        reject(error);
+        console.log(error);
+      })
+  })
+}
+
 export async function queryNotices() {
   return request('/api/notices');
 }

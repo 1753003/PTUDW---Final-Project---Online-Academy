@@ -206,3 +206,18 @@ export function getCoursesNew() {
         })
     })
 }
+
+export function getLecturerById(id) {
+    return new Promise( (resolve, reject) => {
+        axios.get(`http://localhost:5000/api/course/getLecturerCourse/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            // reject(error);
+            getRFT();
+        })
+    })
+}

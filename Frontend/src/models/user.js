@@ -1,4 +1,4 @@
-import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest } from '@/services/user';
+import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -10,9 +10,18 @@ const UserModel = {
     status: ''
   },
   effects: {
-    *resetPassword(payload, {call, put}){
-      const response = yield call(resetRequest, payload.payload);
-      console.log(response);
+    *resetPasswordConfirm(payload, { call, put }) {
+      console.log('model')
+      const response = yield call(resetConfirm, payload.payload)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+      // router.replace('/');
+    },
+    *resetPasswordRequest(payload, { call, put }) {
+      console.log('model')
+      const response = yield call(resetRequest, payload.payload)
       yield put({
         type: 'requestStatus',
         payload: response,
@@ -75,7 +84,7 @@ const UserModel = {
         payload: { status: 'UPLOADING' },
       });
       try {
-        yield call(addCourseToRegister, payload); 
+        yield call(addCourseToRegister, payload);
         yield put({
           type: 'registCourseStatus',
           payload: { status: 'SUCCESS' },
@@ -93,7 +102,7 @@ const UserModel = {
         payload: { status: 'UPLOADING' },
       });
       try {
-        yield call(addCourseToFavorite, payload); 
+        yield call(addCourseToFavorite, payload);
         yield put({
           type: 'addToFavoriteStatus',
           payload: { status: 'SUCCESS' },
@@ -111,7 +120,7 @@ const UserModel = {
         payload: { status: 'UPLOADING' },
       });
       try {
-        yield call(delFavoriteCourse, payload); 
+        yield call(delFavoriteCourse, payload);
         yield put({
           type: 'deleteFavoriteStatus',
           payload: { status: 'SUCCESS' },
@@ -123,6 +132,16 @@ const UserModel = {
         });
       }
     },
+    *setDoneSession({ payload }, { call }) {
+      yield call(setDone, payload);
+    },
+    *getRegisterById({ payload }, { call, put }) {
+      const response = yield call(getRegistedCourseById, payload);
+      yield put({
+        type: 'setSingleRegistedCourse',
+        payload: response,
+      });
+    },
     *resetStatus(_, { put }) {
       yield put({
         type: 'deleteFavoriteStatus',
@@ -131,8 +150,8 @@ const UserModel = {
     },
   },
   reducers: {
-    requestStatus(state, action){
-      return { ...state, status: action.payload}
+    requestStatus(state, action) {
+      return { ...state, status: action.payload }
     },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
@@ -174,6 +193,9 @@ const UserModel = {
     },
     resetStatus(state) {
       return { ...state, registCourseStatus: '', addToFavoriteStatus: '', deleteFavoriteStatus: '' }
+    },
+    setSingleRegistedCourse(state, { payload }) {
+      return { ...state, singleRegistedCourse: payload[0] }
     }
   },
 

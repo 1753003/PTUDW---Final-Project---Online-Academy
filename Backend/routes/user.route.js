@@ -16,7 +16,8 @@ router.post('/', async function (req, res) {
     });
   }
   user.password = bcrypt.hashSync(user.password, 10);
-
+  user.type = 'student'
+  user.name = user.username
   user.id = await userModel.add(user);
   delete user.password;
   res.status(201).json(user);
@@ -38,7 +39,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
-  await userModel.courseRegister(req.params.uid, req.params.cid);
+  await userModel.courseRegister(req.params.uid, req.params.cid, req.body);
   res.status(201).json({});
 });
 
@@ -70,7 +71,12 @@ router.get('/:uid/courseRegister', async function(req, res){
   const list = await userModel.getRegisterCourse(uid);
   res.json(list);
 });
-
+router.get('/:uid/courseRegister/:cid', async function(req, res){
+  const uid = req.params.uid || -1;
+  const cid = req.params.cid || -1;
+  const list = await userModel.getRegisterCourseDetail(uid, cid);
+  res.json(list);
+});
 router.patch('/:uid/courseRegister/:cid', async function(req, res){
   const uid = req.params.uid || -1;
   const cid = req.params.cid || -1;
@@ -279,4 +285,11 @@ router.post('/confirmEmail', function(req, res){
 
   res.json(result);
 });
+router.post('/resetConfirm', async function(req,res){
+  console.log(req.body)
+  const password = bcrypt.hashSync(req.body.password, 10);
+  const user = await userModel.singleByMail(req.body.email);
+  const ret = await userModel.edit(user.id, {password: password})
+  res.json(ret)
+})
 module.exports = router;
