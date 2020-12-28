@@ -107,9 +107,15 @@ const BasicLayout = (props) => {
         type: 'login/logoutHome',
       });
     }
-    let auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
-    // console.log(auth[0])
+    try {
+      var auth = JSON.parse(localStorage.getItem('antd-pro-authority'))
+    } catch (error) {
+      auth = auth?auth:'guest'
+      // localStorage.setItem('antd-pro-authority', JSON.stringify('guest'))
+    }
     auth = auth?auth:'guest'
+    // console.log(auth)
+    console.log(auth[0])
     if (dispatch&&(auth[0]!='guest'||auth !='guest')) {
       dispatch({
         type: 'user/fetchCurrent',
