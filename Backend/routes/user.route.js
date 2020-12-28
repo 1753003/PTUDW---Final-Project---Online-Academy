@@ -198,9 +198,14 @@ router.get('/changeEmail/:uid', async function(req, res){
   res.json(result);
 });
 
-router.post('/forgotPassword', function(req, res){
+router.post('/forgotPassword', async function(req, res){
   var nodemailer = require('nodemailer');
   const email = req.body.email.email;
+  const user = await userModel.singleByMail(email);
+  if (user == null) {
+    console.log("abc");
+    return res.status(404).json("Not exist");
+  }
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -219,10 +224,10 @@ router.post('/forgotPassword', function(req, res){
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
     to: email,
-    subject: 'Pondemy team - Confirm your email',
-    html: `<h2>Confirm your email on Pondemy website!</h2> 
-    <p>Here are your code to confirm your email: ${result}</p>
-    <p>Ignoring this email if it is not you.</p>
+    subject: 'Pondemy team - Reset your password',
+    html: `<h2>Reset your password on Pondemy website!</h2> 
+    <p>Here are your code to reset your password: ${result}</p>
+    <p>Ignoring this email if it is not yours.</p>
     <hr/>
     <p>Best,</p>
     <p>Pondemy team.</p>`

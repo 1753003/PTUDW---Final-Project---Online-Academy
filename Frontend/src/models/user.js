@@ -26,6 +26,7 @@ const UserModel = {
         type: 'requestStatus',
         payload: response,
       });
+
       // router.replace('/');
     },
     *register(payload, { call, put }) {
