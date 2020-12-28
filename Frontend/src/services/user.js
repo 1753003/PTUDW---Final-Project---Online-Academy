@@ -14,12 +14,11 @@ export function resetRequest(params) {
       })
       .then((response) => {
         // handle success
-        resolve(response)
+        resolve(response);
       })
       .catch((error) => {
         // handle error
         reject(error);
-        console.log(error);
       })
   })
 }

@@ -11,11 +11,13 @@ const UserModel = {
   },
   effects: {
     *resetPassword(payload, {call, put}){
-      const response = yield call(resetRequest, payload.payload)
+      const response = yield call(resetRequest, payload.payload);
+      console.log(response);
       yield put({
         type: 'requestStatus',
         payload: response,
       });
+
       // router.replace('/');
     },
     *register(payload, { call, put }) {
