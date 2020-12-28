@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate } from 'antd';
 import { connect } from 'dva';
+import category from '../admin/category';
 
 const { SubMenu } = Menu;
 
 
 const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
     const [searchKey, setSearchKey] = useState('');
+    
     useEffect(() => {
         setSearchKey(location.query.q)
         const payload = {
-            value: location.query.q
+            value: location.query.q,
         }
         dispatch({ type: 'course/search', payload })
-    }, [location.query])
+    }, [location])
+
+    useEffect(() => {
+        console.log(location.pathname.split('/')[2])
+    }, [])
     const topicList = [
         {
             key: 1,

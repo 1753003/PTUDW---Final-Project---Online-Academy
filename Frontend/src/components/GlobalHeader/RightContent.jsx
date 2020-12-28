@@ -31,10 +31,16 @@ const GlobalHeaderRight = (props) => {
           "Design", "IT", "Business"
         ]}
         onSearch={(value) => {
-          router.replace(`/search?q=${value}`)
+          const pathname = window.location.pathname.split('/');
+          if (pathname[1] === 'search' && pathname.length === 3) {
+            router.replace(`/search/${pathname[2]}?q=${value}`)
+          }
+          else {
+            router.replace(`/search?q=${value}`);
+          }
         }}
         onPressEnter={() => {
-          
+
         }}
       />
       <Tooltip

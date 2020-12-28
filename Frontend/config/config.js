@@ -34,11 +34,11 @@ const plugins = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -207,14 +207,14 @@ export default {
         {
           path: '/course',
           component: '../layouts/BasicLayout',
-          authority: ['student', 'lecturer','guest'],
+          authority: ['student', 'lecturer', 'guest'],
           routes: [
             {
               path: '/detail',
               name: 'Detail',
               icon: 'crown',
               component: './detail',
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
             },
             {
               component: './404',
@@ -224,12 +224,12 @@ export default {
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['student', 'lecturer','guest'],
+          authority: ['student', 'lecturer', 'guest'],
           routes: [
             {
               path: '/',
               redirect: '/home',
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
             },
             {
               path: '/home',
@@ -237,7 +237,7 @@ export default {
               icon: 'crown',
               hideInMenu: true,
               component: './home',
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
             },
             {
               path: '/search',
@@ -245,7 +245,7 @@ export default {
               icon: 'crown',
               hideInMenu: true,
               component: './search',
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
             },
             {
               path: '/detail',
@@ -253,7 +253,15 @@ export default {
               icon: 'crown',
               component: './detail',
               hideInMenu: true,
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
+            },
+            {
+              path: '/studentCourse',
+              name: 'Course',
+              icon: 'crown',
+              component: './course',
+              hideInMenu: true,
+              authority: ['student', 'lecturer']
             },
             {
               path: '/profile',
@@ -261,8 +269,22 @@ export default {
               icon: 'crown',
               component: './profile',
               hideInMenu: true,
-              authority: ['student', 'lecturer','guest']
+              authority: ['student', 'lecturer', 'guest']
             },
+            {
+              path: '/search',
+              name: 'Categories',
+              icon: 'appstore',
+              routes: [
+                {
+                  name: 'Bussiness',
+                  icon: 'crown',
+                  path: '/search?q=Business',
+                  component: './search'
+                }
+              ],
+            },
+
             {
               component: './404',
             },

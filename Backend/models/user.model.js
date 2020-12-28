@@ -60,10 +60,11 @@ module.exports = {
   async getFavorite(uid){
     return db('favoriteCourse').where('studentId' ,uid);
   },
-  async courseRegister(uid, cid){
+  async courseRegister(uid, cid, data){
     // return db.raw(`insert into student_course ('courseID', æstudentID', 'progress') VALUES ('?', '?', 'chua hoan thanh');`,uid,cid);
     console.log(uid+" "+cid);
-    return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`) VALUES (?, ?, 'chưa hoàn thành')",[cid,uid]);
+    console.log(data);
+    return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`,`sylabus`) VALUES (?, ?, 'chưa hoàn thành', ?)",[cid,uid,JSON.stringify(data)]);
   },
   async getRegisterCourse(uid){
     return db('student_course').where('studentID' ,uid);
@@ -71,8 +72,8 @@ module.exports = {
   async getRegisterCourseDetail(uid, cid){
     return db('student_course').where({'studentID' :uid,'courseID':cid});
   },
-  async editRegisterCourse(uid,cid, data){
-    return db('student_course').where({'studentID' :uid,'courseID':cid}).update(data);
+  async editRegisterCourse(uid,cid,data){
+    return db('student_course').where({'studentID' :uid,'courseID':cid}).update('sylabus',JSON.stringify(data.sylabus));
   },
   async edit(uid, data){
     return db('user').where('id' ,uid).update(data);
