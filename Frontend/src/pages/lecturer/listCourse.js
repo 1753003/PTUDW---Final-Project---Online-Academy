@@ -25,7 +25,7 @@ class CourseTable extends React.Component {
                 {
                     title: 'Sylabus Action',
                     render: (item) => (
-                        <Sylabus courseID = {item.id}/> 
+                        <Sylabus courseID = {item.id} item = {item}/> 
                     )
                 }
             ]

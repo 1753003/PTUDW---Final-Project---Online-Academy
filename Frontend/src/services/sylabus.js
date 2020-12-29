@@ -14,3 +14,17 @@ export function getList(lecturerID) {
         })
     })
 }
+
+export function addSylabus(courseID, newSylabus) {
+    return new Promise( (resolve, reject) => {
+        axios.post(`/api/sylabus/${courseID}`,newSylabus,{headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+        })
+    })
+}
