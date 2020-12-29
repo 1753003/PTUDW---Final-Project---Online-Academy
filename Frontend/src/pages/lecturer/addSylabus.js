@@ -128,7 +128,7 @@ class EditableTable extends React.Component {
       },
       {
         title: 'Lesson',
-        dataIndex: 'name',
+        dataIndex: 'lesson',
         editable: true,
       },
       {
