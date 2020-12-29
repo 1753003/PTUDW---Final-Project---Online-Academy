@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+db.on('query', console.log)
 module.exports = {
     async getAll() {
         return  await db('category');

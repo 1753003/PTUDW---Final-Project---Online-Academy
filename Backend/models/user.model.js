@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-
+db.on('query', console.log)
 module.exports = {
   async singleById(id) {
     const list = await db('user').where('id', id);
