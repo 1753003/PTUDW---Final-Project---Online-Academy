@@ -96,7 +96,7 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                                                     </Col>
                                             }
                                             <Col span={2}>
-                                                <Typography style={{ fontSize: '10px' }}>{`Session ${item.week}: ${item.name}`}</Typography>
+                                                <Typography style={{ fontSize: '10px' }}>{`Session ${item.week}: ${item.lesson}`}</Typography>
                                             </Col>
                                         </Row>
 

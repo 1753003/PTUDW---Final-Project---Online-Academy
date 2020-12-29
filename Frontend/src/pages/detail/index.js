@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
 import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message } from 'antd';
 import Course from '@/components/Course';
@@ -114,7 +115,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
                     <div className="description" style={{ marginTop: '30px', marginRight: '30px', 'wordWrap': 'break-word' }}>
                         <Typography.Title level={3}>Description</Typography.Title>
-                        <Typography.Text> {detail?.courseInfo?.detailDescription}</Typography.Text>
+                        <div dangerouslySetInnerHTML={{__html: `${detail?.courseInfo?.detailDescription}`}} />
                     </div>
 
                     <div className="comment" style={{ marginTop: '50px' }}>
