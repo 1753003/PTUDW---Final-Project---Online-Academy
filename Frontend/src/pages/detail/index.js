@@ -59,7 +59,6 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     }
 
     const handleAddToRegister = () => {
-        console.log("hello");
         const { query } = location;
         const sylabus = []
         detail.courseSylabus.forEach((item) => {
@@ -70,6 +69,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                 lecturerID: item.lecturerID,
                 videoLink: item.videoLink,
                 name: item.name,
+                lession: item.lession
             }
             sylabus.push(session);
         })
@@ -108,7 +108,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         <Typography.Title level={3}>Course content</Typography.Title>
                         {
                             detail?.courseSylabus?.map((item) =>
-                                <ShowMore title={`Week ${item.week}`} info={item.detailDescription} />)
+                                <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
                         }
                     </div>
 
