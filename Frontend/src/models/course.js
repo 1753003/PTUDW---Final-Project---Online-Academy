@@ -1,5 +1,7 @@
 import Cookies from 'js-cookie';
-import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, searchCourses, addCourse } from '@/services/course';
+import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, 
+  getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, 
+  searchCourses, addCourse,getLecturerById } from '@/services/course';
 
 
 const courseModel = {
@@ -93,7 +95,15 @@ const courseModel = {
         payload: false
       })
 
-    }
+    },
+    *getLecturerCourse(payload, { call, put }) {
+
+      const response = yield call(getLecturerById, payload.payload);
+      yield put({
+        type: 'getList',
+        payload: response,
+      });
+    },
   },
   reducers: {
     getList(state, action) {

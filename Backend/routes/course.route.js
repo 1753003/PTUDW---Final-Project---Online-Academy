@@ -73,6 +73,7 @@ router.post('/:id/sylabus', async function (req, res) {
   const id = await courseModel.addSylabus(req.params.id, req.body);
   res.status(201).json({ id: id });
 })
+
 router.patch('/:id/sylabus', async function (req, res) {
   const id = await courseModel.updateSylabusById(req.params.id, req.body);
   res.status(201).json({ id: id });
