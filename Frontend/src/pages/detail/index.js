@@ -70,7 +70,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                 lecturerID: item.lecturerID,
                 videoLink: item.videoLink,
                 name: item.name,
-                lession: item.lession
+                lesson: item.lesson
             }
             sylabus.push(session);
         })

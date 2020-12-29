@@ -125,7 +125,8 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                             <Typography>Student of University of Science</Typography>
                         </TabPane>
                         <TabPane tab="Detail infomation" key="2">
-                            {description}
+                        <div dangerouslySetInnerHTML={{__html: `${description}`}} />
+
                         </TabPane>
                     </Tabs>,
             </Col>
