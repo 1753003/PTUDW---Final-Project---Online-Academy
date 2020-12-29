@@ -1,4 +1,4 @@
-import { getList } from '@/services/sylabus';
+import { getList, addSylabus } from '@/services/sylabus';
 
 const sylabusModel = {
   namespace: 'sylabus',
@@ -7,8 +7,16 @@ const sylabusModel = {
   },
   effects: {
     *get(payload, { call, put }) {
-      console.log("getModel",payload);
       const response = yield call(getList, payload.payload);
+      yield put({
+          type: 'getList',
+          payload: response,
+      });
+    },
+    *add(payload, { call, put }) {
+      console.log("getModel",payload);
+      yield call(addSylabus, payload.payload[0], payload.payload[1]);
+      const response = yield call(getList, payload.payload[2]);
       yield put({
           type: 'getList',
           payload: response,

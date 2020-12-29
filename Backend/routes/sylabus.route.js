@@ -25,19 +25,20 @@ router.post('/:courseID', async function(req, res) {
     const courseID = req.params.courseID;
     const list = await studentCourseModel.getSylabus(courseID);
     const studentID = await studentCourseModel.getStudentID(courseID);
+    
     let i = 0;
     list.forEach(element => {
         element.sylabus.push(newSylabus);
-        studentCourseModel.updateSylabus(courseID, element.sylabus, studentID[i]);
+        studentCourseModel.updateSylabus(courseID, element.sylabus, studentID[i].studentID);
         i++;
     });
     const temp = {
         "courseID": newSylabus.courseID,
         "week": newSylabus.week,
-        "name": newSylabus.name,
+        "lesson": newSylabus.lesson,
         "videoLink": newSylabus.videoLink
     }
-    sylabusModel.add(courseID, temp);
+    await sylabusModel.add(courseID, temp);
 
     res.json(list);
 })

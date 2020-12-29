@@ -25,7 +25,7 @@ app.use('/api/user',auth,require('./routes/user.route'));
 app.use('/api/category', require('./routes/category.route'));
 app.use('/api/sylabus',require('./routes/sylabus.route'));
 
-app.use('/api/course',auth,require('./routes/course.route'));
+app.use('/api/course',require('./routes/course.route'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {

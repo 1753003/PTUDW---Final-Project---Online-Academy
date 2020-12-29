@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable max-classes-per-file */
 import React from 'react';
@@ -12,6 +13,7 @@ class MyForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.props.addLesson(values);
         this.props.form.resetFields();        
       }
     });
@@ -35,7 +37,7 @@ class MyForm extends React.Component {
                       )}
                   </Form.Item>
                   <Form.Item>
-                      {getFieldDecorator('name', {
+                      {getFieldDecorator('lesson', {
                           rules: [{ required: true, message: 'Please input lesson name!' }],
                       })(
                           <Input
@@ -216,7 +218,6 @@ class EditableTable extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     const components = {
       body: {
         cell: EditableCell,
@@ -287,11 +288,18 @@ class DrawerForm extends React.Component {
           visible={this.state.visible}
           bodyStyle={{ paddingBottom: 80 }}
         >       
-          <EditableFormTable courseID = {this.props.courseID} />    
+          <EditableFormTable courseID = {this.props.courseID}/>    
           <Divider />
           <Collapse onChange={()=>{}}>
             <Panel header="Add new lesson for your course" key="1">
-                <WrappedForm/>
+                <WrappedForm addLesson = {(values) => {
+                  values.courseID = this.props.courseID;
+                  values.name = this.props.item.name;
+                  values.isDone = false;
+                  values.description = this.props.item.detailDescription;
+                
+                  this.props.dispatch({type: 'sylabus/add', payload: [this.props.courseID, values, this.props.item.lecturerID]})
+                }}/>
             </Panel>
         </Collapse>,
           <div
@@ -319,10 +327,11 @@ class DrawerForm extends React.Component {
   }
 }
 
+const DrawerFormWrapper = connect()(DrawerForm);
 export class Sylabus extends React.Component {
     render() {
         return (
-            <DrawerForm courseID = {this.props.courseID}/>
+            <DrawerFormWrapper courseID = {this.props.courseID} item = {this.props.item}/>
         )
     } 
 };
