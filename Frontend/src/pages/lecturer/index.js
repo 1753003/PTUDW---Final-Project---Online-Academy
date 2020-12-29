@@ -5,7 +5,8 @@ import {connect} from 'dva';
 import ReactQuill from 'react-quill';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'react-quill/dist/quill.snow.css';
-import { Upload, Icon, message, PageHeader, Button, Form, Col, Row, Input, Select, InputNumber, Divider } from 'antd';
+import { Result, Upload, Icon, message, PageHeader, Button, Form, Col, Row, Input, Select, InputNumber, Divider } from 'antd';
+import { Redirect } from 'umi';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -76,7 +77,7 @@ class Avatar extends React.Component {
 }
 
 class MyForm extends React.Component {
-  state = {url: ''};
+  state = {url: '', status: 'work'};
 
   constructor(props) {
     super(props);
@@ -84,13 +85,125 @@ class MyForm extends React.Component {
   }
 
   createOptions = () => {
-    console.log(this.props.category);
     const { category = {} } = this.props;
     const { list = [] } = category;
 
     return list
       .filter(i => i.idTopic != null)
       .map(i => (<Option key={i.id}> {i.name} </Option>));
+  }
+
+  changeStatus = () => {
+    const { getFieldDecorator, } = this.props.form;
+
+    if (this.state.status === 'done')
+      return (
+        <Result
+          status="success"
+          title="Successfully Added New Course!"
+          subTitle="Do you want to add new course or add new lesson for your course?"
+          extra={[
+          <Button type="primary" onClick={() => {this.setState({status: 'work'})}}>
+            Add course
+          </Button>,
+          <Button onClick={() => {this.setState({status: 'redirect'})}}>Add lesson</Button>,
+      ]}
+      />
+    )
+    if (this.state.status === 'work')
+      return (
+        <Form onSubmit={this.handleSubmit} className="login-form" layout="horizontal">
+          <Row gutter={16}>
+              <Col span={4} />
+              <Col span={14}>
+                  <Form.Item>
+                      {getFieldDecorator('name', {
+                          rules: [{ required: true, message: 'Please input course name!' }],
+                      })(
+                          <Input
+                          placeholder="Course name"
+                          />
+                      )}
+                  </Form.Item>
+                  <Form.Item>
+                      {getFieldDecorator('categoryID', {
+                          rules: [{ required: true, message: 'Please choose category!' }],
+                      })(
+                          <Select 
+                              placeholder="Please select a topic"
+                              onChange={this.saveOption}
+                          >
+                              {this.createOptions()}
+                          </Select>
+                      )}
+                  </Form.Item>       
+                  <Form.Item >
+                      {getFieldDecorator('briefDescription', {
+                          rules: [{ required: true, message: 'Please input brief description!' }],
+                      })(
+                          <TextArea 
+                            placeholder = "Brief Description"
+                            rows={2}/>
+                      )}
+                  </Form.Item>  
+                  <Form.Item label="Please describe the course content in detail in the form below">
+                      {getFieldDecorator('detailDescription', {
+                          rules: [{ required: true, message: 'Please input detail description!' }],
+                          initialValue: ''
+                      })(
+                        <ReactQuill theme="snow" />
+                      )}
+                  </Form.Item>   
+                  <Row gutter = "32">
+                      <Col span="4">Price: </Col>
+                      <Col span="8">
+                        <Form.Item>
+                        {getFieldDecorator('price', {
+                            rules: [{ required: true, message: 'Please input course price!' }],
+                        })(
+                          <InputNumber defaultValue={1000}
+                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                          />
+                        )}
+                        </Form.Item>   
+                      </Col>
+                      <Col span="4">Sale Price: </Col>
+                      <Col span="8">
+                        <Form.Item>
+                        {getFieldDecorator('salePrice', {
+                            rules: [{ required: true, message: 'Please input sale price!' }],
+                        })(
+                          <InputNumber defaultValue={1000}
+                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          parser={value => value.replace(/\$\s?|(,*)/g, '')}/>
+                        )}
+                        </Form.Item>   
+                      </Col>
+                  </Row>
+                  <Form.Item>
+                        {getFieldDecorator('saleInformation', {
+                        })(
+                          <TextArea rows={3} placeholder="Sale information"/>
+                        )}
+                        </Form.Item>   
+                  <Form.Item>
+                      <Button type="primary" htmlType="submit" className="login-form-button">
+                          Upload
+                      </Button>
+                  </Form.Item>
+              </Col>
+              <Col span={2}>
+                <Avatar onDone = {(img) => {this.setState({url: img})}}/>
+              </Col>
+              <Col span={4} />
+          </Row>
+        </Form>
+    );
+    
+    return (
+      <Redirect to="/lecturer/listCourse" />
+    );
   }
 
   handleSubmit = e => {
@@ -101,109 +214,27 @@ class MyForm extends React.Component {
       values.rating = 0;
       values.status = "Not complete";
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.setState({status: 'done'});
         this.props.dispatch({type: 'course/add', payload: values});
+        this.props.form.resetFields();        
       }
     });
   };
 
-  render() {
-    const { getFieldDecorator, } = this.props.form;
+  render() { 
     return (
-      <Form onSubmit={this.handleSubmit.bind(this)} className="login-form" layout="horizontal">
-        <Row gutter={16}>
-            <Col span={4} />
-            <Col span={14}>
-                <Form.Item>
-                    {getFieldDecorator('name', {
-                        rules: [{ required: true, message: 'Please input course name!' }],
-                    })(
-                        <Input
-                        placeholder="Course name"
-                        />
-                    )}
-                </Form.Item>
-                <Form.Item>
-                    {getFieldDecorator('categoryID', {
-                        rules: [{ required: true, message: 'Please choose category!' }],
-                    })(
-                        <Select 
-                            placeholder="Please select a topic"
-                            onChange={this.saveOption}
-                        >
-                            {this.createOptions()}
-                        </Select>
-                    )}
-                </Form.Item>       
-                <Form.Item >
-                    {getFieldDecorator('briefDescription', {
-                        rules: [{ required: true, message: 'Please input brief description!' }],
-                    })(
-                        <TextArea 
-                          placeholder = "Brief Description"
-                          rows={2}/>
-                    )}
-                </Form.Item>  
-                <Form.Item label="Please describe the course content in detail in the form below">
-                    {getFieldDecorator('detailDescription', {
-                        rules: [{ required: true, message: 'Please input detail description!' }],
-                        initialValue: ''
-                    })(
-                      <ReactQuill theme="snow" />
-                    )}
-                </Form.Item>   
-                <Row gutter = "32">
-                    <Col span="4">Price: </Col>
-                    <Col span="8">
-                      <Form.Item>
-                      {getFieldDecorator('price', {
-                          rules: [{ required: true, message: 'Please input course price!' }],
-                      })(
-                        <InputNumber defaultValue={1000}
-                        formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                        />
-                      )}
-                      </Form.Item>   
-                    </Col>
-                    <Col span="4">Sale Price: </Col>
-                    <Col span="8">
-                      <Form.Item>
-                      {getFieldDecorator('salePrice', {
-                          rules: [{ required: true, message: 'Please input sale price!' }],
-                      })(
-                        <InputNumber defaultValue={1000}
-                        formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/\$\s?|(,*)/g, '')}/>
-                      )}
-                      </Form.Item>   
-                    </Col>
-                </Row>
-                <Form.Item>
-                      {getFieldDecorator('saleInformation', {
-                      })(
-                        <TextArea rows={3} placeholder="Sale information"/>
-                      )}
-                      </Form.Item>   
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        Upload
-                    </Button>
-                </Form.Item>
-            </Col>
-            <Col span={2}>
-              <Avatar onDone = {(img) => {this.setState({url: img})}}/>
-            </Col>
-            <Col span={4} />
-        </Row>
-      </Form>
+      <PageHeader>   
+        { this.changeStatus() }
+      </PageHeader>
+      
     );
   }
 }
-const A = connect(({category, user}) => ({category, user}))(MyForm);
+const A = connect(({category, course}) => ({category, course}))(MyForm);
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(A);
 
 const Home = () => {
+    
     return (
         <PageHeader>
             <h1>Add new course</h1>
