@@ -10,12 +10,13 @@ module.exports = function (req, res, next) {
   const accessToken = req.headers['x-access-token'];
   if(accessToken == 'undefined'){
     if(req.method == "GET" && link.includes('course')){
-      console.log('guest');
+      console.log('guest', req.method );
       next()
     }
   }
   else if (accessToken) {
     try {
+      console.log('wat', req.method );
       const decoded = jwt.verify(accessToken, 'SECRET_KEY');
       req.accessTokenPayload = decoded;
     } catch (err) {
@@ -24,12 +25,15 @@ module.exports = function (req, res, next) {
       //   console.log('get', err);
       //   // next()
       // }else
+      console.log('guest', req.method );
         return res.status(401).json({
           message: 'Invalid access token.'
         })
     }
+    console.log('guest', req.method );
     next();
   } else {
+    console.log('guest', req.method );
     return res.status(400).json({
       message: 'Access token not found.'
     })

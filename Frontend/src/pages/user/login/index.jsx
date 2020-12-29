@@ -30,43 +30,19 @@ class Login extends Component {
       // console.log('dispatch', values)
       const { dispatch } = this.props;
       
-      dispatch({
-        type: 'login/login',
-        payload: { ...values, type, autoLogin },
-      });
+      console.log(this.props)
+      try {
+        const success = dispatch({
+          type: 'login/login',
+          payload: { ...values, type, autoLogin },
+        });
+        console.log('login s', success)
+      } catch (error) {
+        console.log('login e',error)
+      }
     }
   };
 
-  onTabChange = (type) => {
-    this.setState({
-      type,
-    });
-  };
-
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
-      }
-
-      this.loginForm.validateFields(['mobile'], {}, async (err, values) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-
-          try {
-            const success = await dispatch({
-              type: 'login/getCaptcha',
-              payload: values.mobile,
-            });
-            resolve(!!success);
-          } catch (error) {
-            reject(error);
-          }
-        }
-      });
-    });
 
   renderMessage = (content) => (
     <Alert
@@ -85,6 +61,7 @@ class Login extends Component {
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
+        {userLogin.status =="fail"?<Alert style={{marginBottom:"10px"}} message="Check your user name or password" type="error" showIcon/>:""}
         <LoginComponents
           defaultActiveKey={type}
           onTabChange={this.onTabChange}

@@ -44,7 +44,7 @@ module.exports = {
   },
   async hot() {
     return await db.select(db.raw(`COUNT((courseID)) as count, courseID, URL
-    FROM student_course left join course on courseID = id
+    FROM student_course left join course on courseID = course.id
     WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)+1
     GROUP BY courseID ORDER BY count DESC LIMIT 4`));
   },
