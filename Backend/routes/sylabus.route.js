@@ -43,5 +43,31 @@ router.post('/:courseID', async function(req, res) {
     res.json(list);
 })
 
+router.patch('/:courseID', async function(req, res) {
+    const lesson = req.body;
+    const courseID = req.params.courseID;
 
+    const result = await sylabusModel.update(courseID, lesson.week, lesson);
+
+    const list = await studentCourseModel.getSylabus(courseID);
+    const studentID = await studentCourseModel.getStudentID(courseID);
+
+    let i = 0;
+    list.forEach(element => {
+        if (element.sylabus[0].name == lesson.name)
+        {
+            for (let item of element.sylabus) {
+                if (item.week == lesson.week) {
+                    item.lesson = lesson.lesson;
+                    item.videoLink = lesson.videoLink;
+                    console.log(element.sylabus);
+                    studentCourseModel.updateSylabus(courseID, element.sylabus, studentID[i].studentID);
+                    i++;
+                }
+            }
+        } 
+    });
+
+    res.json(result);
+})
 module.exports = router;

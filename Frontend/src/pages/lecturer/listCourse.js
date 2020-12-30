@@ -2,7 +2,7 @@
 import React from 'react';
 import {connect} from 'dva';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PageHeader, Divider, Table, Button } from 'antd';
+import { PageHeader, Divider, Table } from 'antd';
 import { Sylabus } from '@/pages/lecturer/addSylabus';
 
 class CourseTable extends React.Component {
@@ -34,6 +34,7 @@ class CourseTable extends React.Component {
 
     getDataSource = () => {
         const { list = [] } = this.props.course;
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < list.length; i++) {
             list[i].key = list[i].id
         }
