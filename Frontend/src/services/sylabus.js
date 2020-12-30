@@ -28,3 +28,17 @@ export function addSylabus(courseID, newSylabus) {
         })
     })
 }
+
+export function updateSylabus(courseID, newSylabus) {
+    return new Promise( (resolve, reject) => {
+        axios.patch(`/api/sylabus/${courseID}`,newSylabus,{headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+        })
+    })
+}

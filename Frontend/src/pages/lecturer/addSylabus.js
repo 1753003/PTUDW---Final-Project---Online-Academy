@@ -168,6 +168,8 @@ class EditableTable extends React.Component {
         },
       },
     ];
+    this.data = [];
+    this.check = true;
     this.props.dispatch({type: 'sylabus/get', payload:(JSON.parse(localStorage.getItem('userData'))).uid});
     this.state = { courseID: this.props.courseID, editingKey: ''}
 }
@@ -181,6 +183,10 @@ class EditableTable extends React.Component {
             sylabus.forEach(i => {i.key = i.week;})
           }
       })
+      if (this.check) {
+        this.data = sylabus;
+        this.check = false
+      }
       return sylabus;
   }
 
@@ -197,18 +203,28 @@ class EditableTable extends React.Component {
       }
       const newData = this.getData();
       const index = newData.findIndex(item => key === item.key);
+      
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
+        
+        const {courseID} = this.state;
+        const newLesson = {
+          "week": this.state.editingKey,
+          "lesson": newData[this.state.editingKey - 1].lesson,
+          "videoLink": newData[this.state.editingKey - 1].videoLink,
+          "courseID": newData[this.state.editingKey - 1].courseID,
+          "name": this.props.item.name,
+          "lecturerID": this.props.item.lecturerID,
+        }
+        this.props.dispatch({type: 'sylabus/update', payload: [courseID, newLesson, this.props.item.lecturerID]});
         this.setState({ editingKey: '' });
-        //dispatch
       } else {
         newData.push(row);
         this.setState({ editingKey: '' });
-        //dispatch
       }
     });
   }
@@ -288,7 +304,7 @@ class DrawerForm extends React.Component {
           visible={this.state.visible}
           bodyStyle={{ paddingBottom: 80 }}
         >       
-          <EditableFormTable courseID = {this.props.courseID}/>    
+          <EditableFormTable courseID = {this.props.courseID} item = {this.props.item}/>    
           <Divider />
           <Collapse onChange={()=>{}}>
             <Panel header="Add new lesson for your course" key="1">
