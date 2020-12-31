@@ -22,8 +22,8 @@ app.get('/', function(req, res) {
 app.use('/api/auth', require('./routes/auth.route'));
 
 app.use('/api/user',auth,require('./routes/user.route'));
-app.use('/api/category', require('./routes/category.route'));
-app.use('/api/sylabus',require('./routes/sylabus.route'));
+app.use('/api/category',auth, require('./routes/category.route'));
+app.use('/api/sylabus',auth,require('./routes/sylabus.route'));
 
 app.use('/api/course',require('./routes/course.route'));
 

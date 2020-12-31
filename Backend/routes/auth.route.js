@@ -31,7 +31,7 @@ if(req.body.autoLogin){
   var accessToken = jwt.sign({
     userId: user.id
   }, 'SECRET_KEY', {
-    expiresIn: "30s"
+    expiresIn: "300s"
   });
 }
 const stay = req.body.autoLogin == true? 315360000000:1000*60*60*24
@@ -63,13 +63,14 @@ router.post('/refresh', async function (req, res) {
   if(refreshToken)
     {const ret = await userModel.isRefreshTokenExisted(payload.userId, refreshToken);
     if (ret === true) {
-      const accessToken = jwt.sign({
+      var accessToken = jwt.sign({
         userId: payload.userId
       }, 'SECRET_KEY', {
-        expiresIn: "30s"
+        expiresIn: "300s"
       });
       res.cookie('aToken', accessToken,{ expires: new Date(Date.now() + 315360000000)});
-    return res.json({ accessToken });}
+    }
+    return res.json({ accessToken });
   }
 
   res.status(400).json({

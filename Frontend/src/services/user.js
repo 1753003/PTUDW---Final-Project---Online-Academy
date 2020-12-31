@@ -141,6 +141,7 @@ export function queryCurrentRegistedCourse(uid) {
 
 export function getRegistedCourseById(payload) {
   const { uid, cid } = payload;
+  console.log('atoken',Cookies.get('aToken'))
   return new Promise((resolve) => {
     axios.get(`/api/user/${uid}/courseRegister/${cid}`, { headers: { 'x-access-token': Cookies.get('aToken') } })
       .then((response) => {
@@ -158,7 +159,8 @@ export function getRegistedCourseById(payload) {
 export function addCourseToRegister(payload) {
   return new Promise((resolve, reject) => {
     console.log(JSON.stringify(payload.sylabus));
-    axios.post(`api/user/${payload.uid}/courseRegister/${payload.cid}`, payload.sylabus)
+    console.log('atoken',Cookies.get('aToken'))
+    axios.post(`api/user/${payload.uid}/courseRegister/${payload.cid}`, payload.sylabus,{ headers: { 'x-access-token': Cookies.get('aToken') }})
       .then((response) => {
         // handle success
         console.log(response)
@@ -174,7 +176,7 @@ export function addCourseToRegister(payload) {
 
 export function addCourseToFavorite(payload) {
   return new Promise((resolve, reject) => {
-    axios.post(`api/user/${payload.uid}/favorite/${payload.cid}`)
+    axios.post(`api/user/${payload.uid}/favorite/${payload.cid}`,{ headers: { 'x-access-token': Cookies.get('aToken') }})
       .then((response) => {
         // handle success
         console.log(response)
@@ -216,7 +218,7 @@ export function setDone(payload) {
   return new Promise((resolve, reject) => {
     axios.patch(`api/user/${payload.uid}/courseRegister/${payload.cid}`, {
       sylabus: payload.sylabus
-    })
+    },{ headers: { 'x-access-token': Cookies.get('aToken') }})
       .then((response) => {
         // handle success
         console.log(response)

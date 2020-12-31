@@ -39,12 +39,12 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright="2019 Die Sieben Todsunden"
+    copyright="2020 Die Sieben Todsunden"
     links={[
       {
         key: 'Die Sieben Todsunden',
         title: 'Die Sieben Todsunden',
-        href: 'https://pro.ant.design',
+        href: 'https://github.com/orgs/die-sieben-Todsunden/teams/7',
         blankTarget: true,
       },
       {
