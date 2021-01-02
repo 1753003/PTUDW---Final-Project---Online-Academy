@@ -6,7 +6,7 @@ function getRFT() {
       accessToken:Cookies.get('aToken'),
       refreshToken:Cookies.get('rfToken')
   }
-  if(typeof(refreshToken)=='undefined')
+  if(typeof(refreshToken) === 'undefined')
   {
       
       let isLogin = localStorage.getItem("isLogin")
@@ -218,6 +218,25 @@ export function setDone(payload) {
   return new Promise((resolve, reject) => {
     axios.patch(`api/user/${payload.uid}/courseRegister/${payload.cid}`, {
       sylabus: payload.sylabus
+    },{ headers: { 'x-access-token': Cookies.get('aToken') }})
+      .then((response) => {
+        // handle success
+        console.log(response)
+        resolve(response)
+      })
+      .catch((error) => {
+        // handle error
+        reject(error);
+        console.log(error);
+      })
+  })
+}
+
+export function setProgress(payload) {
+  return new Promise((resolve, reject) => {
+    console.log( Cookies.get('aToken'));
+    axios.patch(`api/user/${payload.uid}/courseRegister/${payload.cid}`, {
+      progress: payload.week
     },{ headers: { 'x-access-token': Cookies.get('aToken') }})
       .then((response) => {
         // handle success

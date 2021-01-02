@@ -73,7 +73,8 @@ module.exports = {
     return db('student_course').where({'studentID' :uid,'courseID':cid});
   },
   async editRegisterCourse(uid,cid,data){
-    return db('student_course').where({'studentID' :uid,'courseID':cid}).update('sylabus',JSON.stringify(data.sylabus));
+    const key = Object.keys(data);
+    return db('student_course').where({'studentID' :uid,'courseID':cid}).update(key[0],JSON.stringify(data[key[0]]));
   },
   async edit(uid, data){
     return db('user').where('id' ,uid).update(data);

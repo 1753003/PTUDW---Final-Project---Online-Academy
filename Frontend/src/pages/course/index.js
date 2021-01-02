@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 
 
 
-const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse }) => {
+const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse, history }) => {
     const { query } = location;
     const [key, setKey] = useState(0);
     const [url, setUrl] = useState('');
@@ -19,7 +19,6 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
 
     // useEffect
     useEffect(() => {
-
         if (currentUser.id) {
             const payload = {
                 uid: currentUser.id,
@@ -45,6 +44,19 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                 setUrl(element.videoLink);
                 setDescription(element.description);
                 setKey(element.week);
+                history.push({
+                    pathname: '/studentCourse',
+                    query: {
+                        courseId: query.courseId,
+                        week: element.week
+                    }
+                })
+                const payload = {
+                    uid: currentUser.id,
+                    cid: query.courseId,
+                    week: element.week
+                }
+                dispatch({ type: 'user/setCourseProgress', payload });
             }
         });
     };
@@ -76,8 +88,8 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                     <Menu
                         onClick={handleClick}
                         style={{ width: 230 }}
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['1']}
+                        defaultSelectedKeys={[query.week]}
+                        defaultOpenKeys={[query.week]}
                         mode="inline"
                     >
                         {
@@ -125,7 +137,7 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                             <Typography>Student of University of Science</Typography>
                         </TabPane>
                         <TabPane tab="Detail infomation" key="2">
-                        <div dangerouslySetInnerHTML={{__html: `${description}`}} />
+                            <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
 
                         </TabPane>
                     </Tabs>,
