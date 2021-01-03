@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import router from 'umi'
+
 function getRFT() {
     const body = {
         accessToken:Cookies.get('aToken'),
@@ -218,6 +218,24 @@ export function getLecturerById(id) {
         .catch((error) => {
             // handle error
             // reject(error);
+            getRFT();
+        })
+    })
+}
+
+export function updateCourse(id, newCourse) {
+    return new Promise( (resolve, reject) => {
+        axios.patch(`http://localhost:5000/api/course/${id}`,
+        newCourse,
+        {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            // reject(error);
+            console.log("bcd");
             getRFT();
         })
     })
