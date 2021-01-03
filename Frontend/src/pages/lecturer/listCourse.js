@@ -4,6 +4,7 @@ import {connect} from 'dva';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PageHeader, Divider, Table } from 'antd';
 import { Sylabus } from '@/pages/lecturer/addSylabus';
+import { Info } from '@/pages/lecturer/info';
 
 class CourseTable extends React.Component {
     constructor(props) {
@@ -23,17 +24,28 @@ class CourseTable extends React.Component {
                     dataIndex: 'name'
                 },
                 {
-                    title: 'Sylabus Action',
+                    title: 'Sylabus',
                     render: (item) => (
                         <Sylabus courseID = {item.id} item = {item}/> 
                     )
-                }
+                },
+                {
+                    title: 'More',
+                    render: (item) => (
+                        <Info course = {item} onUpdate = {(course) => {
+                            this.props.dispatch({type:'course/update',payload:[item.id, course, (JSON.parse(localStorage.getItem('userData'))).uid]})
+                        }}/> 
+                    )
+                },
             ]
         );
     }
 
     getDataSource = () => {
-        const { list = [] } = this.props.course;
+        let list = [];
+        list = this.props.course.list[0];
+        if (list === undefined)
+            list = [];
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < list.length; i++) {
             list[i].key = list[i].id
