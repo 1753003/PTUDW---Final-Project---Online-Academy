@@ -43,7 +43,7 @@ const GlobalHeaderRight = (props) => {
 
         }}
       />
-      <Tooltip
+      {/* <Tooltip
         title={formatMessage({
           id: 'component.globalHeader.help',
         })}
@@ -56,7 +56,7 @@ const GlobalHeaderRight = (props) => {
         >
           <Icon type="question-circle-o" />
         </a>
-      </Tooltip>
+      </Tooltip> */}
       <Avatar />
       {REACT_APP_ENV && <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>}
       <SelectLang className={styles.action} />

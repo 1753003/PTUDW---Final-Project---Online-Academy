@@ -30,6 +30,11 @@ const Model = {
           // window.location.href = "/admin"
           router.replace('/admin');
           return;
+
+        }else if(response.type == "lecturer"){
+          // window.location.href = "/admin"
+          router.replace('/lecturer');
+          return;
         }else if(redirect && redirect.includes("/admin")){
           redirect = null;
         }
