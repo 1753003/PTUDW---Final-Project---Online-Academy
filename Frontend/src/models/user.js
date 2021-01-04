@@ -1,4 +1,4 @@
-import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone } from '@/services/user';
+import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone, setProgress } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -141,6 +141,9 @@ const UserModel = {
         type: 'setSingleRegistedCourse',
         payload: response,
       });
+    },
+    *setCourseProgress({ payload }, { call, put }) {
+      yield call(setProgress, payload)
     },
     *resetStatus(_, { put }) {
       yield put({

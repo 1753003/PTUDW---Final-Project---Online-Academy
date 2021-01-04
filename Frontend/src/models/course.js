@@ -1,7 +1,6 @@
-import Cookies from 'js-cookie';
 import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, 
   getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, 
-  searchCourses, addCourse,getLecturerById } from '@/services/course';
+  searchCourses, addCourse,getLecturerById, updateCourse } from '@/services/course';
 
 
 const courseModel = {
@@ -104,9 +103,19 @@ const courseModel = {
         payload: response,
       });
     },
+    *update(payload, { call, put }) {
+      try {yield call(updateCourse(payload.payload[0], payload.payload[1]));}
+      catch(err) {
+      const response = yield call(getLecturerById, payload.payload[2]);
+      yield put({
+        type: 'getList',
+        payload: response,
+      });}
+    }
   },
   reducers: {
     getList(state, action) {
+      console.log(action.payload);
       return {
         ...state,
         list: action.payload

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message } from 'antd';
 import { connect } from 'dva';
+import { router } from 'umi';
 
 
 
@@ -157,12 +158,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                                 key={item.title}
                                             >
                                                 <Row onDoubleClick={() => {
-                                                    history.push({
-                                                        pathname: `/studentCourse`,
-                                                        query: {
-                                                            courseId: item.id,
-                                                        },
-                                                    });
+                                                    router.replace(`/studentCourse?courseId=${item.id}&week=${item.progress}`);
                                                 }}>
                                                     <Col span={9}>
                                                         <img

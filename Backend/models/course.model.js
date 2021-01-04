@@ -21,7 +21,15 @@ module.exports = {
     await db('course').where('id', id).del();
   },
   async updateById(id, data) {
-    const upadteDb = await db('course').where('id', id).update(data);
+    const upadteDb = await db('course').where('id', id).update({
+      name: data.name,
+      price: data.price,
+      salePrice: data.salePrice,
+      briefDescription: data.briefDescription,
+      detailDescription: data.detailDescription,
+      saleInformation: data.saleInformation,
+      status: data.status
+    });
   },
   async searchByKeyword(keyword) {
     return await db.raw(`(SELECT c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views
@@ -100,7 +108,9 @@ module.exports = {
   },
   
   async getLecturerCourse(lecturerID) {
-    return db('course').where("lecturerID", lecturerID);
+    return await db.raw(`select course.*, category.name as categoryName
+    from course, category
+    where category.id = course.categoryID and course.lecturerID = ${lecturerID}`);
   }
 };
 // select categoryID, count(categoryID) as count
