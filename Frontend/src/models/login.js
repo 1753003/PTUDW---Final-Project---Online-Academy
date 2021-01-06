@@ -16,6 +16,7 @@ const Model = {
        // Login successfully
       // console.log(response)
       if (response.status === 'ok') {
+        yield call(realAccountLogin, payload);
         yield put({
           type: 'changeLoginStatus',
           payload: response,
@@ -49,11 +50,13 @@ const Model = {
             }
           } else {
             // window.location.href = '/';
+            console.log('llllllll')
             router.replace('/');
-            return;
+
+            // return;
           }
         }
-
+        console.log('aaaaaaa', redirect)
         router.replace(redirect || '/');
       } else
         {yield put({

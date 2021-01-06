@@ -2,11 +2,19 @@
 
 .main {
   width: 368px;
+  align-items:center;
+  justify-items: center;
+  justify-content: center;
   margin: 0 auto;
+  display: flex;
   @media screen and (max-width: @screen-sm) {
-    width: 95%;
+    width: 90%;
   }
 
+  .form{
+    text-align: left;
+    margin: 0 auto;
+  }
   .icon {
     margin-left: 16px;
     color: rgba(0, 0, 0, 0.2);
@@ -23,7 +31,7 @@
   .other {
     margin-top: 24px;
     line-height: 22px;
-    text-align: left;
+    text-align:center;
 
     .register {
       float: right;

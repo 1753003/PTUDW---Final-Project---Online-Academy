@@ -202,7 +202,7 @@ export default {
     {
       path: '/',
       component: '../layouts/SecurityLayout',
-      authority: ['student', 'lecturer', 'guest'],
+      authority: ['student', 'lecturer', 'guest', 'admin'],
       routes: [
         {
           path: '/course',
@@ -230,6 +230,11 @@ export default {
               path: '/',
               redirect: '/home',
               authority: ['student', 'lecturer', 'guest']
+            },
+            {
+              path: '/',
+              redirect: '/admin/home',
+              authority: ['admin']
             },
             {
               path: '/home',
