@@ -69,7 +69,7 @@ module.exports = {
     return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`,`sylabus`) VALUES (?, ?, 'chưa hoàn thành', ?)",[cid,uid,JSON.stringify(data)]);
   },
   async getRegisterCourse(uid){
-    const temp = db('student_course').where('studentID' ,uid);
+    return db('student_course').where('studentID' ,uid);
     
   },
   async getRegisterCourseDetail(uid, cid){
