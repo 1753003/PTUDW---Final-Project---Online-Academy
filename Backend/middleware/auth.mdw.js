@@ -8,9 +8,17 @@ module.exports = function (req, res, next) {
   // console.log(link)
   // console.log(req.method)
   const accessToken = req.headers['x-access-token'];
-  if(accessToken == 'undefined'){
+  if(accessToken == undefined){
     if(req.method == "GET" && link.includes('course')){
-      console.log('guest', req.method );
+      console.log('GUEST', req.method );
+      next()
+    }
+    if(req.method == "POST" && link.includes('forgotPassword')){
+      console.log('GUEST', req.method );
+      next()
+    }
+    if(req.method == "POST" && link.includes('confirmCode')) {
+      console.log('GUEST', req.method);
       next()
     }
   }
