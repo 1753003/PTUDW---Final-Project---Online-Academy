@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button} from 'antd';
+import { Alert, Form, Icon, Input, Button} from 'antd';
 import React from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
@@ -11,6 +11,7 @@ class RegisterForm extends React.Component {
   state={
     first:true,
     confirmDirty: false,
+    fail: null,
   }
   componentDidUpdate(){
     if(this.state.first == true)
@@ -28,6 +29,7 @@ class RegisterForm extends React.Component {
         })
       } else {
         // console.log(err)
+        this.setState({fail: true})
       }
     });
   };
@@ -52,13 +54,18 @@ class RegisterForm extends React.Component {
   };
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, submitting } = this.props.form;
+    const {status} = this.props;
     const usernameError = isFieldTouched('username') && getFieldError('username');
     const passwordError = isFieldTouched('password') && getFieldError('password');
     const emailError = isFieldTouched('email') && getFieldError('email');
     const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
+    let msg = ""
+    // console.log('status', status.data.signup)
+    if (status !='' && status.data.signup ==='failed') msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)
     return (
       <div className={styles.main}>
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
+        {msg}
         <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your username!' }],
@@ -115,6 +122,7 @@ class RegisterForm extends React.Component {
 
 const Register = Form.create({name: 'register'})(RegisterForm);
 
-export default connect(({loading})=>({
+export default connect(({loading, user})=>({
   submitting: loading.effects['user/register'],
+  status: user.status,
 }))(Register);

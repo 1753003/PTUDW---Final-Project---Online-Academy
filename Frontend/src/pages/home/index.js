@@ -281,7 +281,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
           </Row>
 
           <Divider />
-          <div className="great-courses" style={{ marginTop: '50px' }}>
+          <div className="great-courses" style={{ marginTop: '50px'}}>
             <Title level={3}>Top bán chạy</Title>
             <List
               grid={{ gutter: 16, column: 4 }}

@@ -155,7 +155,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                     <div className="great-courses" style={{ marginTop: '50px' }}>
                         <Typography.Title level={3}>Same</Typography.Title>
                         <List
-                            grid={{ gutter: 16, column: 4 }}
+                            grid={{ gutter: 16, column: 3 }}
                             dataSource={detail?.courseRelate}
                             renderItem={item => (
 
@@ -196,7 +196,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                 currentUser.id ?
                                     <div>
                                         <Button type="primary" style={{ width: '100%', height: '50px', fontWeight: 'bold' }} onClick={handleAddToFavorite}>Add to Favorite</Button><br />
-                                        <Button style={{ width: '100%', height: '50px', color: '#1890ff', borderColor: '#1890ff', fontWeight: 'bold', marginTop: '10px' }} onClick={handleAddToRegister}>Regist</Button>
+                                        <Button style={{ width: '100%', height: '50px', color: '#1890ff', borderColor: '#1890ff', fontWeight: 'bold', marginTop: '10px' }} onClick={handleAddToRegister}>Enroll</Button>
                                     </div> : null
                             }
 

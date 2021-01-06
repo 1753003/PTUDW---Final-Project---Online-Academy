@@ -32,11 +32,16 @@ const UserModel = {
     *register(payload, { call, put }) {
       // console.log('payload',payload)
       const response = yield call(add, payload);
+      console.log('asdhfgjhs',response.data.signup)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
       // yield put({
       //   type: 'save',
       //   payload: response,
       // });
-      router.replace('/');
+      // router.replace('/');
       return response;
     },
     *fetchCurrent( payload , { call, put }) {
