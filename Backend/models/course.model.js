@@ -66,7 +66,7 @@ module.exports = {
     ORDER BY createdDate DESC LIMIT 10`));
   },
   async sylabus(id) {
-    return await db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE id = ${id}`));
+    return await db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE course.id = ${id}`));
   },
   async review(id) {
     return await db.select(db.raw(`course.*,student_course.*, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
@@ -76,7 +76,7 @@ module.exports = {
     from course 
     left join student_course on course.id = student_course.courseID
     left join category on category.id = course.categoryID 
-    WHERE category.id = (
+    WHERE course.id <> ${id} AND category.id = (
     SELECT categoryID from course where course.id = ${id})
     GROUP by courseName
     ORDER by register DESC

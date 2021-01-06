@@ -11,7 +11,7 @@ const UserModel = {
   },
   effects: {
     *resetPasswordConfirm(payload, { call, put }) {
-      console.log('model')
+      // console.log('model')
       const response = yield call(resetConfirm, payload.payload)
       yield put({
         type: 'requestStatus',
@@ -20,7 +20,7 @@ const UserModel = {
       // router.replace('/');
     },
     *resetPasswordRequest(payload, { call, put }) {
-      console.log('model')
+      // console.log('model')
       const response = yield call(resetRequest, payload.payload)
       yield put({
         type: 'requestStatus',
@@ -39,9 +39,11 @@ const UserModel = {
       router.replace('/');
       return response;
     },
-    *fetchCurrent({ payload }, { call, put }) {
+    *fetchCurrent( payload , { call, put }) {
       // console.log("fetchCurrent")
-      const response = yield call(queryCurrent, payload.uid);
+      console.log(payload);
+      const response = yield call(queryCurrent, payload.payload.uid);
+      console.log("aa",response);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
@@ -157,7 +159,8 @@ const UserModel = {
       return { ...state, status: action.payload }
     },
     saveCurrentUser(state, action) {
-      return { ...state, currentUser: action.payload || {} };
+      console.log("bcd",action.payload);
+      return { ...state, currentUser: action.payload };
     },
     delCurrentUser(state) {
       // console.log(state)

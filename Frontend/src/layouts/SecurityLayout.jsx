@@ -25,18 +25,24 @@ class SecurityLayout extends React.Component {
     let accessToken=Cookies.get('aToken')
     let refreshToken=Cookies.get('rfToken')
     let isLogin = localStorage.getItem("isLogin")
+    isLogin = isLogin === null ? 'false' : isLogin
+    // console.log(isLogin)
+    // console.log(typeof(isLogin))
     // console.log(isLogin, accessToken, refreshToken)
+    
     if(isLogin.includes("true")){
       if(typeof(refreshToken)=='undefined')
       dispatch({
         type: 'login/logoutHome',
       });
     }
-    
-    if (dispatch && !isGuest) {
+    let userData = JSON.parse(localStorage.getItem("userData"))
+    userData = userData === null ? null:userData
+    if (dispatch && isLogin.includes("true")) {
+      console.log('dsfkas',userData)
       dispatch({
         type: 'user/fetchCurrent',
-        payload: JSON.parse(localStorage.getItem("userData"))
+        payload: userData
       });
     }
   }
@@ -46,9 +52,7 @@ class SecurityLayout extends React.Component {
     const { children, loading, currentUser } = this.props; // You can replace it to your authentication rule (such as check token exists)
     
     const isLogin = currentUser && currentUser.id;
-    if(isLogin){
-        isGuest: false
-    }
+
     // console.log(isGuest);
     const queryString = stringify({
       redirect: window.location.href,
