@@ -1,8 +1,9 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable max-classes-per-file */
 import React from 'react';
 import {connect} from 'dva';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PageHeader, Divider, Table } from 'antd';
+import { PageHeader, Divider, Table , Button , Icon} from 'antd';
 import { Sylabus } from '@/pages/lecturer/addSylabus';
 import { Info } from '@/pages/lecturer/info';
 
@@ -37,6 +38,14 @@ class CourseTable extends React.Component {
                         }}/> 
                     )
                 },
+                {
+                    title: 'Remove',
+                    render: (item) => (
+                        <Button onClick={() => {}}>
+                            <Icon type="delete" />
+                        </Button>
+                    )
+                }
             ]
         );
     }

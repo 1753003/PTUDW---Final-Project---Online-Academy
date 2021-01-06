@@ -1,10 +1,44 @@
 import axios from 'axios';
 
+import Cookies from 'js-cookie';
+
+function getRFT() {
+    const body = {
+        accessToken:Cookies.get('aToken'),
+        refreshToken:Cookies.get('rfToken')
+    }
+    if(typeof(refreshToken)=='undefined')
+    {
+        
+        let isLogin = localStorage.getItem("isLogin")
+        console.log(isLogin)
+        // if(isLogin.includes('true'))
+        //     {
+        
+        //         console.log("sdsgfd")
+        //         router.replace('user/login')
+        // }
+    }
+    return new Promise( (resolve, reject) => {
+        axios.post('/api/auth/refresh',body)
+        .then((responseRF) => {
+            // handle success
+            resolve(responseRF.status)
+            console.log('RFT',responseRF)
+
+        }).catch((e)=>{
+            console.log('getRFT E',e)
+            
+        })
+    })
+    // console.log('getRFT',res)
+    // console.log('axios error',error);
+}
+
 export function getListCategory() {
-    console.log("call api");
     return new Promise( (resolve, reject) => {
         axios.get('/api/category',
-        {headers:{'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTYwODEwMzQwNCwiZXhwIjoxNjA4MTA5NDA0fQ.SrfkU7AWEew5J-OqTT4sYNEz8vrWNUDbEP5U44dvmDY'}})
+        {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)

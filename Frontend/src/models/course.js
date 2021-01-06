@@ -55,9 +55,9 @@ const courseModel = {
       });
     },
     *delete(payload, { call, put }) {
-      const response = yield call(deleteCourse, payload.payload);
+      const response =  yield call(deleteCourse, payload.payload);
       yield put({
-        type: 'delete',
+        type: 'deleteItem',
         payload: response,
       });
     },
@@ -133,10 +133,11 @@ const courseModel = {
         listNew: action.payload
       }
     },
-    delete(state, action) {
+    deleteItem(state, action) {
+      const temp = [action.payload, []]
       return {
         ...state,
-        list: action.payload
+        list: temp
       }
     },
     add(state, action) {
