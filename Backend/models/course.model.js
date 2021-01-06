@@ -2,8 +2,10 @@ const db = require('../utils/db');
 
 db.on('query', console.log)
 module.exports = {
-  getAll() {
-    return db('course');
+  async getAll() {
+    return await db.raw(`select course.*, category.name as categoryName
+    from course, category
+    where category.id = course.categoryID`);
   },
 
   async singleById(id) {
@@ -62,12 +64,13 @@ module.exports = {
     ORDER BY views DESC LIMIT 10`));
   },
   async new() {
-    return await db.select(db.raw(`course.*, user.name as "lecturerName" from course, user
-    where user.id = course.lecturerID
+    return await db.select(db.raw(`course.*, user.name as "lecturerName", category.name as categoryName
+    from course, user, category
+    where user.id = course.lecturerID and course.categoryID = category.id
     ORDER BY createdDate DESC LIMIT 10`));
   },
   async sylabus(id) {
-    return await db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE id = ${id}`));
+    return await db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE course.id = ${id}`));
   },
   async review(id) {
     return await db.select(db.raw(`course.*,student_course.*, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));

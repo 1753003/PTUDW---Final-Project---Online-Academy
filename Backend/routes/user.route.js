@@ -39,9 +39,19 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
-  const available = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
-  if (!available)
-    await userModel.courseRegister(req.params.uid, req.params.cid, req.body);
+  const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
+  const available = false;
+  if (temp.length == 0)
+    available = true;
+  console.log(temp,available)
+  if (available ) {
+    try {
+      await userModel.courseRegister(req.params.uid, req.params.cid, req.body);
+    }
+    catch(err) {
+      console.log("ERROR:",err);
+    }
+  }
   res.status(201).json({available});
 });
 
@@ -285,7 +295,7 @@ router.post('/confirmEmail', function(req, res){
   res.json(result);
 });
 
-router.post('/confirmCode', function(req, res) {
+router.post('/confirmCode', async function(req, res) {
   const request = req.body;
   const user = await userModel.singleByMail(request.email);
   const token = user.token;

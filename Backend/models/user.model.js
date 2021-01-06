@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-db.on('query', console.log)
+
 module.exports = {
   async singleById(id) {
     const list = await db('user').where('id', id);
@@ -69,7 +69,8 @@ module.exports = {
     return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`,`sylabus`) VALUES (?, ?, 'chưa hoàn thành', ?)",[cid,uid,JSON.stringify(data)]);
   },
   async getRegisterCourse(uid){
-    return db('student_course').where('studentID' ,uid);
+    const temp = db('student_course').where('studentID' ,uid);
+    
   },
   async getRegisterCourseDetail(uid, cid){
     return db('student_course').where({'studentID' :uid,'courseID':cid});
