@@ -18,6 +18,7 @@ module.exports = {
       .insert(course);
   },
   async delById(id) {
+
     await db('course').where('id', id).del();
   },
   async updateById(id, data) {

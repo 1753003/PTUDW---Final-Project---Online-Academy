@@ -15,7 +15,15 @@ module.exports = function (req, res, next) {
   }
   else if(accessToken == 'undefined'){
     if(req.method == "GET" && link.includes('course')){
-      console.log('guest', req.method );
+      console.log('GUEST', req.method );
+      next()
+    }
+    if(req.method == "POST" && link.includes('forgotPassword')){
+      console.log('GUEST', req.method );
+      next()
+    }
+    if(req.method == "POST" && link.includes('confirmCode')) {
+      console.log('GUEST', req.method);
       next()
     }
   }

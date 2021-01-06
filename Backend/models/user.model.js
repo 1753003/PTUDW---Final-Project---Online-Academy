@@ -10,7 +10,9 @@ module.exports = {
     return list[0];
   },
   async singleByMail(mail) {
+    console.log(mail);
     const list = await db('user').where('email', mail);
+    console.log(list);
     if (list.length === 0) {
       return null;
     }

@@ -1,4 +1,3 @@
-const { update } = require('../utils/db');
 const db = require('../utils/db');
 module.exports = {
     async add(courseID, newSylabus) {
@@ -16,5 +15,10 @@ module.exports = {
         })
 
         return newLesson;
+    },
+    async deleteByCourseID(courseID) {
+        await db('sylabus')
+        .where('courseID',courseID)
+        .del();
     }
 };
