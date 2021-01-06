@@ -1,9 +1,9 @@
 const express = require('express');
 const courseModel = require('../models/course.model');
-
+const studentCourseModel = require('../models/student_course.model')
 const router = express.Router({mergeParams: true});
-
-
+const sylabusModel = require('../models/sylabus.model');
+const favoriteCourseModel = require('../models/favorite_course.model');
 router.get('/:id([0-9]+)', async function (req, res, next) {
   const id = req.params.id || -1;
   const course = await courseModel.singleById(id);
@@ -23,21 +23,50 @@ router.post('/', async function (req, res) {
 
 router.delete('/:id', async function (req, res) {
   const id = req.params.id || -1;
-  await courseModel.delById(id).then(async()=>{
-    const list = await courseModel.getAll();
-    res.status(201).json(list);
-  }).catch(async()=>{
-    res.status(201).json(await courseModel.getAll());
-  })
+  
+  await sylabusModel.deleteByCourseID(id).then(
+    async() => {
+      await studentCourseModel.deleteByCourseID(id).then(
+        async () => {
+          await favoriteCourseModel.deleteByCourseID(id).then(
+            async() => {
+              await courseModel.delById(id).then(async()=>{
+                const list = await courseModel.getAll();
+                res.status(201).json(list);
+              }).catch(async(error)=>{
+                console.log(error);
+                res.status(201).json(await courseModel.getAll());
+              })
+            }
+          )
+        }
+      )
+    }
+  )
 })
 
 router.patch('/:id', async function (req, res) {
   const id = req.params.id || -1;
-  await courseModel.updateById(id, req.body).then(()=>{
-    res.status(201).json({id : id});
-  }).catch(()=>{
-    res.status(201).json({id : id});
-  })
+  const course = req.body;
+  await courseModel.updateById(id, req.body);
+  const list = await studentCourseModel.getSylabus(id);
+  const studentID = await studentCourseModel.getStudentID(id);
+  let i = 0;
+  list.forEach(element => {
+      if (element.courseID == id)
+      {
+          for (let item of element.sylabus) {
+              console.log(item);
+              item.name = course.name;
+              item.description = course.detailDescription;
+              studentCourseModel.updateSylabus(id, element.sylabus, studentID[i].studentID);
+              
+          }
+          i++;
+      } 
+  });
+  res.status(201).json({id : id});
+  
 })
 router.get('/search', async function(req, res){
   console.log(req.query.q)

@@ -13,7 +13,8 @@ const Course = ({list, dispatch}) => {
     useEffect(() => {
     }, [list])
    
-    const dataSource = list.list[0];
+    let dataSource = list.list[0];
+   
     let key = [];
     
     if (dataSource !== undefined)
@@ -55,8 +56,9 @@ const Course = ({list, dispatch}) => {
             )
           },
     ]
-
+    console.log(dataSource);
     return (
+        
         <PageHeader>
             <h2>Course page</h2>  
             <Divider />

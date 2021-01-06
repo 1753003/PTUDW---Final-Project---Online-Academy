@@ -1,8 +1,10 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export function getListStudent() {
     return new Promise( (resolve, reject) => {
-        axios.get('/api/user/student')
+        axios.get('/api/user/student',
+        {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -16,7 +18,8 @@ export function getListStudent() {
 
 export function getListLecturer() {
     return new Promise( (resolve, reject) => {
-        axios.get('/api/user/lecturer')
+        axios.get('/api/user/lecturer',
+        {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -30,7 +33,8 @@ export function getListLecturer() {
 
 export function deleteUser(id) {
     return new Promise( (resolve, reject) => {
-        axios.delete(`/api/user/${id}`)
+        axios.delete(`/api/user/${id}`,
+        {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)

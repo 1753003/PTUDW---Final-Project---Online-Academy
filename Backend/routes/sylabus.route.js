@@ -9,7 +9,8 @@ router.get('/lecturer/:id', async function(req, res) {
     const lecturerID = req.params.id;
     const listCourse = await courseModel.getLecturerCourse(lecturerID);
     const result = [];
-    for (const item of listCourse) {
+    for (let item of listCourse[0]) {
+        console.log("Item",item);
         const sylabus = await courseModel.sylabus(item.id);
         console.log(sylabus);
         result.push({
