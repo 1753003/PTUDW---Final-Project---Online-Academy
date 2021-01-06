@@ -87,7 +87,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
       'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
     }
   ]
-
+  console.log(listHot);
   return (
     <Row>
       <Col span={3} />
@@ -152,7 +152,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -161,7 +161,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category="" />
                         </Col>
                       )
                     }
@@ -170,7 +170,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -183,7 +183,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -192,7 +192,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -201,7 +201,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -214,7 +214,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -223,7 +223,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -232,7 +232,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     {
                       courseData.map((item) =>
                         <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} />
+                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
                         </Col>
                       )
                     }
@@ -279,12 +279,12 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
               </Row>
             </Col>
           </Row>
-
+          
           <Divider />
-          <div className="great-courses" style={{ marginTop: '50px'}}>
-            <Title level={3}>Top bán chạy</Title>
+          <div className="great-courses" style={{ marginTop: '50px' }}>
+            <Title level={3}>New Courses</Title>
             <List
-              grid={{ gutter: 16, column: 4 }}
+              grid={{ gutter: 10, column: 4 }}
               dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
@@ -295,7 +295,12 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     },
                   });
                 }}>
-                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} />
+                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  category={item.categoryName} 
+                  lecturer={item.lecturerName}
+                  salePrice={item.salePrice}
+                  rating={item.rating}
+                  numRate={item.numRate}/>
                 </List.Item>
               )}
             />

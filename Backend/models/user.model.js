@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-db.on('query', console.log)
+
 module.exports = {
   async singleById(id) {
     const list = await db('user').where('id', id);
@@ -70,6 +70,7 @@ module.exports = {
   },
   async getRegisterCourse(uid){
     return db('student_course').where('studentID' ,uid);
+    
   },
   async getRegisterCourseDetail(uid, cid){
     return db('student_course').where({'studentID' :uid,'courseID':cid});

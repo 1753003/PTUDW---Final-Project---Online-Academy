@@ -30,5 +30,6 @@ module.exports = {
     async add(category) {
       await db('category')
       .insert(category);
-    }
+    },
+
 };
