@@ -204,8 +204,8 @@ router.post('/forgotPassword', async function(req, res){
   var nodemailer = require('nodemailer');
   const email = req.body.email.email;
   const user = await userModel.singleByMail(email);
+  
   if (user == null) {
-    console.log("abc");
     return res.status(404).json("Not exist");
   }
   var transporter = nodemailer.createTransport({
@@ -216,13 +216,10 @@ router.post('/forgotPassword', async function(req, res){
     }
   });
   
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 6; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
+  var token = user.token;
+  console.log(token);
+  var result = token[0] + token[1] + token[2] + token[3] + token[4] + token[5];
+  console.log(result);
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
     to: email,
@@ -287,6 +284,18 @@ router.post('/confirmEmail', function(req, res){
 
   res.json(result);
 });
+
+router.post('/confirmCode', function(req, res) {
+  const request = req.body;
+  const user = await userModel.singleByMail(request.email);
+  const token = user.token;
+  const code = token[0]+token[1]+token[2]+token[3]+token[4]+token[5];
+  if (code === request.code)
+    res.json(true);
+  else
+    res.json(false);
+});
+
 router.post('/resetConfirm', async function(req,res){
   console.log(req.body)
   const password = bcrypt.hashSync(req.body.password, 10);

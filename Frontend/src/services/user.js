@@ -53,6 +53,20 @@ export function resetRequest(params) {
       })
   })
 }
+export function confirmCode(params) {
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmCode`,
+      params)
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
 export function resetConfirm(params) {
   // console.log("add", params.payload)
   return new Promise((resolve, reject) => {
