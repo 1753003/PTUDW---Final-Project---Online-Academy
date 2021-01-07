@@ -11,6 +11,26 @@ router.get('/getAll', function(req, res) {
     res.json(categoryModel.getAllInfo());
 })
 
+router.get('/getMenu', async function(req, res) {
+    const list = await categoryModel.getAll();
+    const result = [];
+    let i = 0;
+    list.forEach(element => {
+        let temp = {};
+        if (element.idTopic == null) {      
+            temp.topic = element;
+            temp.children = [];
+            list.forEach(item => {
+                if (item.idTopic == element.id) {
+                    temp.children.push(item);
+                }
+            })
+            result.push(temp);
+        }
+        
+    })
+    res.json(result);
+})
 router.get('/getHot', async function(req, res) {
     const result = await categoryModel.getHot();
     console.log(typeof(result));
