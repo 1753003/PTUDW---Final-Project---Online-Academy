@@ -54,13 +54,23 @@ module.exports = {
       where c.name like '${keyword}%' or a.name like '${keyword}%' or b.name like '${keyword}%')`);
   },
   async hot() {
-    return await db.select(db.raw(`COUNT((courseID)) as count, courseID, URL
-    FROM student_course left join course on courseID = course.id
-    WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)+1
+    return await db.select(db.raw(`COUNT((courseID)) as count, 
+    courseID, URL, course.name, rating, numRate, category.name as categoryName, price, salePrice,
+    briefDescription, status, user.name as lecturerName
+    FROM student_course 
+    left join course on courseID = course.id
+    left join category on categoryID = category.id
+    left join user on lecturerID = user.id
+    WHERE WEEK(CURDATE()) = WEEK(student_course.registerDate)
     GROUP BY courseID ORDER BY count DESC LIMIT 4`));
   },
   async trending() {
-    return await db.select(db.raw(`id, views from course 
+    return await db.select(db.raw(`
+    course.id as courseID, URL, course.name, rating, numRate, category.name as categoryName, price, salePrice,
+    briefDescription, status, user.name as lecturerName
+    from course
+    left join category on categoryID = category.id
+    left join user on lecturerID = user.id
     ORDER BY views DESC LIMIT 10`));
   },
   async new() {

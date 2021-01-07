@@ -7,6 +7,35 @@ router.get('/', async function(req, res) {
     res.json(list);
 })
 
+router.get('/getAll', function(req, res) {
+    res.json(categoryModel.getAllInfo());
+})
+
+router.get('/getMenu', async function(req, res) {
+    const list = await categoryModel.getAll();
+    const result = [];
+    let i = 0;
+    list.forEach(element => {
+        let temp = {};
+        if (element.idTopic == null) {      
+            temp.topic = element;
+            temp.children = [];
+            list.forEach(item => {
+                if (item.idTopic == element.id) {
+                    temp.children.push(item);
+                }
+            })
+            result.push(temp);
+        }
+        
+    })
+    res.json(result);
+})
+router.get('/getHot', async function(req, res) {
+    const result = await categoryModel.getHot();
+    console.log(typeof(result));
+    res.json(result);
+})
 router.get('/:id', async function(req, res) {
     const category = await categoryModel.getById(req.params.id);
   
@@ -37,5 +66,6 @@ router.patch('/:id', async function(req, res) {
 router.get('/getAll', function(req, res) {
     res.json(categoryModel.getAllInfo());
 })
+
 
 module.exports = router;

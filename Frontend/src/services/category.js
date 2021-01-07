@@ -90,3 +90,35 @@ export function addCategory(newName, topic) {
         })
     })
 }
+
+export function getListHotCategory() {
+    return new Promise( (resolve, reject) => {
+        axios.get('/api/category/getHot',
+        {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+            console.log(error);
+        })
+    })
+}
+
+export function getMenuCategory() {
+    return new Promise( (resolve, reject) => {
+        axios.get('/api/category/getMenu',
+        {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+            console.log(error);
+        })
+    })
+}
