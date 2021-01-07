@@ -1,8 +1,16 @@
 const db = require('../utils/db');
-db.on('query', console.log)
 module.exports = {
     async getAll() {
         return  await db('category');
+    },
+
+    async getHot() {
+      const res = await db.raw(`select categoryID, count(categoryID) as count, category.name, backgroundURL
+      FROM student_course INNER JOIN course on courseID = course.id
+      LEFT JOIN category on categoryID = category.id
+      GROUP by categoryID ORDER by count DESC LIMIT 10`);
+      console.log(res[0]);
+      return res[0];
     },
 
     async getById(id) {
@@ -10,7 +18,6 @@ module.exports = {
         if (list.length === 0) {
           return null;
         }
-    h
         return list[0];
       },
     async delete(id) {

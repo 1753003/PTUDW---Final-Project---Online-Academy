@@ -26,6 +26,10 @@ module.exports = function (req, res, next) {
       console.log('GUEST', req.method);
       next()
     }
+    if(req.method == "GET" && link.includes('category/getHot')){
+      console.log('GUEST', req.method );
+      next()
+    }
   }
   else if (accessToken) {
     try {
