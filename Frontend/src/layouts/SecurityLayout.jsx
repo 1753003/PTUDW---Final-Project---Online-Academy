@@ -44,6 +44,7 @@ class SecurityLayout extends React.Component {
         type: 'user/fetchCurrent',
         payload: userData
       });
+      dispatch({ type: 'category/get' })
     }
   }
 

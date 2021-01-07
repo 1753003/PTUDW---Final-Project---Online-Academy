@@ -1,9 +1,10 @@
-import { Icon, Tooltip, Tag } from 'antd';
-import React from 'react';
+import { Icon, Tooltip, Tag, Dropdown, Menu } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { router } from 'umi';
 import Avatar from './AvatarDropdown';
+import CategoryDropdown from './CategoryDropdown';
 import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
@@ -15,7 +16,7 @@ const ENVTagColor = {
 };
 
 const GlobalHeaderRight = (props) => {
-  const { theme, layout } = props;
+  const { theme, layout, dispatch, list } = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'topmenu') {
@@ -42,7 +43,14 @@ const GlobalHeaderRight = (props) => {
         onPressEnter={() => {
 
         }}
+
       />
+
+      {
+        list.length > 0 &&
+        <CategoryDropdown />
+      }
+
       {/* <Tooltip
         title={formatMessage({
           id: 'component.globalHeader.help',
@@ -64,7 +72,8 @@ const GlobalHeaderRight = (props) => {
   );
 };
 
-export default connect(({ settings }) => ({
+export default connect(({ settings, category }) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  list: category.list
 }))(GlobalHeaderRight);

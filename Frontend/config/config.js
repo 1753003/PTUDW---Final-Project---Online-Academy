@@ -276,19 +276,6 @@ export default {
               hideInMenu: true,
               authority: ['student', 'lecturer', 'guest']
             },
-            {
-              path: '/search',
-              name: 'Categories',
-              icon: 'appstore',
-              routes: [
-                {
-                  name: 'Bussiness',
-                  icon: 'crown',
-                  path: '/search?q=Business',
-                  component: './search'
-                }
-              ],
-            },
 
             {
               component: './404',
