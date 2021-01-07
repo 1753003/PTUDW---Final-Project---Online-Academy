@@ -40,7 +40,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
   const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
-  const available = false;
+  let available = false;
   if (temp.length == 0)
     available = true;
   console.log(temp,available)

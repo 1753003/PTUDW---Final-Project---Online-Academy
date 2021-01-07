@@ -1,4 +1,4 @@
-import { getListCategory, removeCategory, editCategory, addCategory } from '@/services/category';
+import { getListCategory, removeCategory, editCategory, addCategory, getListHotCategory } from '@/services/category';
 
 const categoryModel = {
   namespace: 'category',
@@ -36,13 +36,26 @@ const categoryModel = {
           payload: response
       });
     },
+    *getHot(_, { call, put }) {     
+      // console.log("add ", payload.payload);
+      const response = yield call(getListHotCategory);
+      yield put({
+          type: 'getListHot',
+          payload: response
+      });
+    },
   },
   reducers: {   
     getList(state, action) {
-      console.log(state.list);
       return {
             ...state,
             list: action.payload
+        }
+    },
+    getListHot(state, action) {
+      return {
+            ...state,
+            listHotCategory: action.payload
         }
     },
     removeItem(state, action) {

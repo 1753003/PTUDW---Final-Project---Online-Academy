@@ -7,6 +7,15 @@ router.get('/', async function(req, res) {
     res.json(list);
 })
 
+router.get('/getAll', function(req, res) {
+    res.json(categoryModel.getAllInfo());
+})
+
+router.get('/getHot', async function(req, res) {
+    const result = await categoryModel.getHot();
+    console.log(typeof(result));
+    res.json(result);
+})
 router.get('/:id', async function(req, res) {
     const category = await categoryModel.getById(req.params.id);
   
@@ -37,5 +46,6 @@ router.patch('/:id', async function(req, res) {
 router.get('/getAll', function(req, res) {
     res.json(categoryModel.getAllInfo());
 })
+
 
 module.exports = router;
