@@ -89,9 +89,8 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
   ]
   console.log(listHot);
   return (
-    <Row>
-      <Col span={3} />
-      <Col span={18}>
+    <Row type='flex' justify='center' align='middle'>
+      <Col span={20}>
         <PageHeader>
           <Carousel autoplay>
             {
@@ -284,7 +283,12 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
           <div className="great-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>New Courses</Title>
             <List
-              grid={{ gutter: 10, column: 4 }}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 3,
+                lg: 3,
+                xl: 4,
+                xxl: 6, }}
               dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
