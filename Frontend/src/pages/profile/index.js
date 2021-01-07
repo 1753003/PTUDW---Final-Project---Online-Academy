@@ -1,11 +1,157 @@
+/* eslint-disable max-classes-per-file */
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message } from 'antd';
+import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message, Drawer,
+     Popconfirm, Form } from 'antd';
 import { connect } from 'dva';
 import { router } from 'umi';
 
+class Edit extends React.Component {
+    state = { visible: false };
+  
+    showDrawer = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+  
+    onClose = () => {
+      this.setState({
+        visible: false,
+      });
+    };
+  
+    render() {
+      return (
+        <div>
+          <Button type="primary" onClick={this.showDrawer}>
+            Edit
+          </Button>
+          <Drawer
+            title="Basic Drawer"
+            placement="right"
+            closable={false}
+            onClose={this.onClose}
+            visible={this.state.visible}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Drawer>
+        </div>
+      );
+    }
+}
 
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 
+class NameInfo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isEdit : false,
+        }
+    }
 
+    componentDidMount() {
+        // To disable submit button at the beginning.
+        this.props.form.validateFields();
+      }
+    
+    handleSubmit = e => {
+        e.preventDefault();
+            this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                this.save()
+            }
+        });
+    };
+
+    getName = () => {
+        const {name = ""} = this.props.currentUser;
+        return name;
+    }
+
+    edit = () => {
+        this.setState({
+            isEdit: true
+        })
+    }
+
+    save = () => {
+        this.setState({
+            isEdit: false
+        })
+    }
+
+    cancel = () => {
+        this.setState({
+            isEdit: false
+        })
+    }
+
+    render() {
+        const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, setFieldsValue } = this.props.form;
+        const nameError = isFieldTouched('name') && getFieldError('name');
+        return (
+            <Form onSubmit={this.handleSubmit}>
+                <Row>
+                    <Col span={16}>
+                        <Form.Item 
+                            validateStatus={nameError ? 'error' : ''} help={nameError || ''}>
+                            {getFieldDecorator('name', {
+                                initialValue: this.getName(),
+                                rules: [{ required: true, message: 'Please input your username!' }],
+                                },
+                                )(
+                                    <Input
+                                        disabled={!this.state.isEdit}
+                                    />
+                            )}
+                        </Form.Item>
+                    </Col>
+                    <Col span={2}/>
+                    <Col span={6}>
+                        {this.state.isEdit ? 
+                            (
+                                <Form.Item>
+                                    <span>  
+                                        <Button
+                                                disabled={hasErrors(getFieldsError())}
+                                                htmlType="submit"
+                                                style={{ marginRight: 8 }}>
+                                                Save
+                                        </Button>
+                                        <Popconfirm title="Sure to cancel?" 
+                                            onConfirm={() => {
+                                                this.cancel()
+                                                setFieldsValue({
+                                                    name: this.getName()
+                                                })}}>
+                                            <Button>Cancel</Button>
+                                        </Popconfirm>
+                                    </span>
+                                </Form.Item>
+                            )
+                            :
+                            (
+                                <Form.Item>
+                                    <Button type="primary"
+                                         onClick={() => {this.edit()}}
+                                    >Edit</Button>
+                                </Form.Item>         
+                            )
+                        }
+                    </Col>
+                </Row>
+            </Form>
+        )
+    }
+}
+
+const WrappedName = Form.create({ name: 'horizontal_login' })(NameInfo);
 
 const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, registedCourses, deleteFavoriteStatus }) => {
     const [menuKey, setMenuKey] = useState('profile');
@@ -44,12 +190,11 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
         dispatch({ type: 'user/delFavorite', payload });
     }
 
-
     return (
         <Row>
             <Col span={3} />
             <Col span={18}>
-                <Row>
+                <Row gutter={24}>
                     <Col span={6} style={{ alignItems: 'center' }}>
                         <div style={{ width: '100%' }}>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -75,9 +220,9 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                         {
                             menuKey === "profile" &&
                             <Card title="Manage your profile">
-                                <div>
+                                <div>         
                                     <Typography>Name</Typography>
-                                    <Input />
+                                    <WrappedName currentUser={currentUser}/>                                 
                                 </div>
                             </Card>
                         }

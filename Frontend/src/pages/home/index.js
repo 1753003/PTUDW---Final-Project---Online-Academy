@@ -67,9 +67,9 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           <Carousel autoplay>
             {
               listHot?.map((item) => (
-                <Row>
+                <Row gutter={16}>
                   <Col span={16}>
-                    <img src={item.URL} height='300px' alt='hinh' onClick={() => {
+                    <img src={item.URL} height='300px' width='100%' alt='hinh' style={{objectFit: 'cover'}} onClick={() => {
                       history.push({
                         pathname: `/detail`,
                         query: {
@@ -87,7 +87,6 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                     <p>{item.lecturerName}</p>                 
                     <Typography.Text delete>${item.price}    </Typography.Text>               
                     <Typography.Text> <b>${item.salePrice}</b></Typography.Text>   
-                    <Tag>Hot course</Tag>
                   </Col>
                 </Row>
               ))}
