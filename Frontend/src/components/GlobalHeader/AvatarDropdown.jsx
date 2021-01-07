@@ -74,10 +74,10 @@ class AvatarDropdown extends React.Component {
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
-        <Menu.Item key="profile">
+        {currentUser.type !=='admin' &&<Menu.Item key="profile">
           <Icon type="profile" />
           <FormattedMessage id="menu.account.Profile" defaultMessage="Profile" />
-        </Menu.Item>
+        </Menu.Item>}
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="Logout" />
@@ -99,7 +99,7 @@ class AvatarDropdown extends React.Component {
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+          <Avatar size="small" className={styles.avatar} src={currentUser.avatarURL} alt="avatar" />
           <span className={styles.name}>{currentUser.name}</span>
         </span>
       </HeaderDropdown>

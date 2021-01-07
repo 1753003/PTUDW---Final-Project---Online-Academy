@@ -90,7 +90,7 @@ module.exports = {
     from course 
     left join student_course on course.id = student_course.courseID
     left join category on category.id = course.categoryID 
-    WHERE category.id = (
+    WHERE course.id <> ${id} AND category.id = (
     SELECT categoryID from course where course.id = ${id})
     GROUP by courseName
     ORDER by register DESC

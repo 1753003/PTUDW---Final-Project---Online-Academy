@@ -8,7 +8,12 @@ module.exports = function (req, res, next) {
   // console.log(link)
   // console.log(req.method)
   const accessToken = req.headers['x-access-token'];
-  if(accessToken == undefined){
+  console.log(req.originalUrl)
+  console.log(req.originalUrl =='/api/user')
+  if(req.method == "POST" && req.originalUrl =='/api/user'){
+    next()
+  }
+  else if(accessToken == 'undefined'){
     if(req.method == "GET" && link.includes('course')){
       console.log('GUEST', req.method );
       next()
@@ -28,7 +33,7 @@ module.exports = function (req, res, next) {
   }
   else if (accessToken) {
     try {
-      console.log('wat', req.method );
+      // console.log('wat', req.method );
       const decoded = jwt.verify(accessToken, 'SECRET_KEY');
       req.accessTokenPayload = decoded;
     } catch (err) {
@@ -37,15 +42,15 @@ module.exports = function (req, res, next) {
       //   console.log('get', err);
       //   // next()
       // }else
-      console.log('guest', req.method );
+      // console.log('guest', req.method );
         return res.status(401).json({
           message: 'Invalid access token.'
         })
     }
-    console.log('guest', req.method );
+    // console.log('guest', req.method );
     next();
   } else {
-    console.log('guest', req.method );
+    // console.log('guest', req.method );
     return res.status(400).json({
       message: 'Access token not found.'
     })

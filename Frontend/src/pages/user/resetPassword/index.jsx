@@ -51,9 +51,10 @@ class ResetPasswordForm extends Component {
     if (status!='' && this.state.fail!=null) msg = status!='' && !this.state.fail?(  <Alert message="Email has been sent." type="success" showIcon/>):(  <Alert message="Email sent failed" type="error" showIcon/>)
     return (
       <div className={styles.main} >
-        {msg}
-        <h4>Type your email and we will send you a mail with confirm code</h4>
+        
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
+      {msg}
+        <h4>Type your email and we will send you a mail with confirm code</h4>
         <Form.Item validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
           {getFieldDecorator('email', {
             rules: [{ type:'email', required: true, message: 'Please input a valid email!' }],

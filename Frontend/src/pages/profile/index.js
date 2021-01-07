@@ -53,7 +53,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                     <Col span={6} style={{ alignItems: 'center' }}>
                         <div style={{ width: '100%' }}>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Avatar size={130} src={currentUser.avatar} style={{ alignItems: 'center' }} />
+                                <Avatar size={130} src={currentUser.avatarURL} style={{ alignItems: 'center' }} />
 
                             </div>
                             <Typography.Title level={4} style={{ textAlign: 'center' }}>{currentUser.name}</Typography.Title>

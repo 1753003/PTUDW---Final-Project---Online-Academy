@@ -60,9 +60,8 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
   ]
   console.log(listHotCategory);
   return (
-    <Row>
-      <Col span={3} />
-      <Col span={18}>
+    <Row type='flex' justify='center' align='middle'>
+      <Col span={20}>
         <PageHeader>
           <Title level={3}>Hot Courses This Week</Title>
           <Carousel autoplay>
@@ -196,7 +195,12 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           <div className="great-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>New Courses</Title>
             <List
-              grid={{ gutter: 10, column: 4 }}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 3,
+                lg: 3,
+                xl: 4,
+                xxl: 6, }}
               dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
