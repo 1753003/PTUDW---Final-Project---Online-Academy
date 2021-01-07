@@ -120,6 +120,8 @@ class AvatarDropdown extends React.Component {
   }
 }
 
-export default connect(({ user }) => ({
+export default connect(({
+  user
+}) => ({
   currentUser: user.currentUser,
 }))(AvatarDropdown);

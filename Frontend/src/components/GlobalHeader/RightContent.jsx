@@ -27,7 +27,7 @@ const GlobalHeaderRight = (props) => {
     <div className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder="Type here"
+        placeholder="Type here ..."
         dataSource={[
           "Design", "IT", "Business"
         ]}
@@ -67,7 +67,7 @@ const GlobalHeaderRight = (props) => {
       </Tooltip> */}
       <Avatar />
       {REACT_APP_ENV && <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>}
-      {/* <SelectLang className={styles.action} /> */}
+      {/*><SelectLang className={styles.action} /> */}
     </div>
   );
 };
