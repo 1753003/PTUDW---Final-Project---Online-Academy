@@ -39,7 +39,7 @@ const categoryModel = {
   },
   reducers: {   
     getList(state, action) {
-      console.log(state.list);
+      // console.log(state.list);
       return {
             ...state,
             list: action.payload

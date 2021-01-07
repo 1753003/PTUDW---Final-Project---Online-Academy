@@ -87,7 +87,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
       'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
     }
   ]
-  console.log(listHot);
+  // console.log(listHot);
   return (
     <Row type='flex' justify='center' align='middle'>
       <Col span={20}>
@@ -285,7 +285,7 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
             <List
               grid={{ gutter: 10, xs: 1,
                 sm: 2,
-                md: 3,
+                md: 2,
                 lg: 3,
                 xl: 4,
                 xxl: 6, }}
@@ -299,7 +299,10 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     },
                   });
                 }}>
-                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  <Course
+                  url={item.URL}
+                  title={item.name}
+                  price={item.price} 
                   category={item.categoryName} 
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}

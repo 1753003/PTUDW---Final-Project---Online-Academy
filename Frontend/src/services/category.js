@@ -37,16 +37,14 @@ function getRFT() {
 
 export function getListCategory() {
     return new Promise( (resolve, reject) => {
-        axios.get('/api/category',
-        {headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get('/api/category', {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT()
         })
     })
 }
@@ -60,8 +58,7 @@ export function removeCategory(id) {
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT()
         })
     })
 }
@@ -75,8 +72,7 @@ export function editCategory(id, newName) {
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT()
         })
     })
 }
@@ -90,8 +86,7 @@ export function addCategory(newName, topic) {
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT()
         })
     })
 }
