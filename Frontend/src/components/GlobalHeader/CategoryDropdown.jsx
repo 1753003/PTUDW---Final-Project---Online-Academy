@@ -5,17 +5,47 @@ import { connect } from 'dva';
 import { router } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+const { SubMenu } = Menu;
 
 const CategoryDropdown = (props) => {
-
+    const result = [];
+    props.list.forEach(element => {
+        const temp = {};
+        if (element.idTopic == null) {      
+            temp.topic = element;
+            temp.children = [];
+            props.list.forEach(item => {
+                if (item.idTopic === element.id) {
+                    temp.children.push(item);
+                }
+            })
+            result.push(temp);
+        }
+    })
     const menu = (
         <Menu>
             {
-                props.list.map((item) => {
+                result.map((item) => {
                     return (
-                        <Menu.Item key={item.id} onClick={() => router.replace(`/search?q=${item.name}`)}>
-                            {item.name}
-                        </Menu.Item>
+                        <SubMenu 
+                        key={item.topic.id}
+                        title={
+                            <span>{item.topic.name}</span>
+                          }
+                        onClick={() => router.replace(`/search?q=${item.name}`)}  
+                          >
+                            {item.children.map((i) => {
+                                return (
+                                    <Menu.Item 
+                                        key={i.id}
+                                        onClick={() => router.replace(`/search?q=${i.name}`)}
+                                    >
+                                        {i.name}
+                                    </Menu.Item>
+                                )
+                            })}
+                            
+                        </SubMenu>
                     )
                 })
             }

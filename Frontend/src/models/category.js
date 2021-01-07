@@ -1,4 +1,4 @@
-import { getListCategory, removeCategory, editCategory, addCategory, getListHotCategory } from '@/services/category';
+import { getListCategory, removeCategory, editCategory, addCategory, getListHotCategory, getMenuCategory } from '@/services/category';
 
 const categoryModel = {
   namespace: 'category',
@@ -44,6 +44,14 @@ const categoryModel = {
           payload: response
       });
     },
+    *getMenu(_, { call, put }) {     
+      // console.log("add ", payload.payload);
+      const response = yield call(getMenuCategory);
+      yield put({
+          type: 'getListMenu',
+          payload: response
+      });
+    },
   },
   reducers: {   
     getList(state, action) {
@@ -52,7 +60,19 @@ const categoryModel = {
             list: action.payload
         }
     },
+    getListMenu(state, action) {
+      return {
+            ...state,
+            listMenu: action.payload
+        }
+    },
     getListHot(state, action) {
+      return {
+            ...state,
+            listHotCategory: action.payload
+        }
+    },
+    getMenu(state, action) {
       return {
             ...state,
             listHotCategory: action.payload
