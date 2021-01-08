@@ -148,7 +148,8 @@ export default {
               path: '/admin/user',
               name: 'User',
               icon: 'user',
-              component: './admin/user/index'
+              component: './admin/user/index',
+              authority: ['admin']
             },
             {
               component: './404',

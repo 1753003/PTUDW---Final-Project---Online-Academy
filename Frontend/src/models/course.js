@@ -1,12 +1,26 @@
-import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, 
-  getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, 
-  searchCourses, addCourse,getLecturerById, updateCourse, getCoursesTrending } from '@/services/course';
-
+import {
+  getListCourses,
+  getListCoursesWithCategory,
+  deleteCourse,
+  getCourseById,
+  getCourseRelateById,
+  getCourseSylabusById,
+  getCourseReviewById,
+  getCoursesNew,
+  getCoursesHot,
+  searchCourses,
+  addCourse,
+  getLecturerById,
+  updateCourse,
+  getCoursesTrending,
+  sendCommentToCourse,
+} from '@/services/course';
 
 const courseModel = {
   namespace: 'course',
   state: {
     list: [],
+    sendCommentStatus: '',
   },
   effects: {
     *get(_, { call, put }) {
@@ -20,17 +34,17 @@ const courseModel = {
       const { value } = payload;
       yield put({
         type: 'loadingStatus',
-        payload: true
-      })
+        payload: true,
+      });
       const respone = yield call(searchCourses, value);
       yield put({
         type: 'updateSearchList',
-        payload: respone
+        payload: respone,
       });
       yield put({
         type: 'loadingStatus',
-        payload: false
-      })
+        payload: false,
+      });
     },
     *getFull(_, { call, put }) {
       const response = yield call(getListCoursesWithCategory);
@@ -62,7 +76,7 @@ const courseModel = {
       });
     },
     *delete(payload, { call, put }) {
-      const response =  yield call(deleteCourse, payload.payload);
+      const response = yield call(deleteCourse, payload.payload);
       yield put({
         type: 'deleteItem',
         payload: response,
@@ -71,15 +85,15 @@ const courseModel = {
     *add(payload, { call, put }) {
       const response = yield call(addCourse, payload.payload);
       yield put({
-          type: 'add',
-          payload: response,
+        type: 'add',
+        payload: response,
       });
     },
     *getSingleCourse({ payload }, { call, put }) {
       yield put({
         type: 'loadingStatus',
-        payload: true
-      })
+        payload: true,
+      });
       const { id } = payload;
       const courseInfo = yield call(getCourseById, id);
       const courseSylabus = yield call(getCourseSylabusById, id);
@@ -89,21 +103,19 @@ const courseModel = {
         courseInfo: courseInfo[0][0],
         courseSylabus,
         courseRelate,
-        courseReview
-      }
+        courseReview,
+      };
       console.log(courseDetail);
       yield put({
         type: 'updateCourseInfo',
-        payload: courseDetail
+        payload: courseDetail,
       });
       yield put({
         type: 'loadingStatus',
-        payload: false
-      })
-
+        payload: false,
+      });
     },
     *getLecturerCourse(payload, { call, put }) {
-
       const response = yield call(getLecturerById, payload.payload);
       yield put({
         type: 'getList',
@@ -111,71 +123,109 @@ const courseModel = {
       });
     },
     *update(payload, { call, put }) {
-      try {yield call(updateCourse(payload.payload[0], payload.payload[1]));}
-      catch(err) {
-      const response = yield call(getLecturerById, payload.payload[2]);
+      try {
+        yield call(updateCourse(payload.payload[0], payload.payload[1]));
+      } catch (err) {
+        const response = yield call(getLecturerById, payload.payload[2]);
+        yield put({
+          type: 'getList',
+          payload: response,
+        });
+      }
+    },
+    *sendComment({ payload }, { call, put }) {
+      try {
+        yield put({
+          type: 'sendCommentStatus',
+          payload: 'LOADING',
+        });
+        yield call(sendCommentToCourse, payload);
+        yield put({
+          type: 'sendCommentStatus',
+          payload: 'SUCCESS',
+        });
+      } catch (err) {
+        console.log(err);
+        yield put({
+          type: 'sendCommentStatus',
+          payload: 'FAIL',
+        });
+      }
+    },
+    *resetStatus(_, { put }) {
       yield put({
-        type: 'getList',
-        payload: response,
-      });}
-    }
+        type: 'resetStatusSendComent',
+      });
+    },
   },
   reducers: {
+    resetStatusSendComent(state) {
+      return {
+        ...state,
+        sendCommentStatus: '',
+      };
+    },
+    sendCommentStatus(state, { payload }) {
+      return {
+        ...state,
+        sendCommentStatus: payload,
+      };
+    },
     getList(state, action) {
       console.log(action.payload);
       return {
         ...state,
-        list: action.payload
-      }
+        list: action.payload,
+      };
     },
     getListHot(state, action) {
       return {
         ...state,
-        listHot: action.payload
-      }
+        listHot: action.payload,
+      };
     },
     getListNew(state, action) {
       return {
         ...state,
-        listNew: action.payload
-      }
+        listNew: action.payload,
+      };
     },
     getListTrending(state, action) {
       return {
         ...state,
-        listTrending: action.payload
-      }
+        listTrending: action.payload,
+      };
     },
     deleteItem(state, action) {
-      const temp = [action.payload, []]
+      const temp = [action.payload, []];
       return {
         ...state,
-        list: temp
-      }
+        list: temp,
+      };
     },
     add(state, action) {
       return {
         ...state,
-        list: action.payload
-      }
+        list: action.payload,
+      };
     },
     updateCourseInfo(state, { payload }) {
       return {
         ...state,
-        courseDetail: payload
-      }
+        courseDetail: payload,
+      };
     },
     loadingStatus(state, { payload }) {
       return {
         ...state,
-        loading: payload
-      }
+        loading: payload,
+      };
     },
     updateSearchList(state, { payload }) {
       return {
         ...state,
-        searchList: payload
-      }
+        searchList: payload,
+      };
     },
   },
 };

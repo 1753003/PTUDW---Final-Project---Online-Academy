@@ -34,6 +34,7 @@ const Model = {
 
         }else if(response.type == "lecturer"){
           // window.location.href = "/admin"
+          redirect = null;
           router.replace('/lecturer');
           return;
         }else if(redirect && redirect.includes("/admin")){

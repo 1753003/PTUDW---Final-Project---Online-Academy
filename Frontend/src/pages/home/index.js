@@ -16,8 +16,6 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
     dispatch({ type: 'category/getHot' });
   }, []);
 
-  
-  console.log(listTrending);
   return (
     <Row type='flex' justify='center' align='middle'>
       <Col span={20}>
@@ -101,7 +99,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   history.push({
                     pathname: `/detail`,
                     query: {
-                      courseId: item.id,
+                      courseId: item.courseID,
                     },
                   });
                 }}>

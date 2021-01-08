@@ -92,7 +92,7 @@ const SearchPage = ({
   )
 
   return (
-  <PageHeader>
+  <PageHeader className={styles.main}>
       <Typography.Title level={3}>{searchList?.length} results for '{searchKey}'</Typography.Title>
       <Alert
           description="Feel free to learn annything !"
@@ -104,7 +104,7 @@ const SearchPage = ({
             <Icon type={'menu-unfold'} />Filter
         </Button>
       </Popover>
-      <Row type='flex' justify='space-around' align='top' gutter={[32,0]}>
+      <Row type='inline-block' justify='space-around' align='top' gutter={[32,0]}>
         <Col span={6}><div className={styles.filterSide}>{filterMenu}</div></Col>
         <Col xs={{span:24}} lg={{span:18}} md={{span:24}}>
         <List
@@ -126,9 +126,11 @@ const SearchPage = ({
                       });
                   }}
                 >
-                  <Row type='flex' justify='space-between' gutter={[8, 8]}>
+                  <Row type='flex' justify='space-between'>
+                  <Col>
+                  <Row type='flex' justify='start' gutter={[8, 8]}>
                     <Col>
-                    <img
+                    <img className={styles.cover}
                       width={272}
                       alt="cover"
                       src={item.URL}
@@ -138,18 +140,21 @@ const SearchPage = ({
                     <List.Item.Meta
                     className={styles.content}
                     title={item.courseName}
-                    description={<Typography.Text ellipsis={true} >{item.briefDescription}</Typography.Text>}
+                    description={<Typography.Paragraph style={{wordWrap: 'break-word'}} ellipsis={{ rows: 3, expandable: true }} >{item.briefDescription}</Typography.Paragraph>}
                   />
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
                       {item.rating}
                       <Rate className={styles.rate} disabled defaultValue={item.rating} style={{fontSize:'11pt'}}/>
                       <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>({item.numRate})</Typography.Text></Row>
                     </Col>
-                    <Col style={{display:'block'}}>
+                    
+                  </Row>
+                  </Col>
+                  <Col>
                       <Typography.Title level={4} strong >${item.salePrice}</Typography.Title>
                       <Typography.Text delete style={{display:'inline-block'}}>${item.price}</Typography.Text>
                     </Col>
-                  </Row>
+                    </Row>
                 </List.Item>
           )}
       /></Col>
