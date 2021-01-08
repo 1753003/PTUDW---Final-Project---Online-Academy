@@ -77,9 +77,10 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
 
     const handleAddToFavorite = () => {
+
         const { query } = location;
         const payload = {
-            uid: currentUser?.id,
+            uid: currentUser.id,
             cid: query.courseId
         }
         dispatch({ type: 'user/addToFavorite', payload });
@@ -125,34 +126,36 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
         (loadingPage) ? <PageLoading /> : <PageHeader>
             <Row type='flex' justify='space-around' gutter={24}>
                 <Col xs={{span:24}} lg={{span:16}} md={{span:24}}>
-                    <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
-                    <Typography.Title level={4}>Thong tin chi tiet</Typography.Title>
-                    <Row align="center" style={{ display: 'flex', alignItems: 'center' }}>
-                        <Col span={1} style={{ Left: '10px' }}>
-                            <Typography style={{ fontSize: '14px' }}>{4}</Typography>
-                        </Col>
-                        <Col span={4}>
-                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />
-                        </Col>
-                        <Col span={10}>
-                            <Typography style={{ fontSize: '12px' }}>({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students</Typography>
-                        </Col>
-                    </Row>
-                    <Typography>Create by {detail?.courseInfo?.lectureName}</Typography>
-                    <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate} <Icon type="global" /> English</Typography>
 
+                    <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
+                    <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                        <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+                            {detail?.courseInfo?.rating}
+                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
+                            <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
+                                ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
+                            </Typography.Text>
+                        </Row>
+                        <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
+                        <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
+                        <Typography><Icon type="global" /> English</Typography>
+                    </Card>
+                    </div>
 
                     <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
-                        <Typography.Title level={3}>Course content</Typography.Title>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Sylabus</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         {
                             detail?.courseSylabus?.map((item) =>
                                 <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
                         }
+                        </Card>
                     </div>
 
                     <div className="description" style={{ marginTop: '30px', marginRight: '30px', 'wordWrap': 'break-word' }}>
-                        <Typography.Title level={3}>Description</Typography.Title>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
+                        </Card>
                     </div>
 
                     
@@ -191,33 +194,33 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
             </Row>
             <Row type='flex' justify='start' align='stretch'>
                 <Col xs={{span:0}} lg={{span:2}} md={{span:2}}></Col>
-                <Col xs={{span:24}} lg={{span:15}} md={{span:20}}>
+                <Col xs={{span:24}} lg={{span:15}} md={{span:21}}>
                 <div className="comment" style={{ marginTop: '50px' }}>
-                        <Typography.Title level={3}>Student feedback</Typography.Title>
+                <Card title={<Typography.Title level={3} style={{color: "white"}}>Reviews</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <List
                             itemLayout="vertical"
                             size="large"
                             pagination={{
-                                onChange: page => {
-                                    console.log(page);
-                                },
+                                hideOnSinglePage:true,
                                 pageSize: 3,
                             }}
                             dataSource={detail?.courseReview}
-
-                            renderItem={item => (
+                            renderItem={item => 
+                                item?.rate ? 
                                 <List.Item
-                                    key={item.title}
+                                    key={item.username}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.avatar} />}
-                                        title={<a href={item.href}>{item.title}</a>}
+                                        avatar={<Avatar src={item.URL} />}
+                                        title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
                                     {item.comments?.split("\"")[1]}
-                                </List.Item>
-                            )}
+                                </List.Item>:<span></span>
+                            }
                         />
+
+                        {currentUser.id&&<div>
                         <Typography.Title level={4}>Write your comment here</Typography.Title>
                         <Rate style={{ paddingBottom: "10px" }} onChange={(value) => { setRating(value) }} />
                         <Row gutter={16}>
@@ -227,11 +230,14 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                 }} />
                             </Col>
                             <Col span={4}><Button style={{ width: "100%" }} type="primary" onClick={onSubmitClick}>Submit</Button></Col>
-                        </Row>
+                            </Row>
+                        </div>}
+                        
+                        </Card>
                     </div>
 
                     <div className="great-courses" style={{ marginTop: '50px' ,display:'block'}}>
-                        <Typography.Title level={3}>Same</Typography.Title>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>You may like</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <List
                             grid={{ gutter: 16, xs: 1,
                                 sm: 2,
@@ -255,10 +261,11 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                         },
                                     });
                                 }}>
-                                    <Course url={item.URL} title={item.courseName} author={item.author} price={item.price} />
+                                    <Course url={item.URL} title={item.courseName} lecturer={item.lecturer} price={item.price}  salePrice={item.salePrice} category={item.categoryName} rating={item.rating} numRate={item.rating} />
                                 </List.Item>
                             )}
                         />
+                        </Card>
                     </div>
                 </Col>
             
