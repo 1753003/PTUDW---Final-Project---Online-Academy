@@ -30,7 +30,7 @@ const CategoryDropdown = (props) => {
         </Dropdown>
     )
 
-
+    
 }
 
 export default connect(({ user, category }) => ({
