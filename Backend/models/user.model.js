@@ -80,7 +80,11 @@ module.exports = {
   },
   async editRegisterCourse(uid,cid,data){
     const key = Object.keys(data);
-    return db('student_course').where({'studentID' :uid,'courseID':cid}).update(key[0],JSON.stringify(data[key[0]]));
+    console.log(data);
+    key.forEach(async (item) => {
+      await db('student_course').where({'studentID' :uid,'courseID':cid}).update(item,JSON.stringify(data[item]));
+    });
+    return;
   },
   async edit(uid, data){
     return db('user').where('id' ,uid).update(data);

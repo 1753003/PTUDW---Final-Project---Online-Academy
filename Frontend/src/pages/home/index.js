@@ -106,7 +106,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           </Carousel>
           {quote(<div>Find video courses on almost any topic <br /> Build your library for your career and personal growth</div>,<div>Learn from industry experts<br /> Select from top instructors around the world</div>,<div>Go at your own pace<br />Enjoy lifetime access to courses on Pondemy’s website</div>)}
           <div className="trending-courses" style={{ marginTop: '50px' }}>
-            <Title level={3}>Most Vỉewed Courses</Title>
+            <Title level={3}>Most Views Courses</Title>
             <List
               grid={{ gutter: 10, xs: 1,
                 sm: 2,

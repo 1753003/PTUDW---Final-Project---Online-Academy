@@ -100,8 +100,11 @@ router.patch('/:uid/courseRegister/:cid', async function(req, res){
 router.patch('/:uid', async function(req, res){
   const cid = req.params.cid || -1;
   const data = req.body
+  const uid = req.params.uid;
+  console.log("Data:", data);
   await userModel.edit(uid, data);
-  res.status(201).json({id : uid});
+  const newData = await userModel.singleById(uid);
+  res.status(201).json(newData);
 });
 
 router.delete('/:uid',async function(req, res){
@@ -168,10 +171,12 @@ router.get('/changePassword/:uid', async function(req, res){
   res.json(result);
 });
 
-router.get('/changeEmail/:uid', async function(req, res){
+router.get('/changeEmailRequest/:uid', async function(req, res){
   var nodemailer = require('nodemailer');
-  const email = await userModel.getEmail(req.params.uid);
-
+  const temp = await (userModel.getEmail(req.params.uid));
+  const email = temp[0].email;
+  const user = await userModel.singleByMail(email);
+  
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -180,16 +185,12 @@ router.get('/changeEmail/:uid', async function(req, res){
     }
   });
   
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 6; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  var token = user.token;
+  var result = token[0] + token[1] + token[2] + token[3] + token[4] + token[5];
 
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
-    to: email[0].email,
+    to: email,
     subject: 'Pondemy team - Change your current email',
     html: `<h2>You have a new change current email request!</h2> 
     <p>Here are your code to change your email: ${result}</p>
@@ -207,7 +208,7 @@ router.get('/changeEmail/:uid', async function(req, res){
     }
   });
 
-  res.json(result);
+  res.json("Success");
 });
 
 router.post('/forgotPassword', async function(req, res){
@@ -295,12 +296,14 @@ router.post('/confirmEmail', function(req, res){
   res.json(result);
 });
 
-router.post('/confirmCode', async function(req, res) {
-  const request = req.body;
-  const user = await userModel.singleByMail(request.email);
+router.post('/confirmCode/:uid', async function(req, res) {
+  const temp = await (userModel.getEmail(req.params.uid));
+  const email = temp[0].email;
+  const user = await userModel.singleByMail(email);
   const token = user.token;
   const code = token[0]+token[1]+token[2]+token[3]+token[4]+token[5];
-  if (code === request.code)
+  console.log(code, req.body.code)
+  if (code == req.body.code)
     res.json(true);
   else
     res.json(false);

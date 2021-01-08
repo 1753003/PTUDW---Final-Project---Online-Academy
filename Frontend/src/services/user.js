@@ -53,20 +53,6 @@ export function resetRequest(params) {
       })
   })
 }
-export function confirmCode(params) {
-  return new Promise((resolve, reject) => {
-    axios.post(`/api/user/confirmCode`,
-      params)
-      .then((response) => {
-        // handle success
-        resolve(response);
-      })
-      .catch((error) => {
-        // handle error
-        // console.log(error);
-      })
-  })
-}
 export function resetConfirm(params) {
   // console.log("add", params.payload)
   return new Promise((resolve, reject) => {
@@ -122,7 +108,6 @@ export function queryCurrent(params) {
       })
   })
 }
-
 export function queryCurrentFavoriteCourse(uid) {
   return new Promise((resolve) => {
     axios.get(`/api/user/${uid}/favorite`, { headers: { 'x-access-token': Cookies.get('aToken') } })
@@ -137,7 +122,6 @@ export function queryCurrentFavoriteCourse(uid) {
       })
   })
 }
-
 export function queryCurrentRegistedCourse(uid) {
   return new Promise((resolve) => {
     axios.get(`/api/user/${uid}/courseRegister`, { headers: { 'x-access-token': Cookies.get('aToken') } })
@@ -152,7 +136,6 @@ export function queryCurrentRegistedCourse(uid) {
       })
   })
 }
-
 export function getRegistedCourseById(payload) {
   const { uid, cid } = payload;
   console.log('atoken',Cookies.get('aToken'))
@@ -169,7 +152,6 @@ export function getRegistedCourseById(payload) {
       })
   })
 }
-
 export function addCourseToRegister(payload) {
   return new Promise((resolve, reject) => {
     console.log(JSON.stringify(payload.sylabus));
@@ -267,4 +249,50 @@ export function setProgress(payload) {
 
 export async function queryNotices() {
   return request('/api/notices');
+}
+
+export function queryEditProfile(uid, newProfile) {
+  return new Promise((resolve) => {
+    axios.patch(`/api/user/${uid}`, newProfile, { headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // console.log(`Hello ${response.data}`);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        // reject(error);
+        getRFT();
+      })
+  })
+}
+
+export function resetEmailRequest(id) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.get(`/api/user/changeEmailRequest/${id}`,{ headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function confirmCode(id, code) {
+  // console.log("add", params.payload)
+  console.log(code);
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmCode/${id}`,{code},{ headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
 }
