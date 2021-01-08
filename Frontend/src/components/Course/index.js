@@ -1,28 +1,37 @@
 import React from 'react';
-import { Card, Typography, Tag, Rate, Row, Col } from 'antd';
-
-const Course = ({ url, title, author, price, salePrice, category, rating, numRate }) => {
+import { Card, Typography, Tag, Rate, Row, Col, Icon } from 'antd';
+import styles from './index.less';
+const {Meta} = Card
+const Course = ({ url, title, lecturer, price, salePrice, category, rating, numRate }) => {
   return(
     <Card
+    className={styles.main}
     hoverable
-    cover={<img alt="example" src={url} />}
-    >   
-        <Typography style={{fontWeight: 'bold'}}>{title}</Typography> 
-        <Typography style={{fontSize: '11px', fontWeight: 'bold'}}>Topic: {category}</Typography>    
-        <Typography style={{fontSize: '11px'}}>{author}</Typography>  
-        <Rate disabled style={{fontSize: '15px'}} defaultValue={rating}/>
-        <Typography style={{fontStyle: 'italic'}}>({numRate} person has rated)</Typography>
-        <Row>
-          <Col span={12}>
-            <Typography style={{fontWeight: 'bold'}}>${price}</Typography>
-          </Col>
-          <Col span={12}>
-            <Typography.Text delete style={{fontWeight: 'bold', textAlign:'right'}}>${salePrice}</Typography.Text>
-          </Col>
-        </Row>      
+    cover={
+      <img className={styles.cover} alt="example" src={url}/>
+    }
+    >
+      <Meta
+      title={title}
+      description={
+        lecturer+ "\n" + "Category: " + category 
+      }
+      >
+      </Meta>
+      <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+      {rating}
+      <Rate className={styles.rate} disabled defaultValue={rating} style={{fontSize:'11pt'}}/>
+      <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>({numRate})</Typography.Text>
+      </Row>
+      <Row type='flex' gutter={[8, 8]}>
+        <Col>
+          <Typography.Text strong >${price}</Typography.Text>
+        </Col><Col>
+          <Typography.Text delete style={{textAlign:'right', fontSize:'12px'}}>${salePrice}</Typography.Text>
+        </Col>
+      </Row>
     </Card>
   )
 };
-
 
 export default Course;

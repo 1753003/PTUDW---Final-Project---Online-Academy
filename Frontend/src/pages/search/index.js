@@ -1,156 +1,174 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Rate } from 'antd';
-import { connect } from 'dva';
-import category from '../admin/category';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  Typography,
+  Input,
+  PageHeader,
+  Alert,
+  Menu,
+  Icon,
+  Checkbox,
+  Row,
+  Col,
+  List,
+  Rate,
+  Layout,
+  Button,
+  Popover
+} from 'antd';
+import {
+  connect
+} from 'dva';
 
-const { SubMenu } = Menu;
+import styles from './index.less';
 
+const {
+  SubMenu
+} = Menu;
 
-const SearchPage = ({ loading, history, searchList, location, dispatch }) => {
-    const [searchKey, setSearchKey] = useState('');
-    
-    useEffect(() => {
-        setSearchKey(location.query.q)
-        const payload = {
-            value: location.query.q,
-        }
-        dispatch({ type: 'course/search', payload })
-    }, [location])
-
-    useEffect(() => {
-        console.log(location.pathname.split('/')[2])
-    }, [])
-    const topicList = [
-        {
-            key: 1,
-            name: 'Web Development',
-            number: 5
-        },
-        {
-            key: 2,
-            name: 'JS',
-            number: 5
-        },
-        {
-            key: 3,
-            name: 'Python',
-            number: 5
-        },
-    ]
-
-    const onSearch = (value) => {
-        const payload = {
-            value
-        }
-        setSearchKey(value);
-        dispatch({ type: 'course/search', payload })
+const SearchPage = ({
+  loading,
+  history,
+  searchList,
+  location,
+  dispatch
+}) => {
+  const [searchKey, setSearchKey] = useState('');
+  useEffect(() => {
+    setSearchKey(location.query.q)
+    const payload = {
+      value: location.query.q,
     }
-    return (
-        <PageHeader>
-            <Typography.Title level={1}>{searchList?.length} results for '{searchKey}'</Typography.Title>
-            <Alert
-                description="Not sure? All courses have a 30-day money-back guarantee"
-                type="info"
-                showIcon
-            />
-            <Row>
-                <Col span={5}>
-                    <Menu
-                        // onClick={this.handleClick}
-                        style={{ width: 256 }}
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        mode="inline"
-                    >
-                        <SubMenu
-                            key="sub1"
-                            title={
-                                <span>
-                                    <Icon type="mail" />
-                                    <span>Topic</span>
-                                </span>
-                            }
-                        >
-                            {
-                                topicList.map((item) =>
-                                    <Menu.Item key={item.key}><Checkbox>{item.name}({item.number})</Checkbox></Menu.Item>
-                                )
-                            }
+    dispatch({
+      type: 'course/search',
+      payload
+    })
+  }, [location])
 
-                        </SubMenu>
-                    </Menu>
-                </Col>
-                <Col span={18}>
-                    <List
-                        itemLayout="vertical"
-                        size="large"
-                        loading={loading}
-                        pagination={{
-                            pageSize: 10,
-                        }}
-                        dataSource={searchList}
-                        renderItem={item => (
-                            <List.Item
-                                key={item.title}
-                            >
-                                {/* <List.Item.Meta
-                                    avatar={<Avatar src={item.avatar} />}
-                                    title={<a href={item.href}>{item.title}</a>}
-                                    description={item.description}
-                                /> */}
-                                <Row onDoubleClick={() => {
-                                    console.log(item);
-                                    history.push({
-                                        pathname: `/detail`,
-                                        query: {
-                                            courseId: item.courseID,
-                                        },
-                                    });
-                                }}>
-                                    <Col span={7}>
-                                        <img
-                                            width={272}
-                                            alt="logo"
-                                            src={item.URL}
-                                        />
-                                    </Col>
-                                    <Col span={15}>
-                                        <Typography.Title level={4}>{item.courseName}</Typography.Title>
-                                        <Typography>{item.briefDescription}</Typography>
+  useEffect(() => {
+    console.log(location.pathname.split('/')[2])
+  }, [])
+  const topicList = [{
+      key: 1,
+      name: 'Web Development',
+      number: 5
+    },
+    {
+      key: 2,
+      name: 'JS',
+      number: 5
+    },
+    {
+      key: 3,
+      name: 'Python',
+      number: 5
+    },
+  ]
+  const filterMenu = (
+    <Menu
+      className={styles.filter}
+      style={{ maxWidth: 256}}
+      mode="inline"
+      theme="light"
+    >
+          <SubMenu
+              key="sub1"
+              title={
+                  <span>
+                      <Icon type="mail" />
+                      <span>Topic</span>
+                  </span>
+              }
+          >
+              {
+                  topicList.map((item) =>
+                      <Menu.Item key={item.key}><Checkbox>{item.name}({item.number})</Checkbox></Menu.Item>
+                  )
+              }
+          </SubMenu>
+        </Menu>
+  )
 
-                                        <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
-                                        <Row align="center" style={{ display: 'flex', alignItems: 'center' }}>
-                                            <Col span={1} style={{ Left: '10px' }}>
-                                                <Typography style={{ fontSize: '14px' }}>{item.rating}</Typography>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Rate disabled defaultValue={item.rating} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />
-                                            </Col>
-                                            <Col span={1}>
-                                                <Typography style={{ fontSize: '12px' }}>{item.views}</Typography>
-                                            </Col>
-                                        </Row>
-
-                                    </Col>
-                                    <Col span={2}>
-                                       
-                                        <Typography>{item.salePrice}$</Typography>
-                                        <Typography.Text delete>{item.price}$</Typography.Text>
-                                    </Col>
-                                </Row>
-                            </List.Item>
-                        )}
+  return (
+  <PageHeader className={styles.main}>
+      <Typography.Title level={3}>{searchList?.length} results for '{searchKey}'</Typography.Title>
+      <Alert
+          description="Feel free to learn annything !"
+          type="info"
+          showIcon
+      />
+      <Popover content={filterMenu} placement="bottomLeft" trigger="click">
+        <Button className={styles.filterButton}>
+            <Icon type={'menu-unfold'} />Filter
+        </Button>
+      </Popover>
+      <Row type='inline-block' justify='space-around' align='top' gutter={[32,0]}>
+        <Col span={6}><div className={styles.filterSide}>{filterMenu}</div></Col>
+        <Col xs={{span:24}} lg={{span:18}} md={{span:24}}>
+        <List
+            itemLayout="vertical"
+            loading={loading}
+            pagination={{
+                pageSize: 10,
+            }}
+            dataSource={searchList}
+            renderItem={item => (
+                <List.Item
+                    key={item.title} 
+                    onClick={() => {
+                      history.push({
+                          pathname: `/detail`,
+                          query: {
+                              courseId: item.courseID,
+                          },
+                      });
+                  }}
+                >
+                  <Row type='flex' justify='space-between'>
+                  <Col>
+                  <Row type='flex' justify='start' gutter={[8, 8]}>
+                    <Col>
+                    <img className={styles.cover}
+                      width={272}
+                      alt="cover"
+                      src={item.URL}
                     />
-            </Col>
-            </Row>
+                    </Col>
+                    <Col>
+                    <List.Item.Meta
+                    className={styles.content}
+                    title={item.courseName}
+                    description={<Typography.Paragraph style={{wordWrap: 'break-word'}} ellipsis={{ rows: 3, expandable: true }} >{item.briefDescription}</Typography.Paragraph>}
+                  />
+                    <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+                      {item.rating}
+                      <Rate className={styles.rate} disabled defaultValue={item.rating} style={{fontSize:'11pt'}}/>
+                      <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>({item.numRate})</Typography.Text></Row>
+                    </Col>
+                    
+                  </Row>
+                  </Col>
+                  <Col>
+                      <Typography.Title level={4} strong >${item.salePrice}</Typography.Title>
+                      <Typography.Text delete style={{display:'inline-block'}}>${item.price}</Typography.Text>
+                    </Col>
+                    </Row>
+                </List.Item>
+          )}
+      /></Col>
+          </Row>
 
-        </PageHeader>
-    )
+      </PageHeader>
+  )
 };
 
 
-export default connect(({ course }) => ({
-    list: course.list,
-    searchList: course.searchList,
-    loading: course.loading
+export default connect(({
+  course
+}) => ({
+  list: course.list,
+  searchList: course.searchList,
+  loading: course.loading
 }))(SearchPage);

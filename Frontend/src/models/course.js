@@ -1,6 +1,6 @@
 import { getListCourses, getListCoursesWithCategory, deleteCourse, getCourseById, 
   getCourseRelateById, getCourseSylabusById, getCourseReviewById, getCoursesNew, getCoursesHot, 
-  searchCourses, addCourse,getLecturerById, updateCourse } from '@/services/course';
+  searchCourses, addCourse,getLecturerById, updateCourse, getCoursesTrending } from '@/services/course';
 
 
 const courseModel = {
@@ -51,6 +51,13 @@ const courseModel = {
       const response = yield call(getCoursesNew);
       yield put({
         type: 'getListNew',
+        payload: response,
+      });
+    },
+    *getTrending(_, { call, put }) {
+      const response = yield call(getCoursesTrending);
+      yield put({
+        type: 'getListTrending',
         payload: response,
       });
     },
@@ -131,6 +138,12 @@ const courseModel = {
       return {
         ...state,
         listNew: action.payload
+      }
+    },
+    getListTrending(state, action) {
+      return {
+        ...state,
+        listTrending: action.payload
       }
     },
     deleteItem(state, action) {

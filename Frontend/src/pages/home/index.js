@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader } from 'antd';
+import { Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader, Rate, Tag } from 'antd';
 
 import Course from '@/components/Course';
 import { connect } from 'dva';
@@ -7,43 +7,14 @@ import { connect } from 'dva';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const Home = ({ list, dispatch, listHot, listNew, history }) => {
+const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, history }) => {
   useEffect(() => {
     dispatch({ type: 'course/get' });
     dispatch({ type: 'course/getHot' });
     dispatch({ type: 'course/getNew' });
+    dispatch({ type: 'course/getTrending' });
+    dispatch({ type: 'category/getHot' });
   }, []);
-
-  const courseData = [
-    {
-      id: 1,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 2,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 3,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    },
-    {
-      id: 4,
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      title: 'AWS Certified Solutions Architect - Associate 2020',
-      author: 'Phu Vinh Hung',
-      price: '80'
-    }
-  ]
 
   const categories = [
     {
@@ -87,24 +58,38 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
       'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
     }
   ]
-  console.log(listHot);
+  console.log('hot',listHotCategory);
   return (
-    <Row>
-      <Col span={3} />
-      <Col span={18}>
+    <Row type='flex' justify='center' align='middle'>
+      <Col span={20}>
         <PageHeader>
+          <Title level={3}>Hot Courses This Week</Title>
           <Carousel autoplay>
             {
-              listHot?.map((item) =>
-                <img src={item.URL} height='400px' alt='hinh' onClick={() => {
-                  history.push({
-                    pathname: `/detail`,
-                    query: {
-                      courseId: item.courseID,
-                    },
-                  });
-                }} />
-              )}
+              listHot?.map((item) => (
+                <Row gutter={16}>
+                  <Col span={16}>
+                    <img src={item.URL} height='300px' width='100%' alt='hinh' style={{objectFit: 'cover'}} onClick={() => {
+                      history.push({
+                        pathname: `/detail`,
+                        query: {
+                          courseId: item.courseID,
+                        },
+                      });
+                    }} />
+                  </Col>
+                  <Col span={8} style={{backgroundColor:'white'}}>
+                    <h2>{item.name} </h2>
+                    <p><b>Topic: </b>{item.categoryName}</p>
+                    <p><b>Brief Description: </b>{item.briefDescription}</p>
+                    <Rate allowHalf disabled defaultValue={item.rating} />
+                    <p>({item.numRate} rating)</p>
+                    <p>{item.lecturerName}</p>                 
+                    <Typography.Text delete>${item.price}    </Typography.Text>               
+                    <Typography.Text> <b>${item.salePrice}</b></Typography.Text>   
+                  </Col>
+                </Row>
+              ))}
           </Carousel>
           <Row className="note" style={{ marginTop: "25px" }}>
             <Col span={9}>
@@ -142,106 +127,31 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
             </Col>
           </Row>
           <Divider />
-          <div className="great-courses" style={{ marginTop: '50px' }}>
-            <Title level={3}>The world largest selection of courses</Title>
-            <Typography style={{ marginBottom: '20px' }}>Choose from 130,000 online video courses with new additions published every month</Typography>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="Python" key="1">
-                <Carousel autoplay>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category="" />
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                </Carousel>
-              </TabPane>
-              <TabPane tab="Excel" key="2">
-                <Carousel autoplay>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                </Carousel>
-              </TabPane>
-              <TabPane tab="Web Development" key="3">
-                <Carousel autoplay>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                  <Row gutter={16}>
-                    {
-                      courseData.map((item) =>
-                        <Col span={6}>
-                          <Course url={item.url} title={item.title} author={item.author} price={item.price} category=""/>
-                        </Col>
-                      )
-                    }
-                  </Row>
-                </Carousel>
-              </TabPane>
-            </Tabs>
+          <div className="trending-courses" style={{ marginTop: '50px' }}>
+            <Title level={3}>Most Vỉewed Courses</Title>
+            <List
+              grid={{ gutter: 10, column: 4 }}
+              dataSource={listTrending}
+              renderItem={item => (
+                <List.Item onClick={() => {
+                  history.push({
+                    pathname: `/detail`,
+                    query: {
+                      courseId: item.id,
+                    },
+                  });
+                }}>
+                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  category={item.categoryName} 
+                  lecturer={item.lecturerName}
+                  salePrice={item.salePrice}
+                  rating={item.rating}
+                  numRate={item.numRate}/>
+                </List.Item>
+              )}
+            />
           </div>
-
+ 
           <Divider />
 
           <Row className="note" style={{ marginTop: "25px" }} gutter={16}>
@@ -279,12 +189,17 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
               </Row>
             </Col>
           </Row>
-          
+           
           <Divider />
           <div className="great-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>New Courses</Title>
             <List
-              grid={{ gutter: 10, column: 4 }}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 2,
+                lg: 3,
+                xl: 4,
+                xxl: 6, }}
               dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
@@ -295,7 +210,10 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
                     },
                   });
                 }}>
-                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  <Course
+                  url={item.URL}
+                  title={item.name}
+                  price={item.price} 
                   category={item.categoryName} 
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}
@@ -349,14 +267,14 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
             <Title level={3}>Top categories</Title>
             <List
               grid={{ gutter: 8, column: 4 }}
-              dataSource={categories}
+              dataSource={listHotCategory}
               renderItem={item => (
                 <List.Item>
-                  <Card
-                    hoverable
-                    cover={<img alt="example" src={item.url} />}
+                    <Card
+                      hoverable
+                    cover={<img alt="example" src={item.backgroundURL} />}
                   >
-                    <Card.Meta title={item.title} />
+                    <Card.Meta title={item.name} />
                   </Card>
                 </List.Item>
               )}
@@ -370,8 +288,10 @@ const Home = ({ list, dispatch, listHot, listNew, history }) => {
 };
 
 
-export default connect(({ course }) => ({
+export default connect(({ course, category }) => ({
   list: course,
   listHot: course.listHot,
-  listNew: course.listNew
+  listNew: course.listNew,
+  listTrending: course.listTrending,
+  listHotCategory: category.listHotCategory
 }))(Home);

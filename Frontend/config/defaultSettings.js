@@ -1,12 +1,12 @@
 export default {
-  navTheme: 'light',
-  primaryColor: '#ff85c0',
+  navTheme: 'dark',
+  primaryColor: '#1DA57A',
   layout: 'topmenu',
   contentWidth: 'Fixed',
-  fixedHeader: false,
-  autoHideHeader: false,
+  fixedHeader: true,
+  autoHideHeader: true,
   fixSiderbar: false,
-  colorWeak: false,
+  colorWeak: true,
   menu: {
     locale: true,
   },

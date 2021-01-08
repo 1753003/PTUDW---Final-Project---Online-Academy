@@ -13,6 +13,9 @@ module.exports = function (req, res, next) {
   if(req.method == "POST" && req.originalUrl =='/api/user'){
     next()
   }
+  else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
+    next()
+  }
   else if(accessToken == 'undefined'){
     if(req.method == "GET" && link.includes('course')){
       console.log('GUEST', req.method );
@@ -24,6 +27,14 @@ module.exports = function (req, res, next) {
     }
     if(req.method == "POST" && link.includes('confirmCode')) {
       console.log('GUEST', req.method);
+      next()
+    }
+    if(req.method == "GET" && link.includes('category/getHot')){
+      console.log('GUEST', req.method );
+      next()
+    }
+    if(req.method == "GET" && link.includes('category/getMenu')){
+      console.log('GUEST', req.method );
       next()
     }
   }
