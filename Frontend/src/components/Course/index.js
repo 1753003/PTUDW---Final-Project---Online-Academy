@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Typography, Tag, Rate, Row, Col, Icon } from 'antd';
 import styles from './index.less';
 const {Meta} = Card
-const Course = ({ url, title, lecturer, price, salePrice, category, rating, numRate }) => {
+const Course = ({ url, title, lecturer, price, salePrice, category, rating, numRate, isHot, isNew }) => {
   return(
     <Card
     className={styles.main}
@@ -28,6 +28,13 @@ const Course = ({ url, title, lecturer, price, salePrice, category, rating, numR
           <Typography.Text strong >${price}</Typography.Text>
         </Col><Col>
           <Typography.Text delete style={{textAlign:'right', fontSize:'12px'}}>${salePrice}</Typography.Text>
+        </Col>
+      </Row>
+      <Row type='flex' gutter={[8, 8]}>
+        <Col>
+        {isNew&&<Tag color="green">New</Tag>}
+        </Col><Col>
+        {isHot&&<Tag color="volcano">Best Seller</Tag>}
         </Col>
       </Row>
     </Card>

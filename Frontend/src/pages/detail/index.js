@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message } from 'antd';
+import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message, Tag } from 'antd';
 import Course from '@/components/Course';
 import ShowMore from '@/components/ShowMore';
 import { PageLoading } from '@ant-design/pro-layout';
@@ -142,6 +142,13 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     return (
         (loadingPage) ? <PageLoading /> : <PageHeader>
             <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
+            <Row type='flex' gutter={[8, 8]}>
+        <Col>
+        <Tag color="green">New</Tag>
+        </Col><Col>
+        <Tag color="volcano">Best Seller</Tag>
+        </Col>
+      </Row>
             <Row type='flex' justify='start' gutter={24}>
             <Col className={styles.card} xs={{span:24}}>
                     <Card

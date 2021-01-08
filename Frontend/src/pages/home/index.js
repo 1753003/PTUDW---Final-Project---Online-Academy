@@ -5,7 +5,6 @@ import Course from '@/components/Course';
 import { connect } from 'dva';
 
 const { Title } = Typography;
-const { TabPane } = Tabs;
 
 const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, history }) => {
   useEffect(() => {
@@ -14,37 +13,39 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
     dispatch({ type: 'course/getNew' });
     dispatch({ type: 'course/getTrending' });
     dispatch({ type: 'category/getHot' });
+  //   if(listHot) {console.log('listHot', Array.from(listHot,x=> (Date.now() - Date.parse(x.createdDate))<604800001*4 ))
+  // console.log('list', listHot)}
   }, []);
   const quote =(q1,q2,q3)=> (<div className={styles.quote}>
     <Divider />
 <Row type='flex' justify="space-between" align="center" className="note" style={{ marginTop: "25px" }} gutter={16}>
-  <Col span={9}>
-    <Row justify="center" align="center">
+  <Col span={8}>
+    <Row>
       <Col span={4}>
-        <Icon type="database" style={{ fontSize: '48px', textAlign: 'center' }} />
+        <Icon type="database" style={{ fontSize: '42px', textAlign: 'start' }} />
       </Col>
       <Col span={20}>
-        <Typography>{q1}</Typography>
+        <Typography.Text>{q1}</Typography.Text>
       </Col>
     </Row>
   </Col>
   <Col span={8}>
     <Row>
       <Col span={4}>
-        <Icon type="safety-certificate" style={{ fontSize: '48px', textAlign: 'center' }} />
+        <Icon type="safety-certificate" style={{ fontSize: '42px', textAlign: 'start' }} />
       </Col>
       <Col span={20}>
-        <Typography>{q2}</Typography>
+        <Typography.Text>{q2}</Typography.Text>
       </Col>
     </Row>
   </Col>
-  <Col span={7}>
+  <Col span={8}>
     <Row>
-      <Col span={5}>
-        <Icon type="clock-circle" style={{ fontSize: '48px', textAlign: 'center' }} />
+      <Col span={4}>
+        <Icon type="clock-circle" style={{ fontSize: '42px', textAlign: 'start' }} />
       </Col>
-      <Col span={19}>
-        <Typography>{q3}</Typography>
+      <Col span={20}>
+        <Typography.Text>{q3}</Typography.Text>
       </Col>
     </Row>
   </Col>
@@ -62,12 +63,12 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
             </img>
           </Col>
             <Col className={styles.extras} xs={24} sm={24} md={10} lg={10} xl={10}>
-            <h3>
+            <Typography.Title level={1}>
             {title}
-            </h3>
-            <p>
+            </Typography.Title>
+            <Typography.Paragraph>
             {description}
-            </p>
+            </Typography.Paragraph>
             </Col>
           </Row>
     <Divider />
@@ -101,6 +102,13 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                     <Typography.Text delete>${item.price}    </Typography.Text>               
                     <Typography.Text> <b>${item.salePrice}</b></Typography.Text>   
                   </Col>
+                  <Row type='flex' gutter={[8, 8]}>
+        <Col>
+        {(Date.now() - Date.parse(item.createdDate)<604800001*4)&&<Tag color="green">New</Tag>}
+        </Col><Col>
+        <Tag color="volcano">Best Seller</Tag>
+        </Col>
+      </Row>
                 </Row>
               ))}
           </Carousel>
@@ -137,7 +145,9 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}
                   rating={item.rating}
-                  numRate={item.numRate}/>
+                  numRate={item.numRate}
+                  isHot={listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)}
+                  isNew = {(Date.now() - Date.parse(item.createdDate)<604800001*4)}/>
                 </List.Item>
               )}
             />
@@ -175,7 +185,9 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}
                   rating={item.rating}
-                  numRate={item.numRate}/>
+                  numRate={item.numRate}
+                  isHot={listHot&&Array.from(listHot, x => x.courseID).includes(item.id)}
+                  isNew = {true}/>
                 </List.Item>
               )}
             />
@@ -184,7 +196,12 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           <div className="categories" style={{ marginTop: '50px' }}>
             <Title level={3}>Top categories</Title>
             <List
-              grid={{ gutter: 8, column: 4 }}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 2,
+                lg: 4,
+                xl: 4,
+                xxl: 6, }}
               dataSource={listHotCategory}
               renderItem={item => (
                 <List.Item onClick={() => {

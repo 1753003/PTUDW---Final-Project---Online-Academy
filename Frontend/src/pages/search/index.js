@@ -4,6 +4,7 @@ import React, {
   useState
 } from 'react';
 import {
+  Tag,
   Typography,
   Input,
   PageHeader,
@@ -140,7 +141,9 @@ const SearchPage = ({
   searchList,
   location,
   dispatch,
-  category
+  category,
+  listHot,
+  listNew
 }) => {
   const [searchKey, setSearchKey] = useState('');
   const [list, setList] = useState([]);
@@ -153,6 +156,14 @@ const SearchPage = ({
       type: 'course/search',
       payload
     })
+    dispatch({
+      type: 'course/getNew',
+      payload
+    })
+    dispatch({
+      type: 'course/getHot',
+      payload
+    })
   }, [location])
 
   useEffect(() => {
@@ -161,6 +172,21 @@ const SearchPage = ({
 
   useEffect(() => {
 
+    // listHot?.forEach(element => {
+    //   console.log('listHot',element.courseID)
+    // });
+
+    // listNew?.forEach(element => {
+    //   console.log('listNew',element.id)
+    // });
+    // searchList?.forEach(element => {
+    //   console.log('listSearch',element.courseID)
+      
+    // });
+    // if(listNew) console.log('listNew', Array.from(listNew, x => x.id))
+    // if(listHot) console.log('listHot', Array.from(listHot, x => x.courseID))
+    // if(searchList) console.log('listSearch', Array.from(searchList, x => Date.parse(x.createdDate)))
+    // console.log('list',Date.now())
     setList(searchList);
   }, [searchList])
 
@@ -257,6 +283,13 @@ const SearchPage = ({
                     title={item.courseName}
                     description={<Typography.Paragraph style={{wordWrap: 'break-word'}} ellipsis={{ rows: 3, expandable: true }} >{item.briefDescription}</Typography.Paragraph>}
                   />
+                  <Row type='flex' gutter={[8, 8]}>
+        <Col>
+        {Date.now() - Date.parse(item.createdDate)<604800001*4&&<Tag color="green">New</Tag>}
+        </Col><Col>
+        {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Best Seller</Tag>}
+        </Col>
+      </Row>
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
                       {item.rating}
                       <Rate className={styles.rate} disabled defaultValue={item.rating} style={{fontSize:'11pt'}}/>
@@ -283,6 +316,8 @@ const SearchPage = ({
 export default connect(({
   course, category
 }) => ({
+  listHot: course.listHot,
+  listNew: course.listNew,
   list: course.list,
   searchList: course.searchList,
   loading: course.loading,
