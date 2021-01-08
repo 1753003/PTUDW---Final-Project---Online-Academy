@@ -230,7 +230,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         />}
                     >
                         <div className="Info">
-                            <Typography style={{ fontSize: "40px", fontWeight: 'bold' }}>{detail?.courseInfo.salePrice}$</Typography>
+                            <Typography style={{ fontSize: "40px", fontWeight: 'bold', color: 'peru' }}>{detail?.courseInfo.salePrice}$</Typography>
                             <Typography.Text delete style={{ fontSize: "25px" }}>{detail?.courseInfo.price}$</Typography.Text>
                             {
                                 currentUser.id ?
