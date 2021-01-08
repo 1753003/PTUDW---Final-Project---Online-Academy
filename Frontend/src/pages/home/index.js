@@ -99,7 +99,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   history.push({
                     pathname: `/detail`,
                     query: {
-                      courseId: item.courseID,
+                      courseId: item.id,
                     },
                   });
                 }}>

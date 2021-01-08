@@ -128,20 +128,17 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                 <Col span={12}>
                     {/* <div>Hello {query.courseId}</div> */}
                     <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
-                    <Typography.Title level={4}>Thong tin chi tiet</Typography.Title>
-                    <Row align="center" style={{ display: 'flex', alignItems: 'center' }}>
-                        <Col span={1} style={{ Left: '10px' }}>
-                            <Typography style={{ fontSize: '14px' }}>{4}</Typography>
-                        </Col>
-                        <Col span={4}>
-                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />
-                        </Col>
-                        <Col span={10}>
-                            <Typography style={{ fontSize: '12px' }}>({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students</Typography>
-                        </Col>
+                    <Typography.Title level={3}>Detail Infomation</Typography.Title>
+                    <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+                        {detail?.courseInfo?.rating}
+                        <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
+                        <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
+                            ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
+                        </Typography.Text>
                     </Row>
-                    <Typography>Create by {detail?.courseInfo?.lectureName}</Typography>
-                    <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate} <Icon type="global" /> English</Typography>
+                    <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
+                    <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
+                    <Typography><Icon type="global" /> English</Typography>
 
 
                     <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
