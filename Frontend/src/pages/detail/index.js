@@ -5,7 +5,7 @@ import Course from '@/components/Course';
 import ShowMore from '@/components/ShowMore';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Link } from 'umi';
-
+import styles from './index.less';
 import { connect } from 'dva';
 
 const { TextArea } = Input;
@@ -179,12 +179,11 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                     </div>
 
                 </Col>
-                <Col span={6}>
+                <Col >
                     <Card
+                    className={styles.card}
                         hoverable
-                        style={{ width: 345, position: 'fixed' }}
                         cover={<img
-                            width={345}
                             alt="logo"
                             src={detail?.courseInfo.URL}
                         />}

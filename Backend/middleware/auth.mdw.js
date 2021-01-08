@@ -21,6 +21,10 @@ module.exports = function (req, res, next) {
       console.log('GUEST', req.method );
       next()
     }
+    if(req.method == "GET" && link.includes('category')){
+      console.log('GUEST', req.method );
+      next()
+    }
     if(req.method == "POST" && link.includes('forgotPassword')){
       console.log('GUEST', req.method );
       next()

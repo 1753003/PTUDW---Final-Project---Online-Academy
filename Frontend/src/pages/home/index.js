@@ -108,22 +108,31 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           <div className="trending-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>Most Vỉewed Courses</Title>
             <List
-                          pagination={{
-                            size: 'small',
-                            pageSize: 4,
-                          }}
-              grid={{ gutter: 10, column: 4 }}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 2,
+                lg: 4,
+                xl: 4,
+                xxl: 6, }}
+              pagination={{
+                size: 'small',
+                defaultPageSize: 4,
+              }}
               dataSource={listTrending}
               renderItem={item => (
                 <List.Item onClick={() => {
+                  console.log('item',item)
                   history.push({
                     pathname: `/detail`,
                     query: {
-                      courseId: item.id,
+                      courseId: item.courseID,
                     },
                   });
                 }}>
-                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  <Course
+                  url={item.URL}
+                  title={item.name}
+                  price={item.price} 
                   category={item.categoryName} 
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}
@@ -178,7 +187,14 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
               grid={{ gutter: 8, column: 4 }}
               dataSource={listHotCategory}
               renderItem={item => (
-                <List.Item>
+                <List.Item onClick={() => {
+                  history.push({
+                    pathname: `/search`,
+                    query: {
+                      q: item.name,
+                    },
+                  });
+                }}>
                     <Card
                       hoverable
                     cover={<img alt="example" src={item.backgroundURL} />}
