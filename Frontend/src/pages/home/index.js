@@ -58,7 +58,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
       'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
     }
   ]
-  console.log(listHotCategory);
+  console.log('hot',listHotCategory);
   return (
     <Row type='flex' justify='center' align='middle'>
       <Col span={20}>
