@@ -32,10 +32,24 @@ router.post('/:uid/review/:cid', async function(req, res){
 }),
 
 router.post('/:uid/favorite/:cid', async function(req, res){
-  let uid = req.params.uid;
-  let cid = req.params.cid;
-  userModel.addFavorite(uid, cid);
-  res.status(200).json({});
+  // let uid = req.params.uid;
+  // let cid = req.params.cid;
+  // userModel.addFavorite(uid, cid);
+  // res.status(200).json({});
+  const temp = await userModel.getSingleFavorite(req.params.uid, req.params.cid);
+  let existed = false;
+  if (temp.length == 0)
+    existed = true;
+  // console.log(temp,available)
+  if (existed ) {
+    try {
+      await userModel.addFavorite(req.params.uid, req.params.cid, req.body);
+    }
+    catch(err) {
+      console.log("ERROR:",err);
+    }
+  }
+  res.status(201).json({available: existed});
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){

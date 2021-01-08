@@ -5,12 +5,11 @@ module.exports = function (req, res, next) {
   // open some api
   //here
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
-  // console.log(link)
-  // console.log(req.method)
   const accessToken = req.headers['x-access-token'];
-  console.log(req.originalUrl)
-  console.log(req.originalUrl =='/api/user')
+  const aToken = req.headers['Cookie'];
+  console.log('cookie',req.cookies)
   if(req.method == "POST" && req.originalUrl =='/api/user'){
+    console.log('wtf')
     next()
   }
   else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
@@ -18,7 +17,7 @@ module.exports = function (req, res, next) {
   }
   else if(accessToken == 'undefined'){
     if(req.method == "GET" && link.includes('course')){
-      console.log('GUEST', req.method );
+      console.log('aToken undefined', req.method );
       next()
     }
     if(req.method == "GET" && link.includes('category')){
@@ -43,10 +42,12 @@ module.exports = function (req, res, next) {
     }
   }
   else if (accessToken) {
+    console.log(link)
     try {
       // console.log('wat', req.method );
       const decoded = jwt.verify(accessToken, 'SECRET_KEY');
       req.accessTokenPayload = decoded;
+      console.log(' success')
     } catch (err) {
       // console.log(err);
       // if(req.method == "GET"){
@@ -54,6 +55,7 @@ module.exports = function (req, res, next) {
       //   // next()
       // }else
       // console.log('guest', req.method );
+      console.log(' fialed')
         return res.status(401).json({
           message: 'Invalid access token.'
         })

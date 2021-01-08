@@ -9,7 +9,7 @@ const ShowMore = ({ title, info }) => {
     }
     return (
         <div>
-            <Row onClick={handleClick} style={{ border: '1px solid #bfbfbfy', backgroundColor: '#e8e8e8', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px', paddingBottom: '0px' }}>
+            <Row onClick={handleClick} style={{ border: '1px solid rgb(124, 230, 152,0.5)', backgroundColor: 'rgb(124, 230, 152,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5px', paddingBottom: '0px' }}>
                 <Col span={23} >
                     <Typography.Title level={4} style={{color: 'black'}}>{title}</Typography.Title>
                 </Col>

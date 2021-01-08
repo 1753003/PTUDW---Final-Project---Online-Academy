@@ -172,7 +172,9 @@ export function addCourseToRegister(payload) {
 
 export function addCourseToFavorite(payload) {
   return new Promise((resolve, reject) => {
-    axios.post(`api/user/${payload.uid}/favorite/${payload.cid}`,{ headers: { 'x-access-token': Cookies.get('aToken') }})
+    const link = `api/user/${payload.uid}/favorite/${payload.cid}`
+    
+    axios.post(link,null,{ headers: { 'x-access-token': Cookies.get('aToken') }})
       .then((response) => {
         // handle success
         console.log(response)
@@ -180,8 +182,8 @@ export function addCourseToFavorite(payload) {
       })
       .catch((error) => {
         // handle error
-        reject(error);
-        console.log(error);
+        console.log(error)
+        getRFT()
       })
   })
 }

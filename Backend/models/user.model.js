@@ -10,9 +10,9 @@ module.exports = {
     return list[0];
   },
   async singleByMail(mail) {
-    console.log(mail);
+    // console.log(mail);
     const list = await db('user').where('email', mail);
-    console.log(list);
+    // console.log(list);
     if (list.length === 0) {
       return null;
     }
@@ -51,6 +51,7 @@ module.exports = {
     return idList[0];
   },
   async addFavorite(uid, cid){
+    console.log(uid+" "+cid);
     return db('favoriteCourse').insert({studentId:uid,courseId:cid});
   },
   async delFavorite(uid,cid){
@@ -62,10 +63,13 @@ module.exports = {
   async getFavorite(uid){
     return db('favoriteCourse').where('studentId' ,uid);
   },
+  async getSingleFavorite(uid, cid){
+    return db('favoriteCourse').where({'studentId' :uid,'courseId':cid});
+  },
   async courseRegister(uid, cid, data){
     // return db.raw(`insert into student_course ('courseID', æstudentID', 'progress') VALUES ('?', '?', 'chua hoan thanh');`,uid,cid);
-    console.log(uid+" "+cid);
-    console.log(data);
+    // console.log(uid+" "+cid);
+    // console.log(data);
     return await db.raw("INSERT INTO `jok7rrqgjka2fkpa`.`student_course` (`courseID`, `studentID`, `progress`,`sylabus`) VALUES (?, ?, 'chưa hoàn thành', ?)",[cid,uid,JSON.stringify(data)]);
   },
   async getRegisterCourse(uid){
@@ -80,7 +84,7 @@ module.exports = {
   },
   async editRegisterCourse(uid,cid,data){
     const key = Object.keys(data);
-    console.log(data);
+    // console.log(data);
     key.forEach(async (item) => {
       await db('student_course').where({'studentID' :uid,'courseID':cid}).update(item,JSON.stringify(data[item]));
     });

@@ -86,10 +86,11 @@ module.exports = {
     return await db.select(db.raw(`course.*,student_course.*, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
   },
   async relate(id) {
-    return await db.select(db.raw(`URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register"
+    return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer"
     from course 
     left join student_course on course.id = student_course.courseID
     left join category on category.id = course.categoryID 
+    left join user on lecturerID = user.id
     WHERE course.id <> ${id} AND category.id = (
     SELECT categoryID from course where course.id = ${id})
     GROUP by courseName
