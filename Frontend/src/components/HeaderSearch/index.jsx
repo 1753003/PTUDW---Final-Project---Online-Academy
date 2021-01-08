@@ -47,7 +47,9 @@ export default class HeaderSearch extends Component {
     }
   };
 
-  onChange = (value) => {
+  onChange = (value, e) => {
+    console.log('key',value)
+    console.log('keye',e.key==='Enter')
     if (typeof value === 'string') {
       const { onSearch, onChange } = this.props;
       this.setState({

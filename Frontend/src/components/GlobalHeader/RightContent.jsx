@@ -31,7 +31,19 @@ const GlobalHeaderRight = (props) => {
         dataSource={[
           "Design", "IT", "Business"
         ]}
+        // onSearch={(value) => {
+        //   const pathname = window.location.pathname.split('/');
+        //   if (pathname[1] === 'search' && pathname.length === 3) {
+        //     router.replace(`/search/${pathname[2]}?q=${value}`)
+        //   }
+        //   else {
+        //     router.replace(`/search?q=${value}`);
+        //   }
+        // }}
         onSearch={(value) => {
+          console.log(value)
+        }}
+        onPressEnter={(value) => {
           const pathname = window.location.pathname.split('/');
           if (pathname[1] === 'search' && pathname.length === 3) {
             router.replace(`/search/${pathname[2]}?q=${value}`)
@@ -39,9 +51,6 @@ const GlobalHeaderRight = (props) => {
           else {
             router.replace(`/search?q=${value}`);
           }
-        }}
-        onPressEnter={() => {
-
         }}
 
       />
