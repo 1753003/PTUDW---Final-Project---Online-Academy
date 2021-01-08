@@ -131,7 +131,6 @@ const SearchPage = ({
                   <Row type='flex' justify='start' gutter={[8, 8]}>
                     <Col>
                     <img className={styles.cover}
-                      width={272}
                       alt="cover"
                       src={item.URL}
                     />
