@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader, Rate, Tag } from 'antd';
-
+import styles from './index.less';
 import Course from '@/components/Course';
 import { connect } from 'dva';
 
@@ -15,7 +15,63 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
     dispatch({ type: 'course/getTrending' });
     dispatch({ type: 'category/getHot' });
   }, []);
+  const quote =(q1,q2,q3)=> (<div className={styles.quote}>
+    <Divider />
+<Row type='flex' justify="space-between" align="center" className="note" style={{ marginTop: "25px" }} gutter={16}>
+  <Col span={9}>
+    <Row justify="center" align="center">
+      <Col span={4}>
+        <Icon type="database" style={{ fontSize: '48px', textAlign: 'center' }} />
+      </Col>
+      <Col span={20}>
+        <Typography>{q1}</Typography>
+      </Col>
+    </Row>
+  </Col>
+  <Col span={8}>
+    <Row>
+      <Col span={4}>
+        <Icon type="safety-certificate" style={{ fontSize: '48px', textAlign: 'center' }} />
+      </Col>
+      <Col span={20}>
+        <Typography>{q2}</Typography>
+      </Col>
+    </Row>
+  </Col>
+  <Col span={7}>
+    <Row>
+      <Col span={5}>
+        <Icon type="clock-circle" style={{ fontSize: '48px', textAlign: 'center' }} />
+      </Col>
+      <Col span={19}>
+        <Typography>{q3}</Typography>
+      </Col>
+    </Row>
+  </Col>
+</Row>
 
+<Divider />
+  </div>) 
+  const extraInfo = (img, title, description) => (<div className={styles.extraInfo}>
+    <Divider />
+          <Row type='flex' justify='space-around' align='middle'>
+          <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+            <img
+            className = {styles.cover}
+            src={img}>
+            </img>
+          </Col>
+            <Col className={styles.extras} xs={10} sm={10} md={10} lg={10} xl={10}>
+            <h3>
+            {title}
+            </h3>
+            <p>
+            {description}
+            </p>
+            </Col>
+          </Row>
+    <Divider />
+  </div>)
   return (
     <Row type='flex' justify='center' align='middle'>
       <Col span={20}>
@@ -48,54 +104,24 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                 </Row>
               ))}
           </Carousel>
-          <Row className="note" style={{ marginTop: "25px" }}>
-            <Col span={9}>
-              <Row justify="center" align="center">
-                <Col span={4}>
-                  <Icon type="pie-chart" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={8}>
-              <Row>
-                <Col span={4}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={7}>
-              <Row>
-                <Col span={5}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={19}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Divider />
+          {quote(<div>Find video courses on almost any topic <br /> Build your library for your career and personal growth</div>,<div>Learn from industry experts<br /> Select from top instructors around the world</div>,<div>Go at your own pace<br />Enjoy lifetime access to courses on Pondemy’s website</div>)}
           <div className="trending-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>Most Views Courses</Title>
             <List
               grid={{ gutter: 10, xs: 1,
                 sm: 2,
                 md: 2,
-                lg: 3,
+                lg: 4,
                 xl: 4,
                 xxl: 6, }}
-              dataSource={listNew}
+              pagination={{
+                size: 'small',
+                defaultPageSize: 4,
+              }}
+              dataSource={listTrending}
               renderItem={item => (
                 <List.Item onClick={() => {
+                  console.log('item',item)
                   history.push({
                     pathname: `/detail`,
                     query: {
@@ -117,54 +143,20 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
             />
           </div>
  
-          <Divider />
-
-          <Row className="note" style={{ marginTop: "25px" }} gutter={16}>
-            <Col span={9}>
-              <Row justify="center" align="center">
-                <Col span={4}>
-                  <Icon type="pie-chart" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={8}>
-              <Row>
-                <Col span={4}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={7}>
-              <Row>
-                <Col span={5}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={19}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-           
-          <Divider />
+          {quote(<div>130,000 online courses <br /> Enjoy a variety of fresh topics</div>,<div>Expert instruction<br /> Find the right instructor for you</div>,<div>Lifetime access<br />Learn on your schedule</div>)}
           <div className="great-courses" style={{ marginTop: '50px' }}>
             <Title level={3}>New Courses</Title>
             <List
               grid={{ gutter: 10, xs: 1,
                 sm: 2,
                 md: 2,
-                lg: 3,
+                lg: 4,
                 xl: 4,
                 xxl: 6, }}
+              pagination={{
+                size: 'small',
+                defaultPageSize: 4,
+              }}
               dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
@@ -188,53 +180,21 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
               )}
             />
           </div>
-          <Divider />
-
-          <Row className="note" style={{ marginTop: "25px" }} gutter={16}>
-            <Col span={9}>
-              <Row justify="center" align="center">
-                <Col span={4}>
-                  <Icon type="pie-chart" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={8}>
-              <Row>
-                <Col span={4}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={20}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={7}>
-              <Row>
-                <Col span={5}>
-                  <Icon type="smile" style={{ fontSize: '48px', textAlign: 'center' }} />
-                </Col>
-                <Col span={19}>
-                  <Typography>130,000 online courses</Typography>
-                  <Typography>Enjoy a variety of fresh topics</Typography>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          <Divider />
-
+          {extraInfo("https://s.udemycdn.com/home/non-student-cta/udlite-lohp-promo-ufb.jpg","Transform your life through education"," Mohamad Alaloush launched a new career in software development by taking courses on Pondemy. What will you be able to do?")}
           <div className="categories" style={{ marginTop: '50px' }}>
             <Title level={3}>Top categories</Title>
             <List
               grid={{ gutter: 8, column: 4 }}
               dataSource={listHotCategory}
               renderItem={item => (
-                <List.Item>
+                <List.Item onClick={() => {
+                  history.push({
+                    pathname: `/search`,
+                    query: {
+                      q: item.name,
+                    },
+                  });
+                }}>
                     <Card
                       hoverable
                     cover={<img alt="example" src={item.backgroundURL} />}
@@ -245,6 +205,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
               )}
             />
           </div>
+          {extraInfo("https://s.udemycdn.com/home/non-student-cta/udlite-lohp-promo-teacher.jpg","Become an instructor","Top instructors from around the world teach millions of students on Udemy. We provide the tools and skills to teach what you love. Email us now at group7.17clc@gmail.com")}
         </PageHeader>
       </Col>
     </Row>

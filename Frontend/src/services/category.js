@@ -101,8 +101,7 @@ export function getListHotCategory() {
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT();
         })
     })
 }
@@ -117,8 +116,7 @@ export function getMenuCategory() {
         })
         .catch((error) => {
             // handle error
-            reject(error);
-            console.log(error);
+            getRFT();
         })
     })
 }

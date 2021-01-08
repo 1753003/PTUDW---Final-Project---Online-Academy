@@ -73,7 +73,10 @@ module.exports = {
     
   },
   async getRegisterCourseDetail(uid, cid){
-    return db('student_course').where({'studentID' :uid,'courseID':cid});
+    // return db('student_course').where({'studentID' :uid,'courseID':cid});
+    return db.raw(`select student_course.*, user.name as 'userName', user.avatarURL FROM
+    student_course left join user on studentID = user.id
+    where studentID = ? and courseID = ?`,[uid, cid])
   },
   async editRegisterCourse(uid,cid,data){
     const key = Object.keys(data);
