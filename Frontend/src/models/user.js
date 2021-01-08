@@ -1,4 +1,6 @@
-import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone, setProgress } from '@/services/user';
+import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, 
+  addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone, 
+  setProgress, queryEditProfile, resetEmailRequest, confirmCode } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -7,7 +9,8 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-    status: ''
+    status: '',
+    confirmStatus : false,
   },
   effects: {
     *resetPasswordConfirm(payload, { call, put }) {
@@ -22,6 +25,16 @@ const UserModel = {
     *resetPasswordRequest(payload, { call, put }) {
       // console.log('model')
       const response = yield call(resetRequest, payload.payload)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+
+      // router.replace('/');
+    },
+    *resetEmailRequest(payload, { call, put }) {
+      // console.log('model')
+      const response = yield call(resetEmailRequest, payload.payload)
       yield put({
         type: 'requestStatus',
         payload: response,
@@ -158,10 +171,37 @@ const UserModel = {
         payload: { status: 'UPLOADING' },
       });
     },
+    *editProfile(payload, { call, put }) {
+      // console.log('model')
+      console.log(payload.payload)
+      const response = yield call(queryEditProfile, payload.payload[0], payload.payload[1])
+      yield put({
+        type: 'requestEdit',
+        payload: response,
+      });
+      // router.replace('/');
+    },
+    *confirmCode(payload, { call, put }) {
+      // console.log('model')
+      console.log(payload.payload)
+      const response = yield call(confirmCode, payload.payload[0], payload.payload[1])
+      console.log("a");
+      yield put({
+        type: 'confirmCodeRequest',
+        payload: response,
+      });
+      // router.replace('/');
+    },
+    *confirmStatusFalse(_,{put}) {
+      yield put({
+        type: 'setConfirmStatusFalse'
+      })
+    }
   },
   reducers: {
     requestStatus(state, action) {
-      return { ...state, status: action.payload }
+      console.log(action.payload);  
+      return { ...state, status: action.payload.data }
     },
     saveCurrentUser(state, action) {
       console.log("bcd",action.payload);
@@ -171,7 +211,6 @@ const UserModel = {
       // console.log(state)
       return { ...state, currentUser: {} || {} };
     },
-
     changeNotifyCount(
       state = {
         currentUser: {},
@@ -207,6 +246,19 @@ const UserModel = {
     },
     setSingleRegistedCourse(state, { payload }) {
       return { ...state, singleRegistedCourse: payload[0] }
+    },
+    requestEdit(state, action) {
+      return { ...state, currentUser: action.payload }
+    },
+    confirmCodeRequest(state, action) {
+      console.log(action.payload.data)
+      return { ...state, confirmStatus: action.payload.data }
+    },
+    setConfirmStatusFalse(state) {
+      return {
+        ...state,
+        confirmStatus: false
+      }
     }
   },
 

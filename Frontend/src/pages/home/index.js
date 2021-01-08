@@ -16,49 +16,8 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
     dispatch({ type: 'category/getHot' });
   }, []);
 
-  const categories = [
-    {
-      'id': 1,
-      'title': 'Design',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 2,
-      'title': 'Marketing',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 3,
-      'title': 'Design',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 4,
-      'title': 'IT Software',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 5,
-      'title': 'Personal Development',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 6,
-      'title': 'Bussiness',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 7,
-      'title': 'Photography',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    },
-    {
-      'id': 8,
-      'title': 'Music',
-      'url': "https://s.udemycdn.com/home/top-categories/lohp-category-business.jpg"
-    }
-  ]
-  console.log(listHotCategory);
+  
+  console.log(listTrending);
   return (
     <Row type='flex' justify='center' align='middle'>
       <Col span={20}>
@@ -128,10 +87,15 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           </Row>
           <Divider />
           <div className="trending-courses" style={{ marginTop: '50px' }}>
-            <Title level={3}>Most Vỉewed Courses</Title>
+            <Title level={3}>Most Views Courses</Title>
             <List
-              grid={{ gutter: 10, column: 4 }}
-              dataSource={listTrending}
+              grid={{ gutter: 10, xs: 1,
+                sm: 2,
+                md: 2,
+                lg: 3,
+                xl: 4,
+                xxl: 6, }}
+              dataSource={listNew}
               renderItem={item => (
                 <List.Item onClick={() => {
                   history.push({
@@ -141,7 +105,10 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                     },
                   });
                 }}>
-                  <Course url={item.URL} title={item.name} author={item.author} price={item.price} 
+                  <Course
+                  url={item.URL}
+                  title={item.name}
+                  price={item.price} 
                   category={item.categoryName} 
                   lecturer={item.lecturerName}
                   salePrice={item.salePrice}

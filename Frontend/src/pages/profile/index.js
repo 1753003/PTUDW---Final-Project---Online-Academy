@@ -1,44 +1,155 @@
 /* eslint-disable max-classes-per-file */
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message, Drawer,
-     Popconfirm, Form } from 'antd';
+import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message, Modal,
+     Popconfirm, Form, PageHeader } from 'antd';
 import { connect } from 'dva';
 import { router } from 'umi';
 
-class Edit extends React.Component {
+class EmailInfo extends React.Component {
     state = { visible: false };
   
-    showDrawer = () => {
-      this.setState({
-        visible: true,
-      });
-    };
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+        this.props.sendCode()
+      };
   
-    onClose = () => {
-      this.setState({
+    handleOk = e => {
+        console.log(e);
+        this.setState({
         visible: false,
-      });
+        });
     };
-  
+    
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+          visible: false,
+        });
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+            this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log(values)
+                if (!this.getComponent())
+                    this.props.confirmCode(values.code);
+                else
+                {
+                    this.props.changeEmail(values);
+                    this.handleCancel();
+                    this.props.setConfirmFalse();
+                }
+            }
+        });
+    };
+
+    getEmail = () => {
+        const {email = ""} = this.props.currentUser;
+        return email;
+    }
+
+    getStatus = () => {
+        const {status = ""} = this.props;
+        return status;
+    }
+
+    getComponent = () => {
+        const {confirmStatus = false} = this.props;
+        console.log(confirmStatus);
+        return confirmStatus;
+    }
+
     render() {
-      return (
-        <div>
-          <Button type="primary" onClick={this.showDrawer}>
-            Edit
-          </Button>
-          <Drawer
-            title="Basic Drawer"
-            placement="right"
-            closable={false}
-            onClose={this.onClose}
-            visible={this.state.visible}
-          >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Drawer>
-        </div>
-      );
+        const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, setFieldsValue } = this.props.form;
+        const codeError = isFieldTouched('code') && getFieldError('code');
+        const emailError = isFieldTouched('email') && getFieldError('email');
+        return (
+            <Row>
+                <Row>
+                    <Col span={16}>                  
+                        <Input
+                            disabled="true"
+                            value={this.props.currentUser.email}
+                        />          
+                    </Col>
+                    <Col span={2}/>
+                    <Col span={6}>                                            
+                        <Button type="primary"
+                                onClick={this.showModal}
+                        >Edit</Button>                             
+                    </Col>
+                </Row>    
+                {!this.getComponent()
+                ?
+                (<Modal
+                    title={`${this.getStatus()  } Request`}
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                    ]}
+                    >
+                    <Form onSubmit={this.handleSubmit}>
+                    <h3>We have sent an email to you, please check it and enter the code in form below:</h3>
+                        <Form.Item 
+                                validateStatus={codeError ? 'error' : ''} help={codeError || ''}>
+                                {getFieldDecorator('code', {
+                                    rules: [{ required: true, message: 'Please input reset code!' }],
+                                    initialValue: 'CODE'
+                                    },
+                                    )(
+                                        <Input/>
+                                )}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button
+                                disabled={hasErrors(getFieldsError())}
+                                htmlType="submit"
+                                style={{ marginRight: 8 }}>
+                                Confirm
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal>                          
+                )
+                :
+                (
+                <Modal
+                    title="Success Confirm"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                    ]}
+                    >
+                    <Form onSubmit={this.handleSubmit}>
+                    <h3>Input your new email</h3>
+                        <Form.Item 
+                                validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
+                                {getFieldDecorator('email', {
+                                    rules: [{ required: true, message: 'Please input your email!' }],
+                                    initialValue: this.props.currentUser.email
+                                    },
+                                    )(
+                                        <Input/>
+                                )}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button
+                                disabled={hasErrors(getFieldsError())}
+                                htmlType="submit"
+                                style={{ marginRight: 8 }}>
+                                Confirm
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal> 
+                )}
+            </Row>
+        )
     }
 }
 
@@ -63,8 +174,8 @@ class NameInfo extends React.Component {
         e.preventDefault();
             this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 this.save()
+                this.props.editName(values);
             }
         });
     };
@@ -152,8 +263,10 @@ class NameInfo extends React.Component {
 }
 
 const WrappedName = Form.create({ name: 'horizontal_login' })(NameInfo);
+const WrappedEmail = Form.create({ name: 'email_info'})(EmailInfo);
 
-const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, registedCourses, deleteFavoriteStatus }) => {
+const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, registedCourses, 
+    deleteFavoriteStatus, status, confirmStatus }) => {
     const [menuKey, setMenuKey] = useState('profile');
 
     // useEffect
@@ -222,7 +335,20 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                             <Card title="Manage your profile">
                                 <div>         
                                     <Typography>Name</Typography>
-                                    <WrappedName currentUser={currentUser}/>                                 
+                                    <WrappedName currentUser={currentUser} 
+                                            editName = {(values) => dispatch({type: 'user/editProfile', 
+                                        payload:[currentUser.id, values]})}/>   
+                                    <Typography>Email</Typography>
+                                    <WrappedEmail currentUser={currentUser}
+                                            status={status}
+                                            confirmStatus={confirmStatus}
+                                            sendCode = {() => dispatch({type: 'user/resetEmailRequest',
+                                                payload:currentUser.id})} 
+                                            confirmCode = {(code) => dispatch({type: 'user/confirmCode',
+                                                payload: [currentUser.id, code]})}
+                                            changeEmail = {(values) => dispatch({type: 'user/editProfile',
+                                                payload: [currentUser.id ,values]})} 
+                                            setConfirmFalse = {() => dispatch({type: 'user/confirmStatusFalse'})}/>                              
                                 </div>
                             </Card>
                         }
@@ -298,7 +424,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                             });
                                             progress=Number(((count/item.sylabus.length)*100).toFixed(2));;
                                         }
-                                        return (
+                                        return ( 
                                             <List.Item
                                                 key={item.title}
                                             >
@@ -316,7 +442,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                                         <Typography.Title level={4}>{item.name}</Typography.Title>
                                                         <Typography>{item.briefDescription}</Typography>
                                                         <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
-                                                        <Progress percent={progress} />
+                                                        <Progress percent={progress} active/>
                                                     </Col>
                                                 </Row>
                                             </List.Item>
@@ -338,5 +464,7 @@ export default connect(({ user }) => ({
     currentUser: user.currentUser,
     favoriteCourses: user.favoriteCourses,
     registedCourses: user.registedCourses,
-    deleteFavoriteStatus: user.deleteFavoriteStatus
+    deleteFavoriteStatus: user.deleteFavoriteStatus,
+    status: user.status,
+    confirmStatus: user.confirmStatus
 }))(Profile);
