@@ -128,7 +128,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
           </Row>
           <Divider />
           <div className="trending-courses" style={{ marginTop: '50px' }}>
-            <Title level={3}>Most Vỉewed Courses</Title>
+            <Title level={3}>Most Viewed Courses</Title>
             <List
               grid={{ gutter: 10, column: 4 }}
               dataSource={listTrending}
@@ -137,7 +137,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   history.push({
                     pathname: `/detail`,
                     query: {
-                      courseId: item.id,
+                      courseId: item.courseID,
                     },
                   });
                 }}>

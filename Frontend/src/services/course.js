@@ -258,3 +258,20 @@ export function updateCourse(id, newCourse) {
         })
     })
 }
+
+
+export function sendCommentToCourse( payload ) {
+    const { uid, cid, data } = payload;
+    return new Promise( (resolve, reject) => {
+        axios.patch(`/api/user/${uid}/courseRegister/${cid}`,data,{headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            reject(error);
+            getRFT();
+        })
+    })
+}

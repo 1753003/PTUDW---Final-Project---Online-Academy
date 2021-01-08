@@ -12,7 +12,10 @@ const { TextArea } = Input;
 const { SubMenu } = Menu;
 
 
-const Detail = ({ list, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus }) => {
+const Detail = ({ list, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus, sendCommentStatus }) => {
+    const [comment, setComment] = useState("");
+    const [rating, setRating] = useState(0);
+    const [loadingPage, setLoadingPage] = useState(false);
     useEffect(() => {
         const { query } = location;
         console.log(query);
@@ -24,8 +27,11 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     }, []);
 
     useEffect(() => {
-        console.log(detail)
-    },[detail]);
+        if(comment === '') {
+            setLoadingPage(loading);
+        }
+        console.log(loading);
+    }, [loading]);
 
     useEffect(() => {
         if (addToFavoriteStatus === "SUCCESS") {
@@ -37,6 +43,26 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
             dispatch({ type: 'user/resetStatus' });
         }
     }, [addToFavoriteStatus]);
+
+    useEffect(() => {
+        const { query } = location;
+        console.log(query);
+        const payload = {
+            id: query.courseId
+        }
+        if (sendCommentStatus === "SUCCESS") {
+            message.success('Send successfully');
+            dispatch({ type: 'course/resetStatus' });
+            dispatch({ type: 'course/getSingleCourse', payload });
+
+        }
+        if (sendCommentStatus === "FAIL") {
+            message.error('Add to Favorite fail');
+            // dispatch({ type: 'course/resetStatus' });
+            dispatch({ type: 'course/getSingleCourse', payload });
+
+        }
+    }, [sendCommentStatus]);
 
     useEffect(() => {
         if (registCourseStatus === "SUCCESS") {
@@ -82,8 +108,21 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
         dispatch({ type: 'user/registCourse', payload });
     }
 
+    const onSubmitClick = () => {
+        const { query } = location;
+        const payload = {
+            uid: currentUser?.id,
+            cid: query.courseId,
+            data: {
+                rate: rating,
+                comments: comment
+            }
+        }
+        dispatch({ type: 'course/sendComment', payload})
+    }
+
     return (
-        loading === true ? <PageLoading /> : <PageHeader loading={loading}>
+        (loadingPage) ? <PageLoading /> : <PageHeader>
             <Row gutter={24}>
                 <Col span={3} />
                 <Col span={12}>
@@ -115,7 +154,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
                     <div className="description" style={{ marginTop: '30px', marginRight: '30px', 'wordWrap': 'break-word' }}>
                         <Typography.Title level={3}>Description</Typography.Title>
-                        <div dangerouslySetInnerHTML={{__html: `${detail?.courseInfo?.detailDescription}`}} />
+                        <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
                     </div>
 
                     <div className="comment" style={{ marginTop: '50px' }}>
@@ -138,17 +177,21 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                     <List.Item.Meta
                                         avatar={<Avatar src={item.avatar} />}
                                         title={<a href={item.href}>{item.title}</a>}
-                                        description={<Rate disabled defaultValue={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
+                                        description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
-                                    {item.comments}
+                                    {item.comments?.split("\"")[1]}
                                 </List.Item>
                             )}
                         />
                         <Typography.Title level={4}>Write your comment here</Typography.Title>
-                        <Rate style={{ paddingBottom: "10px" }} />
-                        <Row>
-                            <Col span={20}><TextArea rows={1} /></Col>
-                            <Col span={4}><Button style={{ width: "100%" }}>Submit</Button></Col>
+                        <Rate style={{ paddingBottom: "10px" }} onChange={(value) => { setRating(value) }} />
+                        <Row gutter={16}>
+                            <Col span={20}>
+                                <TextArea rows={1} onChange={(e) => {
+                                    setComment(e.currentTarget.value);
+                                }} />
+                            </Col>
+                            <Col span={4}><Button style={{ width: "100%" }} type="primary" onClick={onSubmitClick}>Submit</Button></Col>
                         </Row>
                     </div>
 
@@ -207,7 +250,6 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                             <Typography><Icon type="download" /> 51 downloadable resources </Typography>
                             <Typography><Icon type="mobile" /> Access on mobile and TV </Typography>
                             <Typography><Icon type="safety-certificate" /> Certificate of completion </Typography>
-
                         </div>
                     </Card>
                 </Col>
@@ -224,5 +266,6 @@ export default connect(({ course, loading, user }) => ({
     detail: course.courseDetail,
     currentUser: user.currentUser,
     addToFavoriteStatus: user.addToFavoriteStatus,
-    registCourseStatus: user.registCourseStatus
+    registCourseStatus: user.registCourseStatus,
+    sendCommentStatus: course.sendCommentStatus
 }))(Detail);
