@@ -123,10 +123,8 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
     return (
         (loadingPage) ? <PageLoading /> : <PageHeader>
-            <Row gutter={24}>
-                <Col span={3} />
-                <Col span={12}>
-                    {/* <div>Hello {query.courseId}</div> */}
+            <Row type='flex' justify='space-around' gutter={24}>
+                <Col xs={{span:24}} lg={{span:16}} md={{span:24}}>
                     <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
                     <Typography.Title level={4}>Thong tin chi tiet</Typography.Title>
                     <Row align="center" style={{ display: 'flex', alignItems: 'center' }}>
@@ -157,7 +155,44 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
                     </div>
 
-                    <div className="comment" style={{ marginTop: '50px' }}>
+                    
+                </Col>
+                <Col >
+                    <Card
+                    className={styles.card}
+                        hoverable
+                        cover={<img
+                            alt="logo"
+                            src={detail?.courseInfo.URL}
+                        />}
+                    >
+                        <div className="Info">
+                            <Typography style={{ fontSize: "40px", fontWeight: 'bold' }}>{detail?.courseInfo.salePrice}$</Typography>
+                            <Typography.Text delete style={{ fontSize: "25px" }}>{detail?.courseInfo.price}$</Typography.Text>
+                            {
+                                currentUser.id ?
+                                    <div>
+                                        <Button type="primary" style={{ width: '100%', height: '50px', fontWeight: 'bold' }} onClick={handleAddToFavorite}>Add to Favorite</Button><br />
+                                        <Button style={{ width: '100%', height: '50px', color: '#1890ff', borderColor: '#1890ff', fontWeight: 'bold', marginTop: '10px' }} onClick={handleAddToRegister}>Enroll</Button>
+                                    </div> : null
+                            }
+
+                            <Typography style={{ textAlign: 'center' }}>30-Day Money-Back Guarantee</Typography>
+                            <Typography style={{ fontWeight: 'bold', fontSize: '18px' }}>This course includes:</Typography>
+                            <Typography><Icon type="play-circle" /> 2.5 hours on-demand video</Typography>
+                            <Typography><Icon type="file" /> 1 article</Typography>
+                            <Typography><Icon type="download" /> 51 downloadable resources </Typography>
+                            <Typography><Icon type="mobile" /> Access on mobile and TV </Typography>
+                            <Typography><Icon type="safety-certificate" /> Certificate of completion </Typography>
+                        </div>
+                    </Card>
+                </Col>
+            
+            </Row>
+            <Row type='flex' justify='start' align='stretch'>
+                <Col xs={{span:0}} lg={{span:2}} md={{span:2}}></Col>
+                <Col xs={{span:24}} lg={{span:15}} md={{span:20}}>
+                <div className="comment" style={{ marginTop: '50px' }}>
                         <Typography.Title level={3}>Student feedback</Typography.Title>
                         <List
                             itemLayout="vertical"
@@ -195,10 +230,15 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         </Row>
                     </div>
 
-                    <div className="great-courses" style={{ marginTop: '50px' }}>
+                    <div className="great-courses" style={{ marginTop: '50px' ,display:'block'}}>
                         <Typography.Title level={3}>Same</Typography.Title>
                         <List
-                            grid={{ gutter: 16, column: 3 }}
+                            grid={{ gutter: 16, xs: 1,
+                                sm: 2,
+                                md: 2,
+                                lg: 3,
+                                xl: 3,
+                                xxl: 4, }}
                             dataSource={detail?.courseRelate}
                             renderItem={item => (
 
@@ -220,39 +260,9 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                             )}
                         />
                     </div>
-
                 </Col>
-                <Col >
-                    <Card
-                    className={styles.card}
-                        hoverable
-                        cover={<img
-                            alt="logo"
-                            src={detail?.courseInfo.URL}
-                        />}
-                    >
-                        <div className="Info">
-                            <Typography style={{ fontSize: "40px", fontWeight: 'bold' }}>{detail?.courseInfo.salePrice}$</Typography>
-                            <Typography.Text delete style={{ fontSize: "25px" }}>{detail?.courseInfo.price}$</Typography.Text>
-                            {
-                                currentUser.id ?
-                                    <div>
-                                        <Button type="primary" style={{ width: '100%', height: '50px', fontWeight: 'bold' }} onClick={handleAddToFavorite}>Add to Favorite</Button><br />
-                                        <Button style={{ width: '100%', height: '50px', color: '#1890ff', borderColor: '#1890ff', fontWeight: 'bold', marginTop: '10px' }} onClick={handleAddToRegister}>Enroll</Button>
-                                    </div> : null
-                            }
+            
 
-                            <Typography style={{ textAlign: 'center' }}>30-Day Money-Back Guarantee</Typography>
-                            <Typography style={{ fontWeight: 'bold', fontSize: '18px' }}>This course includes:</Typography>
-                            <Typography><Icon type="play-circle" /> 2.5 hours on-demand video</Typography>
-                            <Typography><Icon type="file" /> 1 article</Typography>
-                            <Typography><Icon type="download" /> 51 downloadable resources </Typography>
-                            <Typography><Icon type="mobile" /> Access on mobile and TV </Typography>
-                            <Typography><Icon type="safety-certificate" /> Certificate of completion </Typography>
-                        </div>
-                    </Card>
-                </Col>
-                <Col span={4} />
             </Row>
         </PageHeader>
     )

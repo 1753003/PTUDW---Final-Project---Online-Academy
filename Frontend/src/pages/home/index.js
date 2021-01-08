@@ -55,13 +55,13 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
   const extraInfo = (img, title, description) => (<div className={styles.extraInfo}>
     <Divider />
           <Row type='flex' justify='space-around' align='middle'>
-          <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+          <Col xs={0} sm={0} md={4} lg={4} xl={4}>
             <img
             className = {styles.cover}
             src={img}>
             </img>
           </Col>
-            <Col className={styles.extras} xs={10} sm={10} md={10} lg={10} xl={10}>
+            <Col className={styles.extras} xs={24} sm={24} md={10} lg={10} xl={10}>
             <h3>
             {title}
             </h3>
