@@ -122,40 +122,47 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     }
 
     return (
-        (loadingPage) ? <PageLoading /> : <PageHeader>
+        (loadingPage) ? <PageLoading /> :
             <Row gutter={24}>
                 <Col span={3} />
                 <Col span={12}>
                     {/* <div>Hello {query.courseId}</div> */}
-                    <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
-                    <Typography.Title level={3}>Detail Infomation</Typography.Title>
-                    <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
-                        {detail?.courseInfo?.rating}
-                        <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
-                        <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
-                            ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
-                        </Typography.Text>
-                    </Row>
-                    <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
-                    <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
-                    <Typography><Icon type="global" /> English</Typography>
+                    <Typography.Title level={1} >{detail?.courseInfo?.name}</Typography.Title>
+
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                        <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+                            {detail?.courseInfo?.rating}
+                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
+                            <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
+                                ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
+                            </Typography.Text>
+                        </Row>
+                        <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
+                        <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
+                        <Typography><Icon type="global" /> English</Typography>
+                    </Card>
+                    
 
 
-                    <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
-                        <Typography.Title level={3}>Course content</Typography.Title>
-                        {
-                            detail?.courseSylabus?.map((item) =>
-                                <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
-                        }
+
+                    <div className="CardContent" style={{ marginTop: '30px' }}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Course Info</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                            {
+                                detail?.courseSylabus?.map((item) =>
+                                    <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
+                            }
+                        </Card>
                     </div>
 
-                    <div className="description" style={{ marginTop: '30px', marginRight: '30px', 'wordWrap': 'break-word' }}>
-                        <Typography.Title level={3}>Description</Typography.Title>
-                        <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
+                    <div className="description" style={{ marginTop: '30px', 'wordWrap': 'break-word' }}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Description</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                            <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
+                        </Card>
                     </div>
 
                     <div className="comment" style={{ marginTop: '50px' }}>
-                        <Typography.Title level={3}>Student feedback</Typography.Title>
+                        
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Reviews</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <List
                             itemLayout="vertical"
                             size="large"
@@ -172,28 +179,31 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                     key={item.title}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.avatar} />}
-                                        title={<a href={item.href}>{item.title}</a>}
+                                        avatar={<Avatar src={item.URL} size="large" />}
+                                        title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
                                     {item.comments?.split("\"")[1]}
                                 </List.Item>
                             )}
                         />
-                        <Typography.Title level={4}>Write your comment here</Typography.Title>
-                        <Rate style={{ paddingBottom: "10px" }} onChange={(value) => { setRating(value) }} />
-                        <Row gutter={16}>
-                            <Col span={20}>
-                                <TextArea rows={1} onChange={(e) => {
-                                    setComment(e.currentTarget.value);
-                                }} />
-                            </Col>
-                            <Col span={4}><Button style={{ width: "100%" }} type="primary" onClick={onSubmitClick}>Submit</Button></Col>
-                        </Row>
+                            <Typography.Title level={4}>Write your comment here</Typography.Title>
+                            <Rate style={{ paddingBottom: "10px" }} onChange={(value) => { setRating(value) }} />
+                            <Row gutter={16}>
+                                <Col span={20}>
+                                    <TextArea rows={1} onChange={(e) => {
+                                        setComment(e.currentTarget.value);
+                                    }} />
+                                </Col>
+                                <Col span={4}><Button style={{ width: "100%" }} type="primary" onClick={onSubmitClick}>Submit</Button></Col>
+                            </Row>
+                        </Card>
+                        
+                       
                     </div>
 
                     <div className="great-courses" style={{ marginTop: '50px' }}>
-                        <Typography.Title level={3}>Same</Typography.Title>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>You would like</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <List
                             grid={{ gutter: 16, column: 3 }}
                             dataSource={detail?.courseRelate}
@@ -216,6 +226,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                 </List.Item>
                             )}
                         />
+                        </Card>
                     </div>
 
                 </Col>
@@ -251,7 +262,6 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                 </Col>
                 <Col span={4} />
             </Row>
-        </PageHeader>
     )
 };
 
