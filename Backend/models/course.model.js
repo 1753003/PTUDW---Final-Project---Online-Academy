@@ -83,7 +83,7 @@ module.exports = {
     return await db.select(db.raw(`* from sylabus LEFT join course on sylabus.courseID = course.id WHERE course.id = ${id}`));
   },
   async review(id) {
-    return await db.select(db.raw(`course.*,student_course.*, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
+    return await db.select(db.raw(`course.*,student_course.*,user.avatarURL, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
   },
   async relate(id) {
     return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer"

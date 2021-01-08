@@ -38,6 +38,10 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
             message.success('Add to Favorite successfully');
             dispatch({ type: 'user/resetStatus' });
         }
+        if (addToFavoriteStatus === "EXISTED") {
+            message.info('Already in your favorite list');
+            dispatch({ type: 'user/resetStatus' });
+        }
         if (addToFavoriteStatus === "FAIL") {
             message.error('Add to Favorite fail');
             dispatch({ type: 'user/resetStatus' });
@@ -50,14 +54,23 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
         const payload = {
             id: query.courseId
         }
-        if (sendCommentStatus === "SUCCESS") {
+        if (sendCommentStatus === "AVAILABLE") {
             message.success('Send successfully');
             dispatch({ type: 'course/resetStatus' });
             dispatch({ type: 'course/getSingleCourse', payload });
 
         }
+        if (sendCommentStatus === "NOTAVAILABLE") {
+            message.warning('Review update');
+            dispatch({ type: 'course/resetStatus' });
+            dispatch({ type: 'course/getSingleCourse', payload });
+        }
+        if (sendCommentStatus === "NOTENROLL") {
+            message.error('Please enroll before reviewing course');
+            dispatch({ type: 'course/resetStatus' });
+        }
         if (sendCommentStatus === "FAIL") {
-            message.error('Add to Favorite fail');
+            message.error('Review fail.Please try again');
             // dispatch({ type: 'course/resetStatus' });
             dispatch({ type: 'course/getSingleCourse', payload });
 
@@ -67,6 +80,10 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     useEffect(() => {
         if (registCourseStatus === "SUCCESS") {
             message.success('Regist Course successfully');
+            dispatch({ type: 'user/resetStatus' });
+        }
+        if (registCourseStatus === "EXISTED") {
+            message.info('Already enrolled');
             dispatch({ type: 'user/resetStatus' });
         }
         if (registCourseStatus === "FAIL") {
@@ -124,45 +141,11 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
     return (
         (loadingPage) ? <PageLoading /> : <PageHeader>
-            <Row type='flex' justify='space-around' gutter={24}>
-                <Col xs={{span:24}} lg={{span:16}} md={{span:24}}>
-
-                    <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
-                    <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
-                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
-                        <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
-                            {detail?.courseInfo?.rating}
-                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
-                            <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
-                                ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
-                            </Typography.Text>
-                        </Row>
-                        <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
-                        <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
-                        <Typography><Icon type="global" /> English</Typography>
-                    </Card>
-                    </div>
-
-                    <div className="CardContent" style={{ marginTop: '30px', marginRight: '30px' }}>
-                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Sylabus</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
-                        {
-                            detail?.courseSylabus?.map((item) =>
-                                <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
-                        }
-                        </Card>
-                    </div>
-
-                    <div className="description" style={{ marginTop: '30px', marginRight: '30px', 'wordWrap': 'break-word' }}>
-                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
-                        <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
-                        </Card>
-                    </div>
-
-                    
-                </Col>
-                <Col >
+            <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
+            <Row type='flex' justify='start' gutter={24}>
+            <Col className={styles.card} xs={{span:24}}>
                     <Card
-                    className={styles.card}
+                    
                         hoverable
                         cover={<img
                             alt="logo"
@@ -190,11 +173,44 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         </div>
                     </Card>
                 </Col>
+                <Col xs={{span:24}} lg={{span:17}} md={{span:23}}>
+
+                    
+                    <div className="CardContent" style={{ marginTop: '30px', }}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                        <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
+                            {detail?.courseInfo?.rating}
+                            <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
+                            <Typography.Text style={{fontWeight:'normal',fontStyle: 'italic', fontSize:'10pt'}}>
+                                ({detail?.courseInfo?.numRate} ratings) {detail?.courseInfo?.views} students
+                            </Typography.Text>
+                        </Row>
+                        <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
+                        <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
+                        <Typography><Icon type="global" /> English</Typography>
+                    </Card>
+                    </div>
+
+                    <div className="CardContent" style={{ marginTop: '30px'}}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Sylabus</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                        {
+                            detail?.courseSylabus?.map((item) =>
+                                <ShowMore title={`Week ${item.week}`} info={item.lesson} />)
+                        }
+                        </Card>
+                    </div>
+
+                    <div className="description" style={{ marginTop: '30px','wordWrap': 'break-word' }}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                        <div dangerouslySetInnerHTML={{ __html: `${detail?.courseInfo?.detailDescription}` }} />
+                        </Card>
+                    </div>
+                </Col>
+                
             
-            </Row>
-            <Row type='flex' justify='start' align='stretch'>
-                <Col xs={{span:0}} lg={{span:2}} md={{span:2}}></Col>
-                <Col xs={{span:24}} lg={{span:15}} md={{span:21}}>
+            
+                {/* <Col xs={{span:0}} lg={{span:2}} md={{span:2}}></Col> */}
+                <Col xs={{span:24}} lg={{span:17}} md={{span:23}}>
                 <div className="comment" style={{ marginTop: '50px' }}>
                 <Card title={<Typography.Title level={3} style={{color: "white"}}>Reviews</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <List
@@ -206,12 +222,12 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                             }}
                             dataSource={detail?.courseReview}
                             renderItem={item => 
-                                item?.rate ? 
+                                item?.rate || item.rate == 0 ? 
                                 <List.Item
                                     key={item.username}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.URL} />}
+                                        avatar={<Avatar src={item.avatarURL} />}
                                         title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
@@ -221,7 +237,8 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         />
 
                         {currentUser.id&&<div>
-                        <Typography.Title level={4}>Write your comment here</Typography.Title>
+                        <Typography.Title level={4}>Write your comment here as {currentUser.name}</Typography.Title>
+
                         <Rate style={{ paddingBottom: "10px" }} onChange={(value) => { setRating(value) }} />
                         <Row gutter={16}>
                             <Col span={20}>
@@ -268,8 +285,6 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                         </Card>
                     </div>
                 </Col>
-            
-
             </Row>
         </PageHeader>
     )

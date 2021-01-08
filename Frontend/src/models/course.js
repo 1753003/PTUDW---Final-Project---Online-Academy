@@ -139,10 +139,12 @@ const courseModel = {
           type: 'sendCommentStatus',
           payload: 'LOADING',
         });
-        yield call(sendCommentToCourse, payload);
+        const response = yield call(sendCommentToCourse, payload);
+        let status = response.status
+        console.log('status', response.status)
         yield put({
           type: 'sendCommentStatus',
-          payload: 'SUCCESS',
+          payload: status,
         });
       } catch (err) {
         console.log(err);

@@ -99,15 +99,18 @@ const UserModel = {
       });
     },
     *registCourse({ payload }, { call, put }) {
+      // console.log('register', payload)
       yield put({
         type: 'registCourseStatus',
         payload: { status: 'UPLOADING' },
       });
       try {
-        yield call(addCourseToRegister, payload);
+        const response = yield call(addCourseToRegister, payload);
+        let status = response.data.available?'SUCCESS': 'EXISTED'
+        // console.log('status', response.data)
         yield put({
           type: 'registCourseStatus',
-          payload: { status: 'SUCCESS' },
+          payload: { status: status },
         });
       } catch (e) {
         yield put({
@@ -122,10 +125,13 @@ const UserModel = {
         payload: { status: 'UPLOADING' },
       });
       try {
-        yield call(addCourseToFavorite, payload);
+        const response = yield call(addCourseToFavorite, payload);
+        
+        let status = response.data.available?'SUCCESS': 'EXISTED'
+        console.log('res', status)
         yield put({
           type: 'addToFavoriteStatus',
-          payload: { status: 'SUCCESS' },
+          payload: { status: status},
         });
       } catch (e) {
         yield put({

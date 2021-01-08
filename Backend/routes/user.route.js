@@ -24,11 +24,25 @@ router.post('/', async function (req, res) {
 }),
 
 router.post('/:uid/review/:cid', async function(req, res){
-  let uid = req.params.uid;
-  let cid = req.params.cid;
-  let data = req.body;
-  userModel.editRegisterCourse(cid, uid, data);
-  res.status(200).json({});
+  // let uid = req.params.uid;
+  // let cid = req.params.cid;
+  // let data = req.body;
+  // userModel.editRegisterCourse(cid, uid, data);
+  // res.status(200).json({});
+  const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
+  let existed = false;
+  if (temp.length == 0)
+    existed = true;
+  console.log('asdgfkj',temp)
+  // if (existed ) {
+  //   try {
+  //     await userModel.courseRegister(req.params.uid, req.params.cid, req.body);
+  //   }
+  //   catch(err) {
+  //     console.log("ERROR:",err);
+  //   }
+  // }
+  res.status(201).json({available: existed});
 }),
 
 router.post('/:uid/favorite/:cid', async function(req, res){
@@ -49,13 +63,13 @@ router.post('/:uid/favorite/:cid', async function(req, res){
       console.log("ERROR:",err);
     }
   }
-  res.status(201).json({available: existed});
+  res.status(201).json({available: existed,temp});
 }),
 
 router.post('/:uid/courseRegister/:cid', async function(req, res){
   const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
   let available = false;
-  if (temp.length == 0)
+  if (temp[0].length == 0)
     available = true;
   console.log(temp,available)
   if (available ) {
@@ -66,7 +80,7 @@ router.post('/:uid/courseRegister/:cid', async function(req, res){
       console.log("ERROR:",err);
     }
   }
-  res.status(201).json({available});
+  res.status(201).json({available:available});
 });
 
 router.get('/:uid([0-9]+)', async function(req,res){
@@ -104,11 +118,29 @@ router.get('/:uid/courseRegister/:cid', async function(req, res){
   res.json(list);
 });
 router.patch('/:uid/courseRegister/:cid', async function(req, res){
-  const uid = req.params.uid || -1;
-  const cid = req.params.cid || -1;
-  const data = req.body
-  await userModel.editRegisterCourse(uid,cid,data);
-  res.status(201).json({id : uid});
+  const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
+  let existed = false;
+  if (temp[0].length > 0)
+    {
+    if (!(temp[0][0].rate == null && temp[0][0].comments == null)){
+      existed = true;
+    }
+  }
+  var status = existed?'NOTAVAILABLE':'AVAILABLE'
+  if (temp[0].length == 0){
+    status = 'NOTENROLL'
+  }
+  // console.log('asdgfkj',temp[0].length, temp[0])
+
+  if (status!= 'NOTENROLL' ) {
+    try {
+      await userModel.editRegisterCourse(req.params.uid, req.params.cid, req.body);
+    }
+    catch(err) {
+      console.log("ERROR:",err);
+    }
+  }
+  res.status(201).json({status: status});
 });
 
 router.patch('/:uid', async function(req, res){
