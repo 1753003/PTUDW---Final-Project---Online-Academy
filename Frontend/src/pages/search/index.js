@@ -1,3 +1,4 @@
+/* eslint-disable react/no-access-state-in-setstate */
 import React, {
   useEffect,
   useState
@@ -28,14 +29,121 @@ const {
   SubMenu
 } = Menu;
 
+class Filter extends React.Component {
+  state = {checkBox: [], checkedID: []}
+
+  constructor(props) {
+    super(props);
+    for (let i = 0; i < this.props.length; i+=1) {
+      this.state.checkBox[i] = false;
+    }
+    console.log(this.props);
+  }
+
+  getData = () => {
+    const {list = []} = this.props;
+    return list;
+  }
+
+  setTopic = (id) => {
+    const {checkedID} = this.state;
+    const temp = this.state.checkBox;
+    if (temp[id] === true)
+      temp[id] = false;
+    else
+    {
+      temp[id] = true;
+    }
+
+    this.getData().forEach(item => {
+      if (item.topic.id === id) {
+        item.children.forEach(i => {
+          if (temp[i.id] !== temp[id]) {
+            temp[i.id] = temp[id]
+            if (temp[id] === true) {
+              checkedID.push(i.id)
+            }
+            if (temp[id] === false) {
+              for (let j = 0; j < checkedID.length; j+=1) {
+                  if (checkedID[j] === i.id)
+                    checkedID.splice(j,1);
+              }
+            }
+          }
+        })
+      }
+    })
+
+    this.setState({
+      checkBox: temp,
+      checkedID
+    })
+
+    this.props.filterList(checkedID);
+    
+  }
+
+  setChildren = (id, idTopic) => {
+    const {checkBox, checkedID} = this.state;
+    if (checkBox[id] === false) {
+      checkBox[id] = true;
+      checkedID.push(id);
+    }
+    else {
+      checkBox[id] = false;
+      for (let j = 0; j < checkedID.length; j+=1) {
+        if (checkedID[j] === id)
+          checkedID.splice(j,1);
+    }
+      if (checkBox[idTopic] === true)
+        checkBox[idTopic] = false
+    }
+    this.setState({
+      checkBox
+    })
+    this.props.filterList(checkedID);
+  }
+
+  render() {
+    return (
+        <Menu
+          className={styles.filter}
+          style={{ maxWidth: 256}}
+          mode="inline"
+          theme="light"
+        >
+          {this.getData().map(item => {
+            return (
+              <SubMenu
+              key={item.topic.id}
+              title={
+                <Checkbox checked={this.state.checkBox[item.topic.id]} onChange={() => this.setTopic(item.topic.id)}>{item.topic.name}</Checkbox>
+              }
+              >
+                {
+                    item.children.map((i) =>
+                        <Menu.Item key={i.id}><Checkbox checked={this.state.checkBox[i.id]}
+                          onChange={() => {this.setChildren(i.id, item.topic.id)}}
+                        >{i.name}</Checkbox></Menu.Item>
+                    )
+                }
+              </SubMenu>
+            )
+          })}
+        </Menu>   
+    )
+  }
+}
 const SearchPage = ({
   loading,
   history,
   searchList,
   location,
-  dispatch
+  dispatch,
+  category
 }) => {
   const [searchKey, setSearchKey] = useState('');
+  const [list, setList] = useState([]);
   useEffect(() => {
     setSearchKey(location.query.q)
     const payload = {
@@ -50,46 +158,30 @@ const SearchPage = ({
   useEffect(() => {
     console.log(location.pathname.split('/')[2])
   }, [])
-  const topicList = [{
-      key: 1,
-      name: 'Web Development',
-      number: 5
-    },
-    {
-      key: 2,
-      name: 'JS',
-      number: 5
-    },
-    {
-      key: 3,
-      name: 'Python',
-      number: 5
-    },
-  ]
-  const filterMenu = (
-    <Menu
-      className={styles.filter}
-      style={{ maxWidth: 256}}
-      mode="inline"
-      theme="light"
-    >
-          <SubMenu
-              key="sub1"
-              title={
-                  <span>
-                      <Icon type="mail" />
-                      <span>Topic</span>
-                  </span>
-              }
-          >
-              {
-                  topicList.map((item) =>
-                      <Menu.Item key={item.key}><Checkbox>{item.name}({item.number})</Checkbox></Menu.Item>
-                  )
-              }
-          </SubMenu>
-        </Menu>
-  )
+
+  useEffect(() => {
+
+    setList(searchList);
+  }, [searchList])
+
+  
+
+  const result = [];
+  category.forEach(element => {
+    const temp = {};
+    if (element.idTopic == null) {
+      temp.topic = element;
+      temp.children = [];
+      category.forEach(item => {
+        if (item.idTopic === element.id) {
+          temp.children.push(item);
+        }
+      });
+      result.push(temp);
+    }
+  });
+
+ 
 
   return (
   <PageHeader className={styles.main}>
@@ -99,13 +191,37 @@ const SearchPage = ({
           type="info"
           showIcon
       />
-      <Popover content={filterMenu} placement="bottomLeft" trigger="click">
+      <Popover content=
+        {<Filter list={result} 
+                length={category.length} 
+                filterList={(value) => {searchList.filter(
+                  item => item.id !== value
+                )}}
+        />} placement="bottomLeft" trigger="click">
         <Button className={styles.filterButton}>
             <Icon type={'menu-unfold'} />Filter
         </Button>
       </Popover>
       <Row type='inline-block' justify='space-around' align='top' gutter={[32,0]}>
-        <Col span={6}><div className={styles.filterSide}>{filterMenu}</div></Col>
+        <Col span={6}><div className={styles.filterSide}>
+          {<Filter list={result} 
+              length={category.length}
+              filterList={(value) => {
+                console.log(value);
+                if (value.length === 0)
+                  setList(searchList)
+                else {
+                  const newList = [];
+                  for (let i = 0; i < searchList.length; i+=1) {
+                    value.forEach(item => {
+                    if (searchList[i].categoryID === item)
+                      newList.push(searchList[i])
+                  })
+                  setList(newList)
+                }
+              }              
+          }}
+          />}</div></Col>
         <Col xs={{span:24}} lg={{span:18}} md={{span:24}}>
         <List
             itemLayout="vertical"
@@ -113,7 +229,7 @@ const SearchPage = ({
             pagination={{
                 pageSize: 10,
             }}
-            dataSource={searchList}
+            dataSource={list}
             renderItem={item => (
                 <List.Item
                     key={item.title} 
@@ -165,9 +281,10 @@ const SearchPage = ({
 
 
 export default connect(({
-  course
+  course, category
 }) => ({
   list: course.list,
   searchList: course.searchList,
-  loading: course.loading
+  loading: course.loading,
+  category: category.list
 }))(SearchPage);
