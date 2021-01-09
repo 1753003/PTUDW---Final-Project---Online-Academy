@@ -105,6 +105,11 @@ class Filter extends React.Component {
     this.props.filterList(checkedID);
   }
 
+  handleOnclick=(e) =>{
+    // e.preventDefault()
+    // console.log('ee', e)
+
+  }
   render() {
     return (
         <Menu
@@ -116,15 +121,16 @@ class Filter extends React.Component {
           {this.getData().map(item => {
             return (
               <SubMenu
+              onTitleClick={(event)=>this.handleOnclick(event)}
               key={item.topic.id}
               title={
-                <Checkbox checked={this.state.checkBox[item.topic.id]} onChange={() => this.setTopic(item.topic.id)}>{item.topic.name}</Checkbox>
+                <Checkbox  checked={this.state.checkBox[item.topic.id]} onChange={() => {this.setTopic(item.topic.id)}}>{item.topic.name}</Checkbox>
               }
               >
                 {
                     item.children.map((i) =>
                         <Menu.Item key={i.id}><Checkbox checked={this.state.checkBox[i.id]}
-                          onChange={() => {this.setChildren(i.id, item.topic.id)}}
+                          onChange={(e) => {this.setChildren(i.id, item.topic.id)}} 
                         >{i.name}</Checkbox></Menu.Item>
                     )
                 }

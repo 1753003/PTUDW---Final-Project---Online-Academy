@@ -45,6 +45,11 @@ export function getListCategory() {
         .catch((error) => {
             // handle error
             getRFT()
+            axios.get('/api/category', {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
         })
     })
 }
@@ -93,7 +98,7 @@ export function addCategory(newName, topic) {
 
 export function getListHotCategory() {
     return new Promise( (resolve, reject) => {
-        axios.get('/api/category/getHot',
+        axios.get('/api/category/hot',
         {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success

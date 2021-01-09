@@ -29,7 +29,7 @@ class SecurityLayout extends React.Component {
     // console.log(isLogin)
     // console.log(typeof(isLogin))
     // console.log(isLogin, accessToken, refreshToken)
-    
+    dispatch({ type: 'category/get' })
     if(isLogin.includes("true")){
       if(typeof(refreshToken)=='undefined')
       dispatch({
@@ -44,7 +44,7 @@ class SecurityLayout extends React.Component {
         type: 'user/fetchCurrent',
         payload: userData
       });
-      dispatch({ type: 'category/get' })
+      
     }
   }
 
