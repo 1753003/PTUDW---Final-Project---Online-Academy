@@ -165,7 +165,7 @@ const UserModel = {
       const response = yield call(getRegistedCourseById, payload);
       yield put({
         type: 'setSingleRegistedCourse',
-        payload: response,
+        payload: response[0],
       });
     },
     *setCourseProgress({ payload }, { call, put }) {
