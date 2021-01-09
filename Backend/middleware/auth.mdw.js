@@ -7,9 +7,6 @@ module.exports = function (req, res, next) {
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['x-access-token'];
   const aToken = req.headers['Cookie'];
-  //console.log('cookie',req.cookies)
-  
-  console.log(accessToken);
   if(req.method == "POST" && req.originalUrl =='/api/user'){
     next()
   }
@@ -18,10 +15,11 @@ module.exports = function (req, res, next) {
   }
   else if(accessToken == 'undefined' || accessToken == undefined){
     if(req.method == "GET" && link.includes('course')){
+      console.log('course no token', link );
       next()
     }
     if(req.method == "GET" && link.includes('category')){
-      console.log('GUEST', req.method );
+      console.log('category no token', link);
       next()
     }
     if(req.method == "POST" && link.includes('forgotPassword')){

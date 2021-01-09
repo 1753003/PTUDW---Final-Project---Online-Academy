@@ -147,7 +147,7 @@ const BasicLayout = (props) => {
     <ProLayout
       logo={logo}
       menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
+        <Link to={authorized.authority.includes('admin')?"/admin":"/"}>
           {logoDom}
           {titleDom}
         </Link>

@@ -60,8 +60,10 @@ class RegisterForm extends React.Component {
     const emailError = isFieldTouched('email') && getFieldError('email');
     const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
     let msg = ""
-    // console.log('status', status.data.signup)
-    if (status !='' && status.data.signup ==='failed') msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)
+    console.log('ee', status)
+    if (status !='' &&status&&status.signup ) {
+      console.log('ee', status.signup=='failed')
+      msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)}
     return (
       <div className={styles.main}>
       <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">

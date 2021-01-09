@@ -10,8 +10,9 @@ module.exports = {
       FROM student_course INNER JOIN course on courseID = course.id
       LEFT JOIN category on categoryID = category.id
       GROUP by categoryID ORDER by count DESC LIMIT 10`);
-      console.log(res[0]);
-      return res[0];
+      // console.log(res[0]);
+
+      return res;
     },
 
     async getById(id) {

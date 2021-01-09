@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 
-db.on('query', console.log)
+// db.on('query', console.log)
 module.exports = {
   async getAll() {
     return await db.raw(`select course.*, category.name as categoryName
@@ -24,7 +24,7 @@ module.exports = {
     await db('course').where('id', id).del();
   },
   async updateById(id, data) {
-    const upadteDb = await db('course').where('id', id).update({
+    const form = {
       name: data.name,
       price: data.price,
       salePrice: data.salePrice,
@@ -32,7 +32,13 @@ module.exports = {
       detailDescription: data.detailDescription,
       saleInformation: data.saleInformation,
       status: data.status
-    });
+    }
+    if ( data.views ) {
+      form.views = data.views;
+    }
+
+    console.log(data);
+    return await db('course').where('id', id).update(form);
   },
   async searchByKeyword(keyword) {
     return await db.raw(`(SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views

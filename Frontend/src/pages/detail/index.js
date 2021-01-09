@@ -27,6 +27,26 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
     }, []);
 
     useEffect(() => {
+        if(detail) {
+            const { query } = location;
+            const payload = {
+                id: query.courseId,
+                courseData: {
+                    name: detail?.courseInfo.name,
+                    price: detail?.courseInfo.price,
+                    salePrice: detail?.courseInfo.salePrice,
+                    briefDescription: detail?.courseInfo.briefDescription,
+                    detailDescription: detail?.courseInfo.detailDescription,
+                    saleInformation: detail?.courseInfo.saleInformation,
+                    status: detail?.courseInfo.status,
+                    views: detail?.courseInfo.views + 1,
+                }
+            }
+            dispatch({ type: 'course/updateViews', payload });
+        }
+        
+    },[detail])
+    useEffect(() => {
         if(comment === '') {
             setLoadingPage(loading);
         }
@@ -234,7 +254,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                     key={item.username}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.avatarURL} />}
+                                        avatar={<Avatar src={item.avatarURL?item.avatarURL:null} >{item?.username[0].toUpperCase()}</Avatar>}
                                         title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />

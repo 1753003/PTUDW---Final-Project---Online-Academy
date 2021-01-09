@@ -56,7 +56,7 @@ const UserModel = {
     *register(payload, { call, put }) {
       // console.log('payload',payload)
       const response = yield call(add, payload);
-      console.log('asdhfgjhs',response.data.signup)
+      // console.log('asdhfgjhs',response.data.signup)
       yield put({
         type: 'requestStatus',
         payload: response,
@@ -65,7 +65,9 @@ const UserModel = {
       //   type: 'save',
       //   payload: response,
       // });
-      // router.replace('/');
+      var redirectHome = response.data.signup?response.data.signup:"success"
+      if(redirectHome == 'success')
+        router.push('/user/login')
       return response;
     },
     *fetchCurrent( payload , { call, put }) {

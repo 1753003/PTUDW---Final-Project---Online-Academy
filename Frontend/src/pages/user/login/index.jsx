@@ -134,9 +134,9 @@ class Login extends Component {
           </Submit>
           <div className={styles.other}>
             <FormattedMessage id="user-login.login.sign-in-with" />
-            <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
-            <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
-            <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
+            <Icon type="google" className={styles.icon} theme="outlined" />
+            <Icon type="facebook" className={styles.icon} theme="outlined" />
+            <Icon type="apple" className={styles.icon} theme="outlined" />
             <Link className={styles.register} to="/user/register">
               <FormattedMessage id="user-login.login.signup" />
             </Link>

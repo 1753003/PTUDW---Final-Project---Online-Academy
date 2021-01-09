@@ -133,6 +133,13 @@ const courseModel = {
         });
       }
     },
+    *updateViews({payload}, { call }) {
+      try {
+        yield call(updateCourse(payload.id, payload.courseData));
+      } catch (err) {
+        console.log(err);
+      }
+    },
     *sendComment({ payload }, { call, put }) {
       try {
         yield put({
