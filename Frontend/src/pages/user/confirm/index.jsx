@@ -84,7 +84,7 @@ class ConfirmPasswordForm extends Component {
     return (
       this.state.change ? 
       (
-        <Redirect to={`/user/login`} />
+        <Redirect to="/user/login" />
       )
       :
       (

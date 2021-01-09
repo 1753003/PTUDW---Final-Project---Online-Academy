@@ -147,7 +147,8 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   rating={item.rating}
                   numRate={item.numRate}
                   isHot={listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)}
-                  isNew = {(Date.now() - Date.parse(item.createdDate)<604800001*4)}/>
+                  isNew = {(Date.now() - Date.parse(item.createdDate)<604800001*4)}
+                  status={item.status}/>
                 </List.Item>
               )}
             />
@@ -187,7 +188,8 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                   rating={item.rating}
                   numRate={item.numRate}
                   isHot={listHot&&Array.from(listHot, x => x.courseID).includes(item.id)}
-                  isNew = {true}/>
+                  isNew = "True"
+                  status={item.status}/>
                 </List.Item>
               )}
             />
