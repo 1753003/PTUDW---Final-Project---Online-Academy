@@ -460,11 +460,12 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
 };
 
 
-export default connect(({ user }) => ({
+export default connect(({ user, loading }) => ({
     currentUser: user.currentUser,
     favoriteCourses: user.favoriteCourses,
     registedCourses: user.registedCourses,
     deleteFavoriteStatus: user.deleteFavoriteStatus,
     status: user.status,
+    loading: loading.effects['user/fetchCurrentRegister'],
     confirmStatus: user.confirmStatus
 }))(Profile);
