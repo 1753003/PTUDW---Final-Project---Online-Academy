@@ -170,11 +170,12 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
         </Col>
       </Row>
             <Row type='flex' justify='start' gutter={24}>
-            <Col className={styles.card} xs={{span:24}}>
+            <Col className={styles.card} xs={{span:24}} md={{span:24}} sm={{span:24}}>
                     <Card
-                    
+                    className={styles.card}
                         hoverable
                         cover={<img
+                            className={styles.covercard}
                             alt="logo"
                             src={detail?.courseInfo.URL}
                         />}
