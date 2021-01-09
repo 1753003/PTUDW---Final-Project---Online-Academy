@@ -1,6 +1,7 @@
 import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, 
-  addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone, 
-  setProgress, queryEditProfile, resetEmailRequest, confirmCode } from '@/services/user';
+  addCourseToFavorite, delFavoriteCourse, resetPasswordRequest, resetConfirm, getRegistedCourseById, setDone, 
+  setProgress, queryEditProfile, resetEmailRequest, confirmCode, changePassword, resetRequest,
+  confirmCodeWithEmail, changePasswordWithEmail } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -23,6 +24,16 @@ const UserModel = {
       // router.replace('/');
     },
     *resetPasswordRequest(payload, { call, put }) {
+      // console.log('model')
+      const response = yield call(resetPasswordRequest, payload.payload)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+
+      // router.replace('/');
+    },
+    *forgotPasswordRequest(payload, { call, put }) {
       // console.log('model')
       const response = yield call(resetRequest, payload.payload)
       yield put({
@@ -191,7 +202,17 @@ const UserModel = {
       // console.log('model')
       console.log(payload.payload)
       const response = yield call(confirmCode, payload.payload[0], payload.payload[1])
-      console.log("a");
+      yield put({
+        type: 'confirmCodeRequest',
+        payload: response,
+      });
+      // router.replace('/');
+    },
+    *confirmCodeWithEmail(payload, { call, put }) {
+      // console.log('model')
+      console.log(payload.payload)
+      const response = yield call(confirmCodeWithEmail, payload.payload[0], payload.payload[1])
+      console.log(response)
       yield put({
         type: 'confirmCodeRequest',
         payload: response,
@@ -202,11 +223,17 @@ const UserModel = {
       yield put({
         type: 'setConfirmStatusFalse'
       })
-    }
+    },
+    *changePassword(payload, { call, put }) {
+      yield call(changePassword, payload.payload[0], payload.payload[1]);
+    },
+    *changePasswordWithEmail(payload, { call }) {
+      yield call(changePasswordWithEmail, payload.payload[0], payload.payload[1]);
+    },
   },
   reducers: {
     requestStatus(state, action) {
-      console.log(action.payload);  
+      console.log(action.payload.data);  
       return { ...state, status: action.payload.data }
     },
     saveCurrentUser(state, action) {

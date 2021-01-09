@@ -1,9 +1,13 @@
 /* eslint-disable max-classes-per-file */
 import React, { useEffect, useState } from 'react';
 import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress, message, Modal,
-     Popconfirm, Form, PageHeader } from 'antd';
+     Popconfirm, Form, Divider, Alert } from 'antd';
 import { connect } from 'dva';
 import { router } from 'umi';
+
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 
 class EmailInfo extends React.Component {
     state = { visible: false };
@@ -13,6 +17,7 @@ class EmailInfo extends React.Component {
           visible: true,
         });
         this.props.sendCode()
+        message.success("Sent code");
       };
   
     handleOk = e => {
@@ -34,10 +39,16 @@ class EmailInfo extends React.Component {
             this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
-                if (!this.getComponent())
+                if (!this.getComponent()) {
                     this.props.confirmCode(values.code);
+                    message
+                    .loading('Confirming', 1)
+                    .then(() => message.success('Confirmed', 2.5))
+                }
                 else
                 {
+                    message
+                        .success('Change email successfully', 2.5)
                     this.props.changeEmail(values);
                     this.handleCancel();
                     this.props.setConfirmFalse();
@@ -98,7 +109,7 @@ class EmailInfo extends React.Component {
                                 validateStatus={codeError ? 'error' : ''} help={codeError || ''}>
                                 {getFieldDecorator('code', {
                                     rules: [{ required: true, message: 'Please input reset code!' }],
-                                    initialValue: 'CODE'
+                                    initialValue: ''
                                     },
                                     )(
                                         <Input/>
@@ -153,8 +164,167 @@ class EmailInfo extends React.Component {
     }
 }
 
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
+class PasswordInfo extends React.Component {
+    state = { visible: false };
+  
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+        this.props.sendCode()
+        message.success("Sent code");
+      };
+  
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+        visible: false,
+        });
+    };
+    
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+          visible: false,
+        });
+        this.props.setConfirmFalse();
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+            this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log(values)
+                if (!this.getComponent()) {
+                    message.loading('Confirming', this.props.confirmCode(values.code))
+                    message.success('Confirmed', 2.5);
+                }
+                else
+                if (values.password1 !== values.password2) {
+                        message.error("Passwords do not match!");
+                    } else {
+                        message.success("Change password successfully");
+                        this.props.changePassword(values.password1);
+                        this.handleCancel();
+                        this.props.setConfirmFalse();
+                    }
+            }
+        });
+    };
+
+    getStatus = () => {
+        const {status = ""} = this.props;
+        return status;
+    }
+
+    getComponent = () => {
+        const {confirmStatus = false} = this.props;
+        console.log(confirmStatus);
+        return confirmStatus;
+    }
+
+    render() {
+        const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, setFieldsValue } = this.props.form;
+        const codeError = isFieldTouched('code') && getFieldError('code');
+        const passwordError = isFieldTouched('password') && getFieldError('password');
+        const newPasswordError = isFieldTouched('newPassword') && getFieldError('newPassword');
+        return (
+            <Row>
+                <Row>
+                    <Col span={16}>                  
+                        <Input
+                            disabled="true"
+                            value="******"
+                        />          
+                    </Col>
+                    <Col span={2}/>
+                    <Col span={6}>                                            
+                        <Button type="primary"
+                                onClick={this.showModal}
+                        >Change password</Button>                             
+                    </Col>
+                </Row>    
+                {!this.getComponent()
+                ?
+                (<Modal
+                    title={`${this.getStatus()  } Request`}
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                    ]}
+                    >
+                    <Form onSubmit={this.handleSubmit}>
+                    <h3>We have sent an email to you, please check it and enter the code in form below:</h3>
+                        <Form.Item 
+                                validateStatus={codeError ? 'error' : ''} help={codeError || ''}>
+                                {getFieldDecorator('code', {
+                                    rules: [{ required: true, message: 'Please input reset code!' }],
+                                    initialValue: ''
+                                    },
+                                    )(
+                                        <Input/>
+                                )}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button
+                                disabled={hasErrors(getFieldsError())}
+                                htmlType="submit"
+                                style={{ marginRight: 8 }}>
+                                Confirm
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal>                          
+                )
+                :
+                (
+                <Modal
+                    title="Success Confirm"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                    ]}
+                    >
+                    <Form onSubmit={this.handleSubmit}>
+                        <h3>Input your new password</h3>
+                        <Form.Item 
+                                validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
+                                {getFieldDecorator('password1', {
+                                    rules: [{ required: true, message: 'Please input your new password!' }],
+                                    initialValue: ''
+                                    },
+                                    )(
+                                        <Input/>
+                                )}
+                        </Form.Item>
+                        <h3>Confirm your new password</h3>
+                        <Form.Item 
+                                validateStatus={newPasswordError ? 'error' : ''} help={newPasswordError || ''}>
+                                {getFieldDecorator('password2', {
+                                    rules: [{ required: true, message: 'Please retype your new password!' }],
+                                    initialValue: ''
+                                    },
+                                    )(
+                                        <Input/>
+                                )}
+                        </Form.Item>
+                       
+                        <Form.Item>
+                            <Button
+                                disabled={hasErrors(getFieldsError())}
+                                htmlType="submit"
+                                style={{ marginRight: 8 }}>
+                                Confirm
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal> 
+                )}
+            </Row>
+        )
+    }
 }
 
 class NameInfo extends React.Component {
@@ -264,6 +434,7 @@ class NameInfo extends React.Component {
 
 const WrappedName = Form.create({ name: 'horizontal_login' })(NameInfo);
 const WrappedEmail = Form.create({ name: 'email_info'})(EmailInfo);
+const WrappedPassword = Form.create({ name: 'password_info'})(PasswordInfo);
 
 const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, registedCourses, 
     deleteFavoriteStatus, status, confirmStatus }) => {
@@ -349,6 +520,18 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                             changeEmail = {(values) => dispatch({type: 'user/editProfile',
                                                 payload: [currentUser.id ,values]})} 
                                             setConfirmFalse = {() => dispatch({type: 'user/confirmStatusFalse'})}/>                              
+                                    <Divider />
+                                    <Typography>Password</Typography>
+                                    <WrappedPassword currentUser={currentUser}
+                                            status={status}
+                                            confirmStatus={confirmStatus}
+                                            sendCode = {() => dispatch({type: 'user/resetPasswordRequest',
+                                                payload:currentUser.id})} 
+                                            confirmCode = {(code) => dispatch({type: 'user/confirmCode',
+                                                payload: [currentUser.id, code]})}
+                                            changePassword = {(values) => dispatch({type: 'user/changePassword',
+                                                payload: [currentUser.id ,values]})} 
+                                            setConfirmFalse = {() => dispatch({type: 'user/confirmStatusFalse'})} />
                                 </div>
                             </Card>
                         }

@@ -38,7 +38,10 @@ class Filter extends React.Component {
     for (let i = 0; i < this.props.length; i+=1) {
       this.state.checkBox[i] = false;
     }
-    console.log(this.props);
+  }
+
+  getCheck = () => {
+
   }
 
   getData = () => {
@@ -190,8 +193,6 @@ const SearchPage = ({
     setList(searchList);
   }, [searchList])
 
-  
-
   const result = [];
   category.forEach(element => {
     const temp = {};
@@ -220,9 +221,19 @@ const SearchPage = ({
       <Popover content=
         {<Filter list={result} 
                 length={category.length} 
-                filterList={(value) => {searchList.filter(
-                  item => item.id !== value
-                )}}
+                filterList={(value) => {
+                  if (value.length === 0)
+                    setList(searchList)
+                  else {
+                    const newList = [];
+                    for (let i = 0; i < searchList.length; i+=1) {
+                      value.forEach(item => {
+                      if (searchList[i].categoryID === item)
+                        newList.push(searchList[i])
+                    })
+                    setList(newList)
+                  }
+                }}}
         />} placement="bottomLeft" trigger="click">
         <Button className={styles.filterButton}>
             <Icon type={'menu-unfold'} />Filter
@@ -233,7 +244,6 @@ const SearchPage = ({
           {<Filter list={result} 
               length={category.length}
               filterList={(value) => {
-                console.log(value);
                 if (value.length === 0)
                   setList(searchList)
                 else {

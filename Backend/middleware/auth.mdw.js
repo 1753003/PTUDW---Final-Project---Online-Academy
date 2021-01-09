@@ -7,17 +7,17 @@ module.exports = function (req, res, next) {
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['x-access-token'];
   const aToken = req.headers['Cookie'];
-  console.log('cookie',req.cookies)
+  //console.log('cookie',req.cookies)
+  
+  console.log(accessToken);
   if(req.method == "POST" && req.originalUrl =='/api/user'){
-    console.log('wtf')
     next()
   }
   else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
     next()
   }
-  else if(accessToken == 'undefined'){
+  else if(accessToken == 'undefined' || accessToken == undefined){
     if(req.method == "GET" && link.includes('course')){
-      console.log('aToken undefined', req.method );
       next()
     }
     if(req.method == "GET" && link.includes('category')){
@@ -32,12 +32,8 @@ module.exports = function (req, res, next) {
       console.log('GUEST', req.method);
       next()
     }
-    if(req.method == "GET" && link.includes('category/getHot')){
-      console.log('GUEST', req.method );
-      next()
-    }
-    if(req.method == "GET" && link.includes('category/getMenu')){
-      console.log('GUEST', req.method );
+    if(req.method == "POST" && link.includes('changePasswordWithEmail')) {
+      console.log('GUEST', req.method);
       next()
     }
   }
