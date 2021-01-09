@@ -254,7 +254,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                     key={item.username}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.avatarURL} />}
+                                        avatar={<Avatar src={item.avatarURL?item.avatarURL:null} >{item?.username[0].toUpperCase()}</Avatar>}
                                         title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
