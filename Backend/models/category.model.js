@@ -5,6 +5,7 @@ module.exports = {
     },
 
     async getHot() {
+      console.log("AB")
       const res = await db.raw(`select categoryID, count(categoryID) as count, category.name, backgroundURL
       FROM student_course INNER JOIN course on courseID = course.id
       LEFT JOIN category on categoryID = category.id

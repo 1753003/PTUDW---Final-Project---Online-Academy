@@ -6,10 +6,8 @@ module.exports = function (req, res, next) {
   //here
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['x-access-token'];
-  console.log(accessToken)
-  // console.log('cookie',req.cookies)
+  const aToken = req.headers['Cookie'];
   if(req.method == "POST" && req.originalUrl =='/api/user'){
-    console.log('wtf')
     next()
   }
   else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
@@ -32,12 +30,8 @@ module.exports = function (req, res, next) {
       console.log('GUEST', req.method);
       next()
     }
-    if(req.method == "GET" && link.includes('category/getHot')){
-      console.log('GUEST', req.method );
-      next()
-    }
-    if(req.method == "GET" && link.includes('category/getMenu')){
-      console.log('GUEST', req.method );
+    if(req.method == "POST" && link.includes('changePasswordWithEmail')) {
+      console.log('GUEST', req.method);
       next()
     }
   }

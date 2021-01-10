@@ -32,6 +32,12 @@ router.get('/getMenu', async function(req, res) {
     })
     res.json(result);
 })
+
+router.get('/getHot', async function(req, res) { 
+    const result = await categoryModel.getHot();
+    res.json(result);
+})
+           
 router.get('/hot', async function(req, res) {
     const result = await categoryModel.getHot();
     // console.log(typeof(result));
