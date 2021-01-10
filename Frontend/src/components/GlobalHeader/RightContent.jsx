@@ -25,7 +25,7 @@ const GlobalHeaderRight = (props) => {
 
   return (
     <div className={className}>
-      <HeaderSearch
+      {props.currentUser&&props.currentUser.type!='admin'&&props.currentUser.type!='lecturer'&&<HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="Type here ..."
         dataSource={[
@@ -53,7 +53,7 @@ const GlobalHeaderRight = (props) => {
           }
         }}
 
-      />
+      />}
 
       {
         list.length > 0 &&
@@ -81,8 +81,9 @@ const GlobalHeaderRight = (props) => {
   );
 };
 
-export default connect(({ settings, category }) => ({
+export default connect(({ settings, category, user }) => ({
   theme: settings.navTheme,
   layout: settings.layout,
-  list: category.list
+  list: category.list,
+  currentUser: user.currentUser
 }))(GlobalHeaderRight);
