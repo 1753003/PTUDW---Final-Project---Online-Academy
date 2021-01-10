@@ -5,7 +5,7 @@
  */
 import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
-import { Link } from 'umi';
+import { Link, router} from 'umi';
 import { connect } from 'dva';
 import { Icon, Result, Button } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -143,11 +143,12 @@ const BasicLayout = (props) => {
   };
   // console.log("BasicLayout---");
   // console.log(authorized.authority);
+  
   return (
     <ProLayout
       logo={logo}
       menuHeaderRender={(logoDom, titleDom) => (
-        <Link to={authorized.authority.includes('admin')?"/admin":"/"}>
+        <Link to={localStorage.getItem('antd-pro-authority').includes('admin')?"/admin":localStorage.getItem('antd-pro-authority').includes('lecturer')?"/lecturer":"/"}>
           {logoDom}
           {titleDom}
         </Link>

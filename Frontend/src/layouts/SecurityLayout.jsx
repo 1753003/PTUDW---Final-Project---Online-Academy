@@ -39,7 +39,7 @@ class SecurityLayout extends React.Component {
     let userData = JSON.parse(localStorage.getItem("userData"))
     userData = userData === null ? null:userData
     if (dispatch && isLogin.includes("true")) {
-      console.log('dsfkas',userData)
+      // console.log('dsfkas',userData)
       dispatch({
         type: 'user/fetchCurrent',
         payload: userData
