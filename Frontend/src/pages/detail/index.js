@@ -12,7 +12,7 @@ const { TextArea } = Input;
 const { SubMenu } = Menu;
 
 
-const Detail = ({ list, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus, sendCommentStatus }) => {
+const Detail = ({ listHot, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus, sendCommentStatus }) => {
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(0);
     const [loadingPage, setLoadingPage] = useState(false);
@@ -164,9 +164,9 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
             <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
             <Row type='flex' gutter={[8, 8]}>
         <Col>
-        <Tag color="green">New</Tag>
+        {(Date.now() - Date.parse(detail?.courseInfo?.createdDate)<604800001*4)&&<Tag color="green">New</Tag>}
         </Col><Col>
-        <Tag color="volcano">Best Seller</Tag>
+        {listHot&&Array.from(listHot, x => x.courseID).includes(detail?.courseInfo?.id)&&<Tag color="volcano">Best Seller</Tag>}
         </Col>
       </Row>
             <Row type='flex' justify='start' gutter={24}>
@@ -320,7 +320,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
 
 export default connect(({ course, loading, user }) => ({
-    list: course.list,
+    listHot: course.listHot,
     loading: loading.effects['course/getSingleCourse'],
     detail: course.courseDetail,
     currentUser: user.currentUser,

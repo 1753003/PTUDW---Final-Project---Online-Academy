@@ -34,7 +34,7 @@ const Course = ({ url, title, lecturer, price, salePrice, category, rating, numR
         <Col>
         {isNew&&<Tag color="green">New</Tag>}
         </Col><Col>
-        {isHot&&<Tag color="volcano">Best Seller</Tag>}
+        {isHot&&<Tag color="volcano">Hot Seller</Tag>}
         </Col>
       </Row>
     </Card>

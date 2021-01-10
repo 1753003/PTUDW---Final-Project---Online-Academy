@@ -303,7 +303,7 @@ const SearchPage = ({
         <Col>
         {Date.now() - Date.parse(item.createdDate)<604800001*4&&<Tag color="green">New</Tag>}
         </Col><Col>
-        {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Best Seller</Tag>}
+        {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Hot Seller</Tag>}
         </Col>
       </Row>
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>

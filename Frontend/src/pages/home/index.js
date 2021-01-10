@@ -13,7 +13,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
     dispatch({ type: 'course/getNew' });
     dispatch({ type: 'course/getTrending' });
     dispatch({ type: 'category/getHot' });
-  //   if(listHot) {console.log('listHot', Array.from(listHot,x=> (Date.now() - Date.parse(x.createdDate))<604800001*4 ))
+    if(listHot) {console.log('listHot', Array.from(listHot,x=> x.courseID ))}
   // console.log('list', listHot)}
   }, []);
   const quote =(q1,q2,q3)=> (<div className={styles.quote}>
@@ -106,7 +106,7 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
         <Col>
         {(Date.now() - Date.parse(item.createdDate)<604800001*4)&&<Tag color="green">New</Tag>}
         </Col><Col>
-        <Tag color="volcano">Best Seller</Tag>
+        <Tag color="volcano">Hot Seller</Tag>
         </Col>
       </Row>
                 </Row>
