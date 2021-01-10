@@ -36,8 +36,16 @@ module.exports = function (req, res, next) {
     }
   }
   else if (accessToken) {
-    console.log(link)
-    try {
+    if(req.method == "GET" && link.includes('course')){
+      console.log('course no token', link );
+      next()
+    }
+    else if(req.method == "GET" && link.includes('category')){
+      console.log('category no token', link);
+      next()
+    }
+    else
+    {try {
       // console.log('wat', req.method );
       const decoded = jwt.verify(accessToken, 'SECRET_KEY');
       req.accessTokenPayload = decoded;
@@ -55,7 +63,7 @@ module.exports = function (req, res, next) {
         })
     }
     // console.log('guest', req.method );
-    next();
+    next();}
   } else {
     // console.log('guest', req.method );
     return res.status(400).json({
