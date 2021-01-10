@@ -82,12 +82,13 @@ const Model = {
       Cookies.remove('rfToken')
       setAuthority('guest');
       if (window.location.pathname !== '/user/login' && !redirect) {
-        router.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
+        // router.replace({
+        //   pathname: '/user/login',
+        //   search: stringify({
+        //     redirect: window.location.href,
+        //   }),
+        // });
+        window.location.href = "/user/login"
       }
     },
     *logoutHome(_,{put}) {
