@@ -79,13 +79,11 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
 
     }
 
-
-
     return (
         loading === true ? <PageLoading /> :
             <Row>
                 <Col span={4} style={{ alignItems: 'center' }}>
-                    <Menu
+                    <Menu 
                         onClick={handleClick}
                         style={{ width: 230 }}
                         defaultSelectedKeys={[query.week]}
@@ -95,6 +93,7 @@ const Course = ({ location, dispatch, loading, currentUser, singleRegistedCourse
                         {
                             singleRegistedCourse?.sylabus?.map((item) => {
                                 // setUrl(item.videoLink);
+                                console.log(item);
                                 return (
                                     <Menu.Item key={item.week}>
                                         <Row>

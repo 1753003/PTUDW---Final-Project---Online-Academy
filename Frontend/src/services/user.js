@@ -359,3 +359,33 @@ export function changePasswordWithEmail(email, password) {
       })
   })
 }
+
+export function confirmEmail(email) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmEmail`,{"email": email})
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function confirmCodeEmail(code) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmCodeEmail`,{"code": code})
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}

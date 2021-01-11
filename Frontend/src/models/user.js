@@ -1,7 +1,7 @@
 import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, 
   addCourseToFavorite, delFavoriteCourse, resetPasswordRequest, resetConfirm, getRegistedCourseById, setDone, 
   setProgress, queryEditProfile, resetEmailRequest, confirmCode, changePassword, resetRequest,
-  confirmCodeWithEmail, changePasswordWithEmail } from '@/services/user';
+  confirmCodeWithEmail, changePasswordWithEmail, confirmEmail, confirmCodeEmail } from '@/services/user';
 import { getCourseById } from '@/services/course';
 
 import { router } from 'umi';
@@ -12,6 +12,7 @@ const UserModel = {
     currentUser: {},
     status: '',
     confirmStatus : false,
+    confirmEmail : false
   },
   effects: {
     *resetPasswordConfirm(payload, { call, put }) {
@@ -43,6 +44,22 @@ const UserModel = {
 
       // router.replace('/');
     },
+    *confirmEmailRequest(payload, { call, put }) {
+      // console.log('model')
+      const response = yield call(confirmEmail, payload.payload)
+      if (response.data === "Exist")
+        yield put({
+          type: 'requestStatus',
+          payload: response,
+        });
+      else 
+        yield put({
+          type: 'confirmCodeRequest',
+          payload: response,
+        });
+
+      // router.replace('/');
+    },
     *resetEmailRequest(payload, { call, put }) {
       // console.log('model')
       const response = yield call(resetEmailRequest, payload.payload)
@@ -55,12 +72,19 @@ const UserModel = {
     },
     *register(payload, { call, put }) {
       // console.log('payload',payload)
+      console.log(payload);
       const response = yield call(add, payload);
       // console.log('asdhfgjhs',response.data.signup)
       yield put({
         type: 'requestStatus',
         payload: response,
       });
+      yield put({
+        type: 'setConfirmEmailFalse'
+      })
+      yield put({
+        type: 'setConfirmStatusFalse'
+      })
       // yield put({
       //   type: 'save',
       //   payload: response,
@@ -226,14 +250,35 @@ const UserModel = {
         type: 'setConfirmStatusFalse'
       })
     },
+    *confirmEmailFalse(_,{put}) {
+      yield put({
+        type: 'setConfirmEmailFalse'
+      })
+    },
     *changePassword(payload, { call, put }) {
       yield call(changePassword, payload.payload[0], payload.payload[1]);
     },
     *changePasswordWithEmail(payload, { call }) {
       yield call(changePasswordWithEmail, payload.payload[0], payload.payload[1]);
     },
+    *confirmCodeEmail(payload, {call, put}) {
+      const response = yield call(confirmCodeEmail, payload.payload)
+      
+      yield put({
+        type: 'confirmCodeEmailRequest',
+        payload: response,
+      });
+
+
+    }
   },
   reducers: {
+    confirmCodeEmailRequest(state, action) {
+      return {
+        ...state,
+        confirmEmail: action.payload.data
+      }
+    },
     requestStatus(state, action) {
       console.log(action.payload.data);  
       return { ...state, status: action.payload.data }
@@ -290,9 +335,17 @@ const UserModel = {
       return { ...state, confirmStatus: action.payload.data }
     },
     setConfirmStatusFalse(state) {
+      console.log("baa");
       return {
         ...state,
         confirmStatus: false
+      }
+    },
+    setConfirmEmailFalse(state) {
+      console.log("aa");
+      return {
+        ...state,
+        confirmEmail: false
       }
     }
   },
