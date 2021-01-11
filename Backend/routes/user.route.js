@@ -8,14 +8,8 @@ const { response } = require('express');
 const router = express.Router({mergeParams: true});
 
 router.post('/', async function (req, res) {
+  console.log(req.body);
   const user = req.body;
-  console.log(req.body)
-  const check = await userModel.singleByMail(req.body.email);
-  if (check != null) {
-    return res.status(200).json({
-      signup: "failed"
-    });
-  }
   user.password = bcrypt.hashSync(user.password, 10);
   user.type = 'student'
   user.name = user.username
@@ -162,14 +156,17 @@ router.delete('/:uid',async function(req, res){
   const list2 = await userModel.getAllByType("lecturer");
   res.status(201).json([list, list2]);
 });
+
 router.get('/student',async function(req, res){
   const list = await userModel.getAllByType("student");
   res.json(list);
 });
+
 router.get('/lecturer',async function(req, res){
   const list = await userModel.getAllByType("lecturer");
   res.json(list);
 });
+
 router.get('/:uid/lectureList',async function(req, res){
   const uid = req.params.uid || -1;
   const list = await userModel.getLectureCourse(uid);
@@ -300,7 +297,12 @@ router.post('/forgotPassword', async function(req, res){
   res.json("OK");
 });
 
-router.post('/confirmEmail', function(req, res){
+router.post('/confirmEmail', async function(req, res){
+  const check = await userModel.singleByMail(req.body.email);
+  if (check != null) {
+    return res.status(200).json("Exist");
+  }
+
   var nodemailer = require('nodemailer');
   const email = req.body.email;
 
@@ -312,12 +314,11 @@ router.post('/confirmEmail', function(req, res){
     }
   });
   
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 6; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  const user = await userModel.singleByMail("admin@gmail.com");
+  const token = user.token;
+
+  const n = Math.floor(Math.random() * 20);
+  const result = token[n] + token[n+1] + token[n+2] + token[n+3] + token[n+4] + token[n+5];
 
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
@@ -339,7 +340,7 @@ router.post('/confirmEmail', function(req, res){
     }
   });
 
-  res.json(result);
+  res.json(true);
 });
 
 router.post('/confirmCode/:uid', async function(req, res) {
@@ -354,6 +355,17 @@ router.post('/confirmCode/:uid', async function(req, res) {
   else
     res.json(false);
 });
+
+router.post('/confirmCodeEmail', async function(req,res) {
+  const user = await userModel.singleByMail("admin@gmail.com");
+  const token = user.token;
+  const code = req.body.code;
+  console.log(code);
+  console.log(token);
+  if (token.includes(code) && code.length === 6)
+    return res.json(true);
+  return res.json(false);
+})
 
 router.post('/confirmCodeWithEmail', async function(req, res) {
   console.log(req.body.email);

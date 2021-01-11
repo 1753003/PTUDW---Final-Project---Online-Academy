@@ -10,6 +10,10 @@ module.exports = function (req, res, next) {
   if(req.method == "POST" && req.originalUrl =='/api/user'){
     next()
   }
+  else if (req.method == "POST" && req.originalUrl =='/api/user/confirmEmail') 
+    next()
+  else if (req.method == "POST" && req.originalUrl =='/api/user/confirmCodeEmail') 
+    next()
   else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
     next()
   }
