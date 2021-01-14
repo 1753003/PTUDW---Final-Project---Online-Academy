@@ -665,6 +665,7 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                         {
                             menuKey === "signed" &&
                             <Card title="Registed Courses">
+                                 <Alert message="Double click to enter your courses" type="success" showIcon />
                                 <List
                                     itemLayout="vertical"
                                     size="large"
@@ -706,6 +707,14 @@ const Profile = ({ dispatch, loading, history, currentUser, favoriteCourses, reg
                                                         <Typography>{item.briefDescription}</Typography>
                                                         <Typography style={{ fontSize: '12px' }}>{item.lecturer}</Typography>
                                                         <Progress percent={progress} active/>
+                                                        <Button type="primary" onClick={()=>{
+                                                            history.push({
+                                                                pathname: `/detail`,
+                                                                query: {
+                                                                    courseId: item.id,
+                                                                },
+                                                            });
+                                                        }}>Go to detail</Button>
                                                     </Col>
                                                 </Row>
                                             </List.Item>

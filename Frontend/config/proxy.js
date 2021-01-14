@@ -8,13 +8,8 @@
 export default {
   dev: {
     '/api/': {
-<<<<<<< HEAD
-      target: 'https://vast-sands-83648.herokuapp.com',
-      changeOrigin: true,
-=======
       target: 'http://localhost:5000/',
       changeOrigin: true, 
->>>>>>> origin
       pathRewrite: {
         '^': '',
       },
