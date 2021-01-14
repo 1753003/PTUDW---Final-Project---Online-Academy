@@ -46,8 +46,8 @@ const UserModel = {
     },
     *confirmEmailRequest(payload, { call, put }) {
       // console.log('model')
-      const response = yield call(confirmEmail, payload.payload)
-      if (response.data === "Exist")
+      const response = yield call(confirmEmail, payload.payload[0], payload.payload[1])
+      if (response.data === "Exist" || response.data === "UExist")
         yield put({
           type: 'requestStatus',
           payload: response,
@@ -93,6 +93,16 @@ const UserModel = {
       if(redirectHome == 'success')
         router.push('/user/login')
       return response;
+    },
+    *create(payload, { call, put }) {
+      // console.log('payload',payload)
+      console.log(payload);
+      const response = yield call(add, payload);
+      // console.log('asdhfgjhs',response.data.signup)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
     },
     *fetchCurrent( payload , { call, put }) {
       // console.log("fetchCurrent")
@@ -255,6 +265,11 @@ const UserModel = {
         type: 'setConfirmEmailFalse'
       })
     },
+    *statusEmpty(_,{put}) {
+      yield put({
+        type: 'setStatusEmpty'
+      })
+    },
     *changePassword(payload, { call, put }) {
       yield call(changePassword, payload.payload[0], payload.payload[1]);
     },
@@ -334,15 +349,19 @@ const UserModel = {
       console.log(action.payload.data)
       return { ...state, confirmStatus: action.payload.data }
     },
+    setStatusEmpty(state) {
+      return {
+        ...state,
+        status: ''
+      }
+    },
     setConfirmStatusFalse(state) {
-      console.log("baa");
       return {
         ...state,
         confirmStatus: false
       }
     },
     setConfirmEmailFalse(state) {
-      console.log("aa");
       return {
         ...state,
         confirmEmail: false

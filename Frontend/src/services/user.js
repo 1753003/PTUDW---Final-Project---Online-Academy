@@ -79,6 +79,7 @@ export function add(params) {
         username: params.payload.username,
         email: params.payload.email,
         password: params.payload.password,
+        type: params.payload.type
       })
       .then((response) => {
         // handle succes
@@ -360,10 +361,10 @@ export function changePasswordWithEmail(email, password) {
   })
 }
 
-export function confirmEmail(email) {
+export function confirmEmail(email, username) {
   // console.log("add", params.payload)
   return new Promise((resolve, reject) => {
-    axios.post(`/api/user/confirmEmail`,{"email": email})
+    axios.post(`/api/user/confirmEmail`,{"email": email, "username": username})
       .then((response) => {
         // handle success
         resolve(response);

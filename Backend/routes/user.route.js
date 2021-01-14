@@ -8,10 +8,22 @@ const { response } = require('express');
 const router = express.Router({mergeParams: true});
 
 router.post('/', async function (req, res) {
+  const check = await userModel.singleByMail(req.body.email);
+  if (check != null) {
+    return res.status(200).json("Exist");
+  }
+
+  const check2 = await userModel.singleByUserName(req.body.username);
+  if (check2 != null) {
+    return res.status(200).json("UExist")
+  }
+
   console.log(req.body);
   const user = req.body;
   user.password = bcrypt.hashSync(user.password, 10);
-  user.type = 'student'
+  if (user.type == undefined || user.type == "" || user.type == "undefined")
+    user.type = 'student'
+  console.log(user);
   user.name = user.username
   user.id = await userModel.add(user);
   delete user.password;
@@ -106,12 +118,14 @@ router.get('/:uid/courseRegister', async function(req, res){
   const list = await userModel.getRegisterCourse(uid);
   res.json(list);
 });
+
 router.get('/:uid/courseRegister/:cid', async function(req, res){
   const uid = req.params.uid || -1;
   const cid = req.params.cid || -1;
   const list = await userModel.getRegisterCourseDetail(uid, cid);
   res.json(list);
 });
+
 router.patch('/:uid/courseRegister/:cid', async function(req, res){
   const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
   let existed = false;
@@ -303,6 +317,11 @@ router.post('/confirmEmail', async function(req, res){
     return res.status(200).json("Exist");
   }
 
+  const check2 = await userModel.singleByUserName(req.body.username);
+  if (check2 != null) {
+    return res.status(200).json("UExist")
+  }
+  
   var nodemailer = require('nodemailer');
   const email = req.body.email;
 
