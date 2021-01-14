@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message, Tag } from 'antd';
+import { Tooltip, Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message, Tag } from 'antd';
 import Course from '@/components/Course';
 import ShowMore from '@/components/ShowMore';
 import { PageLoading } from '@ant-design/pro-layout';
@@ -168,6 +168,12 @@ const Detail = ({ listHot, loading, location, detail, history, dispatch, current
         </Col><Col>
         {listHot&&Array.from(listHot, x => x.courseID).includes(detail?.courseInfo?.id)&&<Tag color="volcano">Best Seller</Tag>}
         </Col>
+        <Col>
+        {detail?.courseInfo?.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {detail?.courseInfo?.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
+        </Col>
       </Row>
             <Row type='flex' justify='start' gutter={24}>
             <Col className={styles.card} xs={{span:24}} md={{span:24}} sm={{span:24}}>
@@ -306,7 +312,7 @@ const Detail = ({ listHot, loading, location, detail, history, dispatch, current
                                         },
                                     });
                                 }}>
-                                    <Course url={item.URL} title={item.courseName} lecturer={item.lecturer} price={item.price}  salePrice={item.salePrice} category={item.categoryName} rating={item.rating} numRate={item.rating} />
+                                    <Course url={item.URL} title={item.courseName} lecturer={item.lecturer} price={item.price}  salePrice={item.salePrice} category={item.categoryName} rating={item.rating} numRate={item.rating} status={item.status} isHot={listHot&&Array.from(listHot, x => x.courseID).includes(detail?.courseInfo?.id)} isNew={(Date.now() - Date.parse(detail?.courseInfo?.createdDate)<604800001*4)}/>
                                 </List.Item>
                             )}
                         />

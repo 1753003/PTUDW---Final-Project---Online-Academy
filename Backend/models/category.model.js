@@ -9,7 +9,7 @@ module.exports = {
       const res = await db.raw(`select categoryID, count(categoryID) as count, category.name, backgroundURL
       FROM student_course INNER JOIN course on courseID = course.id
       LEFT JOIN category on categoryID = category.id
-      GROUP by categoryID ORDER by count DESC LIMIT 10`);
+      GROUP by categoryID ORDER by count DESC LIMIT 8`);
       // console.log(res[0]);
 
       return res;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader, Rate, Tag } from 'antd';
+import { Tooltip, Typography, Carousel, Row, Col, List, Tabs, Divider, Icon, Card, PageHeader, Rate, Tag } from 'antd';
 import styles from './index.less';
 import Course from '@/components/Course';
 import { connect } from 'dva';
@@ -101,12 +101,19 @@ const Home = ({ dispatch, listHot, listNew, listTrending, listHotCategory, histo
                     <p>{item.lecturerName}</p>                 
                     <Typography.Text delete>${item.price}    </Typography.Text>               
                     <Typography.Text> <b>${item.salePrice}</b></Typography.Text>   
+        
                   </Col>
                   <Row type='flex' gutter={[8, 8]}>
         <Col>
         {(Date.now() - Date.parse(item.createdDate)<604800001*4)&&<Tag color="green">New</Tag>}
         </Col><Col>
         <Tag color="volcano">Hot Seller</Tag>
+        </Col>
+        <Col>
+        {item.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {item.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
                 </Row>

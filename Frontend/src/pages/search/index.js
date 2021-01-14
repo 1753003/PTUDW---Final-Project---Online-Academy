@@ -4,6 +4,7 @@ import React, {
   useState
 } from 'react';
 import {
+  Tooltip,
   Tag,
   Typography,
   Input,
@@ -306,6 +307,12 @@ const SearchPage = ({
         {Date.now() - Date.parse(item.createdDate)<604800001*4&&<Tag color="green">New</Tag>}
         </Col><Col>
         {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Hot Seller</Tag>}
+        </Col>
+        <Col>
+        {item.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {item.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
