@@ -4,6 +4,7 @@ import React, {
   useState
 } from 'react';
 import {
+  Tooltip,
   Tag,
   Typography,
   Input,
@@ -17,6 +18,7 @@ import {
   List,
   Rate,
   Layout,
+  Select,
   Button,
   Popover
 } from 'antd';
@@ -26,9 +28,12 @@ import {
 
 import styles from './index.less';
 
+
 const {
   SubMenu
 } = Menu;
+
+const { Option } = Select;
 
 class Filter extends React.Component {
   state = {checkBox: [], checkedID: []}
@@ -158,6 +163,8 @@ const SearchPage = ({
 }) => {
   const [searchKey, setSearchKey] = useState('');
   const [list, setList] = useState([]);
+  const [sortBy, setSortBy] = useState('rating');
+  const [sortOrder, setSortOrder] = useState('desc');
   useEffect(() => {
     setSearchKey(location.query.q)
     const payload = {
@@ -198,7 +205,13 @@ const SearchPage = ({
     // if(listHot) console.log('listHot', Array.from(listHot, x => x.courseID))
     // if(searchList) console.log('listSearch', Array.from(searchList, x => Date.parse(x.createdDate)))
     // console.log('list',Date.now())
-    setList(searchList);
+    if(searchList) {
+      const temp = [...searchList];
+      temp.sort((a,b) => {
+        return b.rating - a.rating;
+      })
+      setList(temp);
+    }
   }, [searchList])
 
   const result = [];
@@ -216,11 +229,75 @@ const SearchPage = ({
     }
   });
 
+  const handleSortBy = (value) => {
+    setSortBy(value);
+    if(sortOrder === 'asc') {
+      let temp = [...list];
+      temp.sort((a,b) => {
+        return a[value] - b[value];
+      })
+      console.log(temp[0]);
+      setList(temp);
+    }
+    if(sortOrder === 'desc') {
+      let temp = [...list];
+      temp.sort((a,b) => {
+        return b[value] - a[value];
+      })
+      console.log(temp);
+      setList(temp);
+    }
+  }
+
+  const handleSortOrder = (value) => {
+    setSortOrder(value);
+    if(value === 'asc') {
+      let temp = [...list];
+      temp.sort((a,b) => {
+        return a[sortBy] - b[sortBy];
+      })
+      console.log(temp[0]);
+      setList(temp);
+    }
+    if(value === 'desc') {
+      let temp = [...list];
+      temp.sort((a,b) => {
+        return b[sortBy] - a[sortBy];
+      })
+      console.log(temp);
+      setList(temp);
+    }
+  }
+
  
 
   return (
   <PageHeader className={styles.main}>
-      <Typography.Title level={3}>{searchList?.length} results for '{searchKey}'</Typography.Title>
+    <Row >
+      <Col span={19}>
+        <Typography.Title level={3}>{searchList?.length} results for '{searchKey}'</Typography.Title>
+      </Col>
+      <Col span={1}>
+        <Typography>Sort by</Typography>
+      </Col>
+      <Col span={1}>
+      <Select defaultValue="rating" onChange={handleSortBy} key="sortBy">
+        <Option value="rating">Rating</Option>
+        <Option value="price">Price</Option>
+        <Option value="views">Views</Option>
+      </Select>
+      </Col>
+      <Col span={1} />
+      <Col span={1}>
+        <Typography>Sort order</Typography>
+      </Col>
+      <Col span={1}>
+      <Select defaultValue="desc" onChange={handleSortOrder} key="sortOrder">
+        <Option value="asc">Asc</Option>
+        <Option value="desc">Desc</Option>
+      </Select>
+      </Col>
+    </Row>
       <Alert
           description="Feel free to learn annything !"
           type="info"
@@ -306,6 +383,12 @@ const SearchPage = ({
         {Date.now() - Date.parse(item.createdDate)<604800001*4&&<Tag color="green">New</Tag>}
         </Col><Col>
         {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Hot Seller</Tag>}
+        </Col>
+        <Col>
+        {item.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {item.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>

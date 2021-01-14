@@ -44,7 +44,7 @@ module.exports = {
     return await db('course').where('id', id).update(form);
   },
   async searchByKeyword(keyword) {
-    return await db.raw(`(SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views, disabled
+    return await db.raw(`(SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views,  status, disabled
       FROM course c
       LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
@@ -55,7 +55,7 @@ module.exports = {
       MATCH(b.name) AGAINST('${keyword}*' IN BOOLEAN MODE)
       )
       union 
-      (SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views, disabled
+      (SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views, status, disabled
       FROM course c
       LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
@@ -95,7 +95,7 @@ module.exports = {
     return await db.select(db.raw(`course.*,student_course.*,user.avatarURL, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
   },
   async relate(id) {
-    return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer", course.disabled
+    return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer", course.disabled, status
     from course 
     left join student_course on course.id = student_course.courseID
     left join category on category.id = course.categoryID 

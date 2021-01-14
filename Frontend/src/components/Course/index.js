@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Tag, Rate, Row, Col, Icon } from 'antd';
+import { Tooltip, Card, Typography, Tag, Rate, Row, Col, Icon } from 'antd';
 import styles from './index.less';
 
 const {Meta} = Card
@@ -15,9 +15,8 @@ const Course = ({ url, title, lecturer, price, salePrice, category, rating, numR
       <Meta
         title={title}
         description={
-          `${lecturer }\n Category: ${  category  }\n Status: ${  status}`
-        }
-       />
+          `${lecturer }\n Category: ${  category  }\n `
+        }/>
       <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
       {rating}
       <Rate className={styles.rate} disabled defaultValue={rating} style={{fontSize:'11pt'}}/>
@@ -35,6 +34,12 @@ const Course = ({ url, title, lecturer, price, salePrice, category, rating, numR
         {isNew&&<Tag color="green">New</Tag>}
         </Col><Col>
         {isHot&&<Tag color="volcano">Hot Seller</Tag>}
+        </Col>
+        <Col>
+        {status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
     </Card>
