@@ -98,13 +98,6 @@ class DrawerForm extends React.Component {
                 />,
                 )}
             </Form.Item>           
-            <Form.Item label="Type">
-                {getFieldDecorator('type')(
-                <Input
-                    placeholder="Please enter type"
-                />,
-                )}
-            </Form.Item>  
             <div
             style={{
               position: 'absolute',
@@ -121,16 +114,13 @@ class DrawerForm extends React.Component {
               <Button type="primary"  htmlType="submit">
                 Create
               </Button></Form.Item>
-            <Button onClick={this.onClose} style={{ marginRight: 8 }}>
-              Cancel
-            </Button>
-            
+       
           </div>   
            </Form>
           
         </Drawer>
       </div>
-    );
+    );   
   }
 }
 
@@ -177,7 +167,33 @@ class User extends React.Component {
                   <Icon type = 'delete' />
               </Button>
           )
-        },
+      },
+      {
+        title: 'Lock',
+        key: 'lock',
+        render: (item) => (
+            <Button disabled = {item.isLock === 0}
+            onClick={async () => {
+              await this.props.dispatch({type: 'user/editProfileAdmin', payload: [item.id, {isLock: 0}]})
+              this.props.dispatch({type: 'account/getStudent'});
+              this.props.dispatch({type: 'account/getLecturer'});}}>
+                <Icon type="lock" />
+            </Button>
+        )
+      },
+      {
+        title: 'Unlock',
+        key: 'Unlock',
+        render: (item) => (
+            <Button disabled = {item.isLock === 1}
+            onClick={async () => {
+              await this.props.dispatch({type: 'user/editProfileAdmin', payload: [item.id, {isLock: 1}]})
+              this.props.dispatch({type: 'account/getStudent'});
+              this.props.dispatch({type: 'account/getLecturer'});}}>
+                <Icon type="unlock" />
+            </Button>
+        )
+      },
     ]
     return columns;
   }
@@ -205,7 +221,6 @@ class User extends React.Component {
                     <Table dataSource={this.getStudent()} columns={this.getColumns()}/>
                 </TabPane>
                 <TabPane tab="Lecturer" key="2">
-                    <Table dataSource={this.getLecturer()} columns={this.getColumns()}/>
                     <Wrapper type = "lecturer"
                              status = {user.status}
                              create = {async (value) => {
@@ -214,6 +229,8 @@ class User extends React.Component {
                              setEmptyStatus = {() => {
                                 dispatch({type:'user/statusEmpty'})
                               }}/>
+                    <Table dataSource={this.getLecturer()} columns={this.getColumns()}/>
+                   
                 </TabPane>
             </Tabs>
         </PageHeader>

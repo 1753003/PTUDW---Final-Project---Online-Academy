@@ -61,6 +61,8 @@ class Login extends Component {
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
+        {userLogin.status === "lock"? <Alert style={{marginBottom:"10px"}} message="Your account was locked, 
+        please contact with admin for more information." type="error" showIcon/>:""}
         {userLogin.status =="fail"?<Alert style={{marginBottom:"10px"}} message="Check your user name or password" type="error" showIcon/>:""}
         <LoginComponents
           defaultActiveKey={type}

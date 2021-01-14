@@ -231,6 +231,11 @@ const UserModel = {
       });
       // router.replace('/');
     },
+    *editProfileAdmin(payload, { call  }) {
+      // console.log('model')
+      yield call(queryEditProfile, payload.payload[0], payload.payload[1])
+      // router.replace('/');
+    },
     *confirmCode(payload, { call, put }) {
       // console.log('model')
       console.log(payload.payload)

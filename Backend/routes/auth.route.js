@@ -21,6 +21,14 @@ router.post('/', async function (req, res) {
       authenticated: false
     });
   }
+
+  if (user.isLock == 0) {
+    console.log("a");
+    return res.json({
+      authenticated: false,
+      lock: true
+    });
+  }
 if(req.body.autoLogin){
   var accessToken = jwt.sign({
     userId: user.id

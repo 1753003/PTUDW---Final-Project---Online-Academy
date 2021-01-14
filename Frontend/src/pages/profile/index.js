@@ -4,7 +4,6 @@ import { Typography, Input, Menu, Row, Col, List, Avatar, Card, Button, Progress
      Popconfirm, Form, Divider, Alert, Upload, Icon } from 'antd';
 import { connect } from 'dva';
 import { router } from 'umi';
-
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }

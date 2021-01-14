@@ -275,3 +275,22 @@ export function sendCommentToCourse( payload ) {
         })
     })
 }
+
+
+export function disabledRequest(id, data) {
+    return new Promise( (resolve, reject) => {
+        axios.patch(`http://localhost:5000/api/course/disabled/${id}`,
+        data,
+        {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            // reject(error);
+            console.log("bcd");
+            getRFT();
+        })
+    })
+}

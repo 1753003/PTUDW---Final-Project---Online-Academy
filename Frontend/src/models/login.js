@@ -59,7 +59,14 @@ const Model = {
         }
         console.log('aaaaaaa', redirect)
         router.replace(redirect || '/');
-      } else
+      } 
+      else if (response.lock === true) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {status:"lock"},
+        });
+      }
+      else
         {yield put({
           type: 'changeLoginStatus',
           payload: {status:"fail"},

@@ -72,19 +72,23 @@ router.get('/search', async function(req, res){
   console.log(req.query.q)
   const keyword = req.query.q
   const list = await courseModel.searchByKeyword(keyword);
-  res.json(list[0]);
+  list.forEach(item => {
+    console.log(item.disabled);
+    console.log(typeof(item.disabled))
+  })
+  res.json(list[0].filter(item => item.disabled === 1));
 })
 router.get('/hot', async function (req, res) {
   const list = await courseModel.hot();
-  res.json(list);
+  res.json(list.filter(item => item.disabled === 1));
 })
 router.get('/trending', async function (req, res) {
   const list = await courseModel.trending();
-  res.json(list);
+  res.json(list.filter(item => item.disabled === 1));
 })
 router.get('/new', async function (req, res) {
   const list = await courseModel.new();
-  res.json(list);
+  res.json(list.filter(item => item.disabled === 1));
 })
 router.get('/:id/sylabus', async function (req, res) {
   const list = await courseModel.sylabus(req.params.id);
@@ -96,7 +100,7 @@ router.get('/:id/review', async function (req, res) {
 })
 router.get('/:id/relate', async function (req, res) {
   const list = await courseModel.relate(req.params.id);
-  res.json(list);
+  res.json(list.filter(item => item.disabled === 1));
 })
 router.post('/:id/sylabus', async function (req, res) {
   const id = await courseModel.addSylabus(req.params.id, req.body);
@@ -124,4 +128,10 @@ router.get('/', async function (req, res) {
   const list = await courseModel.getAll();
   res.json(list);
 })
+
+router.patch('/disabled/:id', async function (req, res) {
+  const list = await courseModel.disabled(req.params.id, req.body);
+  res.json(list);
+})
+
 module.exports = router;
