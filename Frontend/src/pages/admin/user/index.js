@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line max-classes-per-file
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Icon, Table, PageHeader, Button, Divider, Tabs, Input, Form, Alert, Drawer, message} from 'antd';
 import { connect } from 'dva';
 
@@ -134,48 +134,60 @@ class DrawerForm extends React.Component {
   }
 }
 
-const User = ({list, user, dispatch}) => {
-    useEffect(() => {
-        dispatch({ type: 'account/getStudent'});     
-    }, []);
-    
-    useEffect(() => {
-        dispatch({ type: 'account/getLecturer'});
-    }, []);
+class User extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.dispatch({type: 'account/getStudent'});
+    this.props.dispatch({type: 'account/getLecturer'});
+  }
 
-    useEffect(() => {
-    }, [list])
+  getStudent = () => {
+    const {studentList = []} = this.props.list;
+    return studentList;
+  }
 
+  getLecturer = () => {
+    const {lecturerList = []} = this.props.list;
+    return lecturerList;
+  }
+
+  getColumns = () => {
     const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
+      {
+          title: 'ID',
+          dataIndex: 'id',
+      },
+      {
+          title: 'Usermame',
+          dataIndex: 'username'
+      },
+      {
+          title: 'Name',
+          dataIndex: 'name'
+      },
+      {
+          title: 'Email',
+          dataIndex: 'email'
+      },
+      {
+          title: 'Remove',
+          key: 'remove',
+          render: (item) => (
+              <Button onClick={() => {this.props.dispatch({type: 'account/deleteUser', payload: item.id})}}>
+                  <Icon type = 'delete' />
+              </Button>
+          )
         },
-        {
-            title: 'Usermame',
-            dataIndex: 'username'
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name'
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email'
-        },
-        {
-            title: 'Remove',
-            key: 'remove',
-            render: (item) => (
-                <Button onClick={() => {dispatch({type: 'account/deleteUser', payload: item.id})}}>
-                    <Icon type = 'delete' />
-                </Button>
-            )
-          },
     ]
+    return columns;
+  }
 
+  render () {
+  
     const { TabPane } = Tabs;
     const Wrapper = Form.create()(DrawerForm);
+
+    const {list, user, dispatch} = this.props;
     return (
         <PageHeader>
             <h2>User page</h2>  
@@ -184,20 +196,20 @@ const User = ({list, user, dispatch}) => {
                 <TabPane tab="Students" key="1">
                     <Wrapper type = "student"
                              status = {user.status}
-                             create = {(value) => {
-                                dispatch({type:'user/create', payload: value})
+                             create = {async (value) => {
+                                await dispatch({type:'user/create', payload: value})
                                 dispatch({ type: 'account/getStudent'})}}
                              setEmptyStatus = {() => {
                                 dispatch({type:'user/statusEmpty'})
                               }}/>
-                    <Table dataSource={list.studentList} columns={columns}/>
+                    <Table dataSource={this.getStudent()} columns={this.getColumns()}/>
                 </TabPane>
                 <TabPane tab="Lecturer" key="2">
-                    <Table dataSource={list.lecturerList} columns={columns}/>
+                    <Table dataSource={this.getLecturer()} columns={this.getColumns()}/>
                     <Wrapper type = "lecturer"
                              status = {user.status}
-                             create = {(value) => {
-                                dispatch({type:'user/create', payload: value})
+                             create = {async (value) => {
+                                await dispatch({type:'user/create', payload: value})
                                 dispatch({ type: 'account/getLecturer'})}}
                              setEmptyStatus = {() => {
                                 dispatch({type:'user/statusEmpty'})
@@ -205,7 +217,8 @@ const User = ({list, user, dispatch}) => {
                 </TabPane>
             </Tabs>
         </PageHeader>
-    )
+      )
+    }
 };
 
 

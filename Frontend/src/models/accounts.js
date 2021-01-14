@@ -8,6 +8,7 @@ const accountModel = {
   },
   effects: {
     *getStudent(_, { call, put }) {
+      console.log("get Student");
       const response = yield call(getListStudent);
       yield put({
           type: 'getListStudent',
