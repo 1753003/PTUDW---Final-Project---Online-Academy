@@ -29,13 +29,12 @@ class RegisterForm extends React.Component {
       if (!err) {
         if (this.getConfirmEmail()) {
           this.register(this.state.values);
-          console.log(this.props);
         }
         else if (!this.getConfirmStatus()) {
           this.setValues(values);
           this.props.dispatch({
             type: 'user/confirmEmailRequest',
-            payload: values.email
+            payload: [values.email, values.username]
           })
         }
         else {
@@ -105,6 +104,8 @@ class RegisterForm extends React.Component {
     console.log(status);
     if (status === "Exist" ) {
       msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)}
+    if (status === "UExist" ) {
+        msg = (  <Alert message="Register failed. Username already exists." type="error" showIcon/>)}
     if (this.getConfirmEmail() === false && this.state.isEnterCode === true)
       msg2 = (  <Alert message="Wrong code" type="error" showIcon/>)
     return (
