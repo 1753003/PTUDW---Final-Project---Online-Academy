@@ -14,6 +14,7 @@ import {
   updateCourse,
   getCoursesTrending,
   sendCommentToCourse,
+  disabledRequest
 } from '@/services/course';
 
 const courseModel = {
@@ -50,7 +51,7 @@ const courseModel = {
       const response = yield call(getListCoursesWithCategory);
       yield put({
         type: 'getList',
-        payload: response,
+        payload: response[0],
       });
     },
     *getHot(_, { call, put }) {
@@ -167,6 +168,16 @@ const courseModel = {
         type: 'resetStatusSendComent',
       });
     },
+    *filter(payload, { put }) {
+      console.log(payload.payload)
+      yield put({
+        type: 'getList',
+        payload: payload.payload
+      });
+    },
+    *disabledRequest(payload, { call, put }) {
+      yield call(disabledRequest, payload.payload.id, payload.payload.data);
+    },
   },
   reducers: {
     resetStatusSendComent(state) {
@@ -182,7 +193,7 @@ const courseModel = {
       };
     },
     getList(state, action) {
-      console.log(action.payload);
+      console.log(action)
       return {
         ...state,
         list: action.payload,

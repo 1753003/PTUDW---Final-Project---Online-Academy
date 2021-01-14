@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { router } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+
 const { SubMenu } = Menu;
 
 const CategoryDropdown = props => {

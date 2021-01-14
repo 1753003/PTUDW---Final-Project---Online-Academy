@@ -5,7 +5,7 @@ module.exports = {
   async getAll() {
     return await db.raw(`select course.*, category.name as categoryName
     from course, category
-    where category.id = course.categoryID`);
+    where category.id = course.categoryID and course.disabled = 1 `);
   },
 
   async singleById(id) {
@@ -22,6 +22,9 @@ module.exports = {
   async delById(id) {
 
     await db('course').where('id', id).del();
+  },
+  async disabled(id, data) {
+    return await db('course').where('id', id).update(data);
   },
   async updateById(id, data) {
     const form = {
@@ -41,7 +44,7 @@ module.exports = {
     return await db('course').where('id', id).update(form);
   },
   async searchByKeyword(keyword) {
-    return await db.raw(`(SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views
+    return await db.raw(`(SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views, disabled
       FROM course c
       LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
@@ -52,7 +55,7 @@ module.exports = {
       MATCH(b.name) AGAINST('${keyword}*' IN BOOLEAN MODE)
       )
       union 
-      (SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views
+      (SELECT c.createdDate, c.id as 'courseID', c.name as 'courseName',a.id as 'categoryID', c.name as 'categoryName',c.id as 'topicID', c.name as 'topicName', URL, price,rating, salePrice, numRate, u.username, briefDescription, detailDescription, saleInformation, views, disabled
       FROM course c
       LEFT JOIN category a ON c.categoryID = a.id
       LEFT JOIN category b ON a.idTopic = b.id
@@ -61,7 +64,7 @@ module.exports = {
   },
   async hot() {
     return await db.select(db.raw(`COUNT((courseID)) as count, 
-    courseID, URL, course.name, rating, numRate, category.name as categoryName, price, salePrice, course.createdDate,
+    courseID, URL, course.name, rating, numRate, disabled, category.name as categoryName, price, salePrice, course.createdDate,
     briefDescription, status, user.name as lecturerName
     FROM student_course 
     left join course on courseID = course.id
@@ -73,7 +76,7 @@ module.exports = {
   async trending() {
     return await db.select(db.raw(`
     course.id as courseID, URL, course.name, rating, numRate, category.name as categoryName, price, salePrice,course.createdDate,
-    briefDescription, status, user.name as lecturerName
+    briefDescription, status, user.name as lecturerName, disabled
     from course
     left join category on categoryID = category.id
     left join user on lecturerID = user.id
@@ -92,7 +95,7 @@ module.exports = {
     return await db.select(db.raw(`course.*,student_course.*,user.avatarURL, user.name as 'username' from course LEFT join student_course on student_course.courseID = course.id left join user on studentID = user.id WHERE course.id = ${id}`));
   },
   async relate(id) {
-    return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer"
+    return await db.select(db.raw(`course.price, course.salePrice, course.rating, course.numRate ,URL,course.id as "courseID", category.id as "categoryID", course.name as "courseName", category.name as "categoryName",COUNT(student_course.courseID) as "register", user.name as "lecturer", course.disabled
     from course 
     left join student_course on course.id = student_course.courseID
     left join category on category.id = course.categoryID 
