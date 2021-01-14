@@ -49,7 +49,7 @@ export function resetRequest(params) {
       })
       .catch((error) => {
         // handle error
-        // console.log(error);
+        console.log(error);
       })
   })
 }
@@ -79,6 +79,7 @@ export function add(params) {
         username: params.payload.username,
         email: params.payload.email,
         password: params.payload.password,
+        type: params.payload.type 
       })
       .then((response) => {
         // handle succes
@@ -283,11 +284,102 @@ export function resetEmailRequest(id) {
   })
 }
 
+export function resetPasswordRequest(id) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.get(`/api/user/changePasswordRequest/${id}`,{ headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
 export function confirmCode(id, code) {
   // console.log("add", params.payload)
   console.log(code);
   return new Promise((resolve, reject) => {
     axios.post(`/api/user/confirmCode/${id}`,{code},{ headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function confirmCodeWithEmail(code, email) {
+  // console.log("add", params.payload)
+  console.log(code, email);
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmCodeWithEmail`,{"code":code,"email":email})
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function changePassword(id, password) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/changePassword/${id}`,{"password": password},{ headers: { 'x-access-token': Cookies.get('aToken') } })
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function changePasswordWithEmail(email, password) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/changePasswordWithEmail`,{"password": password,"email": email})
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function confirmEmail(email, username) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmEmail`,{"email": email, "username": username})
+      .then((response) => {
+        // handle success
+        resolve(response);
+      })
+      .catch((error) => {
+        // handle error
+        // console.log(error);
+      })
+  })
+}
+
+export function confirmCodeEmail(code) {
+  // console.log("add", params.payload)
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/user/confirmCodeEmail`,{"code": code})
       .then((response) => {
         // handle success
         resolve(response);

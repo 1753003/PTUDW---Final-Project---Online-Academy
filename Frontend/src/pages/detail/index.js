@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message, Tag } from 'antd';
+import { Tooltip, Typography, Input, PageHeader, Alert, Menu, Icon, Checkbox, Row, Col, List, Avatar, Rate, Card, Button, Divider, message, Tag } from 'antd';
 import Course from '@/components/Course';
 import ShowMore from '@/components/ShowMore';
 import { PageLoading } from '@ant-design/pro-layout';
@@ -12,7 +12,7 @@ const { TextArea } = Input;
 const { SubMenu } = Menu;
 
 
-const Detail = ({ list, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus, sendCommentStatus }) => {
+const Detail = ({ listHot, loading, location, detail, history, dispatch, currentUser, addToFavoriteStatus, registCourseStatus, sendCommentStatus }) => {
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(0);
     const [loadingPage, setLoadingPage] = useState(false);
@@ -164,17 +164,24 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
             <Typography.Title level={1}>{detail?.courseInfo?.name}</Typography.Title>
             <Row type='flex' gutter={[8, 8]}>
         <Col>
-        <Tag color="green">New</Tag>
+        {(Date.now() - Date.parse(detail?.courseInfo?.createdDate)<604800001*4)&&<Tag color="green">New</Tag>}
         </Col><Col>
-        <Tag color="volcano">Best Seller</Tag>
+        {listHot&&Array.from(listHot, x => x.courseID).includes(detail?.courseInfo?.id)&&<Tag color="volcano">Best Seller</Tag>}
+        </Col>
+        <Col>
+        {detail?.courseInfo?.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {detail?.courseInfo?.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
             <Row type='flex' justify='start' gutter={24}>
-            <Col className={styles.card} xs={{span:24}}>
+            <Col className={styles.card} xs={{span:24}} md={{span:24}} sm={{span:24}}>
                     <Card
-                    
+                    className={styles.card}
                         hoverable
                         cover={<img
+                            className={styles.covercard}
                             alt="logo"
                             src={detail?.courseInfo.URL}
                         />}
@@ -254,7 +261,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                     key={item.username}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.avatarURL} />}
+                                        avatar={<Avatar src={item.avatarURL?item.avatarURL:null} >{item?.username[0].toUpperCase()}</Avatar>}
                                         title={<a href={item.href}>{item.username}</a>}
                                         description={<Rate disabled value={item.rate} style={{ fontSize: '14px', paddingBottom: '5px', paddingLeft: '-5px' }} />}
                                     />
@@ -305,7 +312,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
                                         },
                                     });
                                 }}>
-                                    <Course url={item.URL} title={item.courseName} lecturer={item.lecturer} price={item.price}  salePrice={item.salePrice} category={item.categoryName} rating={item.rating} numRate={item.rating} />
+                                    <Course url={item.URL} title={item.courseName} lecturer={item.lecturer} price={item.price}  salePrice={item.salePrice} category={item.categoryName} rating={item.rating} numRate={item.rating} status={item.status} isHot={listHot&&Array.from(listHot, x => x.courseID).includes(detail?.courseInfo?.id)} isNew={(Date.now() - Date.parse(detail?.courseInfo?.createdDate)<604800001*4)}/>
                                 </List.Item>
                             )}
                         />
@@ -319,7 +326,7 @@ const Detail = ({ list, loading, location, detail, history, dispatch, currentUse
 
 
 export default connect(({ course, loading, user }) => ({
-    list: course.list,
+    listHot: course.listHot,
     loading: loading.effects['course/getSingleCourse'],
     detail: course.courseDetail,
     currentUser: user.currentUser,

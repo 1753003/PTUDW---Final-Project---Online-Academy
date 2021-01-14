@@ -33,8 +33,8 @@ const UserLayout = (props) => {
     if(localStorage.getItem('isLogin').includes('true')){
   if (localStorage.getItem('antd-pro-authority').includes('admin'))
     return <Redirect to='/admin'/>
-  if (!localStorage.getItem('antd-pro-authority').includes('guest'))
-    return <Redirect to='/'/>
+  // if (!localStorage.getItem('antd-pro-authority').includes('guest'))
+  //   return <Redirect to='/'/>
   }}
   return (
     <>
@@ -45,7 +45,7 @@ const UserLayout = (props) => {
 
       <div className={styles.container}>
         <div className={styles.lang}>
-          <SelectLang />
+          {/* <SelectLang /> */}
         </div>
         <div className={styles.content}>
           <div className={styles.top}>

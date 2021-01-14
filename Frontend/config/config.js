@@ -230,12 +230,6 @@ export default {
             {
               path: '/',
               redirect: '/home',
-              authority: ['student', 'lecturer', 'guest']
-            },
-            {
-              path: '/',
-              redirect: '/admin/home',
-              authority: ['admin']
             },
             {
               path: '/home',
@@ -243,7 +237,7 @@ export default {
               icon: 'crown',
               hideInMenu: true,
               component: './home',
-              authority: ['student', 'lecturer', 'guest']
+              authority: ['student', 'guest']
             },
             {
               path: '/search',
@@ -251,7 +245,7 @@ export default {
               icon: 'crown',
               hideInMenu: true,
               component: './search',
-              authority: ['student', 'lecturer', 'guest']
+              authority: ['student', 'guest']
             },
             {
               path: '/detail',
@@ -259,7 +253,7 @@ export default {
               icon: 'crown',
               component: './detail',
               hideInMenu: true,
-              authority: ['student', 'lecturer', 'guest']
+              authority: ['student', 'guest']
             },
             {
               path: '/studentCourse',
@@ -277,7 +271,6 @@ export default {
               hideInMenu: true,
               authority: ['student', 'lecturer', 'guest']
             },
-
             {
               component: './404',
             },

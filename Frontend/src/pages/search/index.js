@@ -4,6 +4,7 @@ import React, {
   useState
 } from 'react';
 import {
+  Tooltip,
   Tag,
   Typography,
   Input,
@@ -38,7 +39,10 @@ class Filter extends React.Component {
     for (let i = 0; i < this.props.length; i+=1) {
       this.state.checkBox[i] = false;
     }
-    console.log(this.props);
+  }
+
+  getCheck = () => {
+
   }
 
   getData = () => {
@@ -105,6 +109,12 @@ class Filter extends React.Component {
     this.props.filterList(checkedID);
   }
 
+  handleOnclick=(e) =>{
+    // e.preventDefault()
+    // console.log('ee', e)
+
+  }
+
   render() {
     return (
         <Menu
@@ -116,15 +126,16 @@ class Filter extends React.Component {
           {this.getData().map(item => {
             return (
               <SubMenu
+              onTitleClick={(event)=>this.handleOnclick(event)}
               key={item.topic.id}
               title={
-                <Checkbox checked={this.state.checkBox[item.topic.id]} onChange={() => this.setTopic(item.topic.id)}>{item.topic.name}</Checkbox>
+                <Checkbox  checked={this.state.checkBox[item.topic.id]} onChange={() => {this.setTopic(item.topic.id)}}>{item.topic.name}</Checkbox>
               }
               >
                 {
                     item.children.map((i) =>
                         <Menu.Item key={i.id}><Checkbox checked={this.state.checkBox[i.id]}
-                          onChange={() => {this.setChildren(i.id, item.topic.id)}}
+                          onChange={(e) => {this.setChildren(i.id, item.topic.id)}} 
                         >{i.name}</Checkbox></Menu.Item>
                     )
                 }
@@ -135,6 +146,7 @@ class Filter extends React.Component {
     )
   }
 }
+
 const SearchPage = ({
   loading,
   history,
@@ -190,8 +202,6 @@ const SearchPage = ({
     setList(searchList);
   }, [searchList])
 
-  
-
   const result = [];
   category.forEach(element => {
     const temp = {};
@@ -220,9 +230,19 @@ const SearchPage = ({
       <Popover content=
         {<Filter list={result} 
                 length={category.length} 
-                filterList={(value) => {searchList.filter(
-                  item => item.id !== value
-                )}}
+                filterList={(value) => {
+                  if (value.length === 0)
+                    setList(searchList)
+                  else {
+                    const newList = [];
+                    for (let i = 0; i < searchList.length; i+=1) {
+                      value.forEach(item => {
+                      if (searchList[i].categoryID === item)
+                        newList.push(searchList[i])
+                    })
+                    setList(newList)
+                  }
+                }}}
         />} placement="bottomLeft" trigger="click">
         <Button className={styles.filterButton}>
             <Icon type={'menu-unfold'} />Filter
@@ -233,7 +253,6 @@ const SearchPage = ({
           {<Filter list={result} 
               length={category.length}
               filterList={(value) => {
-                console.log(value);
                 if (value.length === 0)
                   setList(searchList)
                 else {
@@ -287,7 +306,13 @@ const SearchPage = ({
         <Col>
         {Date.now() - Date.parse(item.createdDate)<604800001*4&&<Tag color="green">New</Tag>}
         </Col><Col>
-        {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Best Seller</Tag>}
+        {listHot&&Array.from(listHot, x => x.courseID).includes(item.courseID)&&<Tag color="volcano">Hot Seller</Tag>}
+        </Col>
+        <Col>
+        {item.status !== "Complete"&& <Tooltip title="This course is on updating sylabus">
+        <Icon type="info-circle" theme="twoTone" twoToneColor="#ffcc00"/></Tooltip>}
+        {item.status === "Complete"&& <Tooltip title="This course has complete sylabus">
+        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /></Tooltip>}
         </Col>
       </Row>
                     <Row type='flex' justify='start' align='bottom' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>

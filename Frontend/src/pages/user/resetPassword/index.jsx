@@ -18,7 +18,7 @@ class ResetPasswordForm extends Component {
   }
 
   componentDidUpdate(){
-    if(this.state.first == true)
+    if(this.state.first === true)
       {this.setState({first:false})
       this.props.form.validateFields();}
   }
@@ -28,15 +28,17 @@ class ResetPasswordForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.dispatch({
-          type: 'user/resetPasswordRequest',
+          type: 'user/forgotPasswordRequest',
           payload: {...values}
         })
+        localStorage.setItem("Email",values.email);
       } else {
         // console.log(err)
         this.setState({fail: true})
       }
     });
   };
+
   handleConfirmBlur = e => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });

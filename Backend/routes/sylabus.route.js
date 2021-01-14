@@ -26,7 +26,8 @@ router.post('/:courseID', async function(req, res) {
     const courseID = req.params.courseID;
     const list = await studentCourseModel.getSylabus(courseID);
     const studentID = await studentCourseModel.getStudentID(courseID);
-    
+    newSylabus.week = Number(newSylabus.week);
+    console.log(typeof(newSylabus.week));
     let i = 0;
     list.forEach(element => {
         element.sylabus.push(newSylabus);

@@ -9,12 +9,33 @@
 }
 @media only screen and (max-width: @screen-md){
   .card{
-    min-width: 296px;
-    max-width: 612px;
+    justify-self: stretch;
+    align-self: stretch;
+    min-width: 512px;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    max-width: 62px;
+    position: relative;
+    top:auto;
+    right: auto;
+    left: auto;
+    border: 0;
+
+  }
+}
+@media only screen and (max-width: @screen-sm){
+  .card{
+    min-width: 282px;
     width: auto;
     position: relative;
     top:auto;
     right: auto;
     left: auto;
+    border: 0;
   }
+}
+.covercard{
+  align-self: middle;
+  justify-self: center;
 }

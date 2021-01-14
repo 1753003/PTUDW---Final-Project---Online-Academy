@@ -7,21 +7,23 @@ module.exports = function (req, res, next) {
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['x-access-token'];
   const aToken = req.headers['Cookie'];
-  console.log('cookie',req.cookies)
   if(req.method == "POST" && req.originalUrl =='/api/user'){
-    console.log('wtf')
     next()
   }
+  else if (req.method == "POST" && req.originalUrl =='/api/user/confirmEmail') 
+    next()
+  else if (req.method == "POST" && req.originalUrl =='/api/user/confirmCodeEmail') 
+    next()
   else if(req.method == "GET" && req.originalUrl.includes('/api/user')){
     next()
   }
-  else if(accessToken == 'undefined'){
+  else if(accessToken == 'undefined' || accessToken == undefined){
     if(req.method == "GET" && link.includes('course')){
-      console.log('aToken undefined', req.method );
+      console.log('course no token', link );
       next()
     }
     if(req.method == "GET" && link.includes('category')){
-      console.log('GUEST', req.method );
+      console.log('category no token', link);
       next()
     }
     if(req.method == "POST" && link.includes('forgotPassword')){
@@ -32,18 +34,22 @@ module.exports = function (req, res, next) {
       console.log('GUEST', req.method);
       next()
     }
-    if(req.method == "GET" && link.includes('category/getHot')){
-      console.log('GUEST', req.method );
-      next()
-    }
-    if(req.method == "GET" && link.includes('category/getMenu')){
-      console.log('GUEST', req.method );
+    if(req.method == "POST" && link.includes('changePasswordWithEmail')) {
+      console.log('GUEST', req.method);
       next()
     }
   }
   else if (accessToken) {
-    console.log(link)
-    try {
+    if(req.method == "GET" && link.includes('course')){
+      console.log('course no token', link );
+      next()
+    }
+    else if(req.method == "GET" && link.includes('category')){
+      console.log('category no token', link);
+      next()
+    }
+    else
+    {try {
       // console.log('wat', req.method );
       const decoded = jwt.verify(accessToken, 'SECRET_KEY');
       req.accessTokenPayload = decoded;
@@ -61,7 +67,7 @@ module.exports = function (req, res, next) {
         })
     }
     // console.log('guest', req.method );
-    next();
+    next();}
   } else {
     // console.log('guest', req.method );
     return res.status(400).json({

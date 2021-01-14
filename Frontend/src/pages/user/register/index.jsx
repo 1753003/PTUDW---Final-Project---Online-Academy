@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Alert, Form, Icon, Input, Button} from 'antd';
 import React from 'react';
 import { Link } from 'umi';
@@ -7,14 +8,17 @@ import styles from './index.less';
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+
 class RegisterForm extends React.Component {
   state={
     first:true,
     confirmDirty: false,
-    fail: null,
+    values: {},
+    isEnterCode: false,
   }
+
   componentDidUpdate(){
-    if(this.state.first == true)
+    if(this.state.first === true)
       {this.setState({first:false})
       this.props.form.validateFields();}
   }
@@ -23,20 +27,43 @@ class RegisterForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.dispatch({
-          type: 'user/register',
-          payload: values
-        })
-      } else {
-        // console.log(err)
-        this.setState({fail: true})
+        if (this.getConfirmEmail()) {
+          this.register(this.state.values);
+        }
+        else if (!this.getConfirmStatus()) {
+          this.setValues(values);
+          this.props.dispatch({
+            type: 'user/confirmEmailRequest',
+            payload: [values.email, values.username]
+          })
+        }
+        else {
+          this.props.dispatch({
+            type: 'user/confirmCodeEmail',
+            payload: values.code
+          })
+          this.setState({isEnterCode: true})
+        }
       }
     });
   };
+
+  setValues = (values) => {
+    this.setState({values})
+  } 
+
   handleConfirmBlur = e => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
+
+  register = (values) => {
+    this.props.dispatch({
+      type: 'user/register',
+      payload: values
+    })
+  }
+  
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && this.state.confirmDirty) {
@@ -44,6 +71,7 @@ class RegisterForm extends React.Component {
     }
     callback();
   };
+
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
@@ -52,6 +80,17 @@ class RegisterForm extends React.Component {
       callback();
     }
   };
+
+  getConfirmStatus = () => {
+    const {confirmStatus = false} = this.props;
+    return confirmStatus;
+  }
+
+  getConfirmEmail = () => {
+    const {confirmEmail = false } = this.props;
+    return confirmEmail;
+  }
+
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, submitting } = this.props.form;
     const {status} = this.props;
@@ -59,13 +98,64 @@ class RegisterForm extends React.Component {
     const passwordError = isFieldTouched('password') && getFieldError('password');
     const emailError = isFieldTouched('email') && getFieldError('email');
     const rePasswordError = isFieldTouched('re-password') && getFieldError('re-password');
+    const codeError = isFieldTouched('code') && getFieldError('code'); 
     let msg = ""
-    // console.log('status', status.data.signup)
-    if (status !='' && status.data.signup ==='failed') msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)
+    let msg2 = ""
+    console.log(status);
+    if (status === "Exist" ) {
+      msg = (  <Alert message="Register failed. Email already exists." type="error" showIcon/>)}
+    if (status === "UExist" ) {
+        msg = (  <Alert message="Register failed. Username already exists." type="error" showIcon/>)}
+    if (this.getConfirmEmail() === false && this.state.isEnterCode === true)
+      msg2 = (  <Alert message="Wrong code" type="error" showIcon/>)
     return (
-      <div className={styles.main}>
-      <Form onSubmit={this.handleSubmit.bind(this)} className="register-form">
-        {msg}
+      this.getConfirmEmail()
+      ?
+      (
+        <div className={styles.main}>
+          
+          <Form onSubmit={this.handleSubmit} className="register-form">
+          <Alert message="Confirm email successfull! Click below button to finish register progress." type="success" showIcon/>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="login-form-button">
+                Register
+              </Button>          
+            </Form.Item>   
+          </Form>
+        </div>
+      )
+      :
+      (
+        this.getConfirmStatus() 
+      ?
+      (
+        <div className={styles.main} >
+         
+          <Form onSubmit={this.handleSubmit} className="register-form">
+          {msg2}
+          <Form.Item hasFeedback validateStatus={codeError ? 'error' : ''} help={codeError || ''}>
+              {getFieldDecorator('code', {
+                rules: [{ required: true, message: 'Please input the code!' },{validator:this.validateToNextPassword}],
+              })(
+                <Input
+                  placeholder="Code"
+                />,
+              )}
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
+                Check code
+              </Button>
+              <Link style={{float:'right'}} to="/user/resetPasswordRequest">Wanna new code? Go back</Link>
+            </Form.Item>
+          </Form>
+        </div>
+      )
+      :
+      (
+        <div className={styles.main}>
+      <Form onSubmit={this.handleSubmit} className="register-form">
+      {msg}
         <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your username!' }],
@@ -110,12 +200,15 @@ class RegisterForm extends React.Component {
         </Form.Item>
         <Form.Item loading={submitting}>
           <Button type="primary" htmlType="submit" className="login-form-button" disabled={hasErrors(getFieldsError())||this.state.first}>
-            Sign Up
+            Send code
           </Button>
           <Link style={{float:'right'}} to="/user/login">Already have an account ? Login now</Link>
         </Form.Item>
+      
       </Form>
-      </div>
+      </div>  
+      )
+      )
     );
   }
 }
@@ -125,4 +218,6 @@ const Register = Form.create({name: 'register'})(RegisterForm);
 export default connect(({loading, user})=>({
   submitting: loading.effects['user/register'],
   status: user.status,
+  confirmStatus: user.confirmStatus,
+  confirmEmail: user.confirmEmail
 }))(Register);

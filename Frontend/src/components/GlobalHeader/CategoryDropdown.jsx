@@ -44,7 +44,7 @@ const CategoryDropdown = props => {
     </Menu>
   );
 
-  return props.list ? (
+  return props.list ? (props.currentUser&&props.currentUser.type!='admin'&&props.currentUser.type!='lecturer'&&
     <HeaderDropdown className={`${styles.action} ${styles.dark}`} overlay={menu}>
       <span onClick={e => e.preventDefault()}>
         <Icon type="appstore" /> Categories

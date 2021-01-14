@@ -3,20 +3,27 @@ const bcrypt = require('bcryptjs');
 
 const userModel = require('../models/user.model');
 const e = require('express');
+const { response } = require('express');
 
 const router = express.Router({mergeParams: true});
 
 router.post('/', async function (req, res) {
-  const user = req.body;
-  console.log(req.body)
   const check = await userModel.singleByMail(req.body.email);
   if (check != null) {
-    return res.status(200).json({
-      signup: "failed"
-    });
+    return res.status(200).json("Exist");
   }
+
+  const check2 = await userModel.singleByUserName(req.body.username);
+  if (check2 != null) {
+    return res.status(200).json("UExist")
+  }
+
+  console.log(req.body);
+  const user = req.body;
   user.password = bcrypt.hashSync(user.password, 10);
-  user.type = 'student'
+  if (user.type == undefined || user.type == "" || user.type == "undefined")
+    user.type = 'student'
+  console.log(user);
   user.name = user.username
   user.id = await userModel.add(user);
   delete user.password;
@@ -111,12 +118,14 @@ router.get('/:uid/courseRegister', async function(req, res){
   const list = await userModel.getRegisterCourse(uid);
   res.json(list);
 });
+
 router.get('/:uid/courseRegister/:cid', async function(req, res){
   const uid = req.params.uid || -1;
   const cid = req.params.cid || -1;
   const list = await userModel.getRegisterCourseDetail(uid, cid);
   res.json(list);
 });
+
 router.patch('/:uid/courseRegister/:cid', async function(req, res){
   const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
   let existed = false;
@@ -155,30 +164,39 @@ router.patch('/:uid', async function(req, res){
 
 router.delete('/:uid',async function(req, res){
   const uid = req.params.uid || -1; 
-  await userModel.delUser(uid);
-
+  console.log(uid);
+  try {await userModel.delUser(uid)}
+  catch(err) {
+    console.log(err);
+  };
+  console.log("ab");
   const list = await userModel.getAllByType("student");
   const list2 = await userModel.getAllByType("lecturer");
   res.status(201).json([list, list2]);
 });
+
 router.get('/student',async function(req, res){
   const list = await userModel.getAllByType("student");
   res.json(list);
 });
+
 router.get('/lecturer',async function(req, res){
   const list = await userModel.getAllByType("lecturer");
   res.json(list);
 });
+
 router.get('/:uid/lectureList',async function(req, res){
   const uid = req.params.uid || -1;
   const list = await userModel.getLectureCourse(uid);
   res.json(list);
 });
 
-router.get('/changePassword/:uid', async function(req, res){
+router.get('/changePasswordRequest/:uid', async function(req, res){
   var nodemailer = require('nodemailer');
-  const email = await userModel.getEmail(req.params.uid);
-
+  const temp = await (userModel.getEmail(req.params.uid));
+  const email = temp[0].email;
+  const user = await userModel.singleByMail(email);
+  
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -187,18 +205,14 @@ router.get('/changePassword/:uid', async function(req, res){
     }
   });
   
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 6; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  var token = user.token;
+  var result = token[0] + token[1] + token[2] + token[3] + token[4] + token[5];
 
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
-    to: email[0].email,
-    subject: 'Pondemy team - Change your password',
-    html: `<h2>You have a new change password request!</h2> 
+    to: email,
+    subject: 'Pondemy team - Change your current password',
+    html: `<h2>You have a new change current password request!</h2> 
     <p>Here are your code to change your password: ${result}</p>
     <p>Ignoring this email if it is not your request.</p>
     <hr/>
@@ -214,7 +228,7 @@ router.get('/changePassword/:uid', async function(req, res){
     }
   });
 
-  res.json(result);
+  res.json("Success");
 });
 
 router.get('/changeEmailRequest/:uid', async function(req, res){
@@ -259,11 +273,12 @@ router.get('/changeEmailRequest/:uid', async function(req, res){
 
 router.post('/forgotPassword', async function(req, res){
   var nodemailer = require('nodemailer');
+  console.log(req.body);
   const email = req.body.email.email;
   const user = await userModel.singleByMail(email);
   
   if (user == null) {
-    return res.status(404).json("Not exist");
+    return res.status(404).json("FAIL");
   }
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -297,10 +312,20 @@ router.post('/forgotPassword', async function(req, res){
     }
   });
 
-  res.json(result);
+  res.json("OK");
 });
 
-router.post('/confirmEmail', function(req, res){
+router.post('/confirmEmail', async function(req, res){
+  const check = await userModel.singleByMail(req.body.email);
+  if (check != null) {
+    return res.status(200).json("Exist");
+  }
+
+  const check2 = await userModel.singleByUserName(req.body.username);
+  if (check2 != null) {
+    return res.status(200).json("UExist")
+  }
+  
   var nodemailer = require('nodemailer');
   const email = req.body.email;
 
@@ -312,12 +337,11 @@ router.post('/confirmEmail', function(req, res){
     }
   });
   
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 6; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  const user = await userModel.singleByMail("admin@gmail.com");
+  const token = user.token;
+
+  const n = Math.floor(Math.random() * 20);
+  const result = token[n] + token[n+1] + token[n+2] + token[n+3] + token[n+4] + token[n+5];
 
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
@@ -339,7 +363,7 @@ router.post('/confirmEmail', function(req, res){
     }
   });
 
-  res.json(result);
+  res.json(true);
 });
 
 router.post('/confirmCode/:uid', async function(req, res) {
@@ -354,6 +378,54 @@ router.post('/confirmCode/:uid', async function(req, res) {
   else
     res.json(false);
 });
+
+router.post('/confirmCodeEmail', async function(req,res) {
+  const user = await userModel.singleByMail("admin@gmail.com");
+  const token = user.token;
+  const code = req.body.code;
+  console.log(code);
+  console.log(token);
+  if (token.includes(code) && code.length === 6)
+    return res.json(true);
+  return res.json(false);
+})
+
+router.post('/confirmCodeWithEmail', async function(req, res) {
+  console.log(req.body.email);
+  const user = await userModel.singleByMail(req.body.email);
+  const token = user.token;
+  const code = token[0]+token[1]+token[2]+token[3]+token[4]+token[5];
+  console.log(code, req.body.code)
+  if (code == req.body.code)
+    res.json(true);
+  else
+    res.json(false);
+})
+
+router.post('/changePassword/:uid' ,async function(req, res) {
+  const password = bcrypt.hashSync(req.body.password, 10);
+  try {
+    await userModel.edit(req.params.uid, {password: password});
+    res.json("OK")
+  }
+  catch (error) {
+    res.json("FAIL")
+  }
+})
+
+router.post('/changePasswordWithEmail' ,async function(req, res) {
+  const password = bcrypt.hashSync(req.body.password, 10);
+  console.log(req.body);
+  const user = await userModel.singleByMail(req.body.email);
+  console.log(user)
+  try {
+    await userModel.edit(user.id, {password: password});
+    res.json("OK")
+  }
+  catch (error) {
+    res.json("FAIL")
+  }
+})
 
 router.post('/resetConfirm', async function(req,res){
   console.log(req.body)

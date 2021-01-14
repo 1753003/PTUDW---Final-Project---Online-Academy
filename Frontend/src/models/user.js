@@ -1,8 +1,9 @@
 import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCourse, addCourseToRegister, 
-  addCourseToFavorite, delFavoriteCourse, resetRequest, resetConfirm, getRegistedCourseById, setDone, 
-  setProgress, queryEditProfile, resetEmailRequest, confirmCode } from '@/services/user';
-import { getCourseById } from '@/services/course';
+  addCourseToFavorite, delFavoriteCourse, resetPasswordRequest, resetConfirm, getRegistedCourseById, setDone, 
+  setProgress, queryEditProfile, resetEmailRequest, confirmCode, changePassword, resetRequest,
+  confirmCodeWithEmail, changePasswordWithEmail, confirmEmail, confirmCodeEmail } from '@/services/user';
 
+import { getCourseById } from '@/services/course';
 import { router } from 'umi';
 
 const UserModel = {
@@ -11,6 +12,7 @@ const UserModel = {
     currentUser: {},
     status: '',
     confirmStatus : false,
+    confirmEmail : false
   },
   effects: {
     *resetPasswordConfirm(payload, { call, put }) {
@@ -24,11 +26,37 @@ const UserModel = {
     },
     *resetPasswordRequest(payload, { call, put }) {
       // console.log('model')
+      const response = yield call(resetPasswordRequest, payload.payload)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+
+      // router.replace('/');
+    },
+    *forgotPasswordRequest(payload, { call, put }) {
+      // console.log('model')
       const response = yield call(resetRequest, payload.payload)
       yield put({
         type: 'requestStatus',
         payload: response,
       });
+
+      // router.replace('/');
+    },
+    *confirmEmailRequest(payload, { call, put }) {
+      // console.log('model')
+      const response = yield call(confirmEmail, payload.payload[0], payload.payload[1])
+      if (response.data === "Exist" || response.data === "UExist")
+        yield put({
+          type: 'requestStatus',
+          payload: response,
+        });
+      else 
+        yield put({
+          type: 'confirmCodeRequest',
+          payload: response,
+        });
 
       // router.replace('/');
     },
@@ -44,24 +72,40 @@ const UserModel = {
     },
     *register(payload, { call, put }) {
       // console.log('payload',payload)
+      console.log(payload);
       const response = yield call(add, payload);
-      console.log('asdhfgjhs',response.data.signup)
+      // console.log('asdhfgjhs',response.data.signup)
       yield put({
         type: 'requestStatus',
         payload: response,
       });
+      yield put({
+        type: 'setConfirmEmailFalse'
+      })
+      yield put({
+        type: 'setConfirmStatusFalse'
+      })
       // yield put({
       //   type: 'save',
       //   payload: response,
       // });
-      // router.replace('/');
+      var redirectHome = response.data.signup?response.data.signup:"success"
+      if(redirectHome == 'success')
+        router.push('/user/login')
       return response;
     },
-    *fetchCurrent( payload , { call, put }) {
-      // console.log("fetchCurrent")
+    *create(payload, { call, put }) {
+      // console.log('payload',payload)
       console.log(payload);
+      const response = yield call(add, payload);
+      // console.log('asdhfgjhs',response.data.signup)
+      yield put({
+        type: 'requestStatus',
+        payload: response,
+      });
+    },
+    *fetchCurrent( payload , { call, put }) {
       const response = yield call(queryCurrent, payload.payload.uid);
-      console.log("aa",response);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
@@ -191,7 +235,17 @@ const UserModel = {
       // console.log('model')
       console.log(payload.payload)
       const response = yield call(confirmCode, payload.payload[0], payload.payload[1])
-      console.log("a");
+      yield put({
+        type: 'confirmCodeRequest',
+        payload: response,
+      });
+      // router.replace('/');
+    },
+    *confirmCodeWithEmail(payload, { call, put }) {
+      // console.log('model')
+      console.log(payload.payload)
+      const response = yield call(confirmCodeWithEmail, payload.payload[0], payload.payload[1])
+      console.log(response)
       yield put({
         type: 'confirmCodeRequest',
         payload: response,
@@ -202,11 +256,43 @@ const UserModel = {
       yield put({
         type: 'setConfirmStatusFalse'
       })
+    },
+    *confirmEmailFalse(_,{put}) {
+      yield put({
+        type: 'setConfirmEmailFalse'
+      })
+    },
+    *statusEmpty(_,{put}) {
+      yield put({
+        type: 'setStatusEmpty'
+      })
+    },
+    *changePassword(payload, { call, put }) {
+      yield call(changePassword, payload.payload[0], payload.payload[1]);
+    },
+    *changePasswordWithEmail(payload, { call }) {
+      yield call(changePasswordWithEmail, payload.payload[0], payload.payload[1]);
+    },
+    *confirmCodeEmail(payload, {call, put}) {
+      const response = yield call(confirmCodeEmail, payload.payload)
+      
+      yield put({
+        type: 'confirmCodeEmailRequest',
+        payload: response,
+      });
+
+
     }
   },
   reducers: {
+    confirmCodeEmailRequest(state, action) {
+      return {
+        ...state,
+        confirmEmail: action.payload.data
+      }
+    },
     requestStatus(state, action) {
-      console.log(action.payload);  
+      console.log(action.payload.data);  
       return { ...state, status: action.payload.data }
     },
     saveCurrentUser(state, action) {
@@ -260,10 +346,22 @@ const UserModel = {
       console.log(action.payload.data)
       return { ...state, confirmStatus: action.payload.data }
     },
+    setStatusEmpty(state) {
+      return {
+        ...state,
+        status: ''
+      }
+    },
     setConfirmStatusFalse(state) {
       return {
         ...state,
         confirmStatus: false
+      }
+    },
+    setConfirmEmailFalse(state) {
+      return {
+        ...state,
+        confirmEmail: false
       }
     }
   },

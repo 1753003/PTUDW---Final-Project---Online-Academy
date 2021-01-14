@@ -32,6 +32,7 @@ export function getListLecturer() {
 }
 
 export function deleteUser(id) {
+    console.log(id);
     return new Promise( (resolve, reject) => {
         axios.delete(`/api/user/${id}`,
         {headers:{'x-access-token':Cookies.get('aToken')}})

@@ -76,9 +76,10 @@ const courseModel = {
       });
     },
     *delete(payload, { call, put }) {
-      const response = yield call(deleteCourse, payload.payload);
+      yield call(deleteCourse, payload.payload);
+      const response = yield call(getListCourses);
       yield put({
-        type: 'deleteItem',
+        type: 'getList',
         payload: response,
       });
     },
