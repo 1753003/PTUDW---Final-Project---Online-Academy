@@ -2,8 +2,8 @@ import { queryCurrent, add, queryCurrentFavoriteCourse, queryCurrentRegistedCour
   addCourseToFavorite, delFavoriteCourse, resetPasswordRequest, resetConfirm, getRegistedCourseById, setDone, 
   setProgress, queryEditProfile, resetEmailRequest, confirmCode, changePassword, resetRequest,
   confirmCodeWithEmail, changePasswordWithEmail, confirmEmail, confirmCodeEmail } from '@/services/user';
-import { getCourseById } from '@/services/course';
 
+import { getCourseById } from '@/services/course';
 import { router } from 'umi';
 
 const UserModel = {
@@ -105,10 +105,7 @@ const UserModel = {
       });
     },
     *fetchCurrent( payload , { call, put }) {
-      // console.log("fetchCurrent")
-      console.log(payload);
       const response = yield call(queryCurrent, payload.payload.uid);
-      console.log("aa",response);
       yield put({
         type: 'saveCurrentUser',
         payload: response,

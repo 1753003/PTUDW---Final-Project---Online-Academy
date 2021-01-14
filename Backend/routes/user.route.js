@@ -164,8 +164,12 @@ router.patch('/:uid', async function(req, res){
 
 router.delete('/:uid',async function(req, res){
   const uid = req.params.uid || -1; 
-  await userModel.delUser(uid);
-
+  console.log(uid);
+  try {await userModel.delUser(uid)}
+  catch(err) {
+    console.log(err);
+  };
+  console.log("ab");
   const list = await userModel.getAllByType("student");
   const list2 = await userModel.getAllByType("lecturer");
   res.status(201).json([list, list2]);

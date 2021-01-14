@@ -113,6 +113,7 @@ class Filter extends React.Component {
     // console.log('ee', e)
 
   }
+
   render() {
     return (
         <Menu
@@ -144,6 +145,7 @@ class Filter extends React.Component {
     )
   }
 }
+
 const SearchPage = ({
   loading,
   history,

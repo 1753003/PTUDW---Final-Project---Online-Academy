@@ -79,7 +79,7 @@ export function add(params) {
         username: params.payload.username,
         email: params.payload.email,
         password: params.payload.password,
-        type: params.payload.type
+        type: params.payload.type 
       })
       .then((response) => {
         // handle succes
