@@ -85,7 +85,7 @@ export function deleteCourse(id) {
 export function addCourse(course) {
     console.log("Add course api");
     return new Promise( (resolve, reject) => {
-        axios.post(`http://localhost:5000/api/course`,course,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.post(`/api/course`,course,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -100,7 +100,7 @@ export function addCourse(course) {
 
 export function searchCourses(value) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/search?q=${value}`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/search?q=${value}`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -117,7 +117,7 @@ export function searchCourses(value) {
 
 export function getCourseById(id) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -132,7 +132,7 @@ export function getCourseById(id) {
 
 export function getCourseRelateById(id) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/${id}/relate`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/${id}/relate`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -147,7 +147,7 @@ export function getCourseRelateById(id) {
 
 export function getCourseSylabusById(id) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/${id}/sylabus`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/${id}/sylabus`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -162,7 +162,7 @@ export function getCourseSylabusById(id) {
 
 export function getCourseReviewById(id) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/${id}/review`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/${id}/review`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -177,7 +177,7 @@ export function getCourseReviewById(id) {
 
 export function getCoursesHot() {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/hot`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/hot`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -192,7 +192,7 @@ export function getCoursesHot() {
 
 export function getCoursesNew() {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/new`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/new`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -210,7 +210,7 @@ export function getCoursesNew() {
 
 export function getCoursesTrending() {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/trending`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/trending`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -228,7 +228,7 @@ export function getCoursesTrending() {
 
 export function getLecturerById(id) {
     return new Promise( (resolve, reject) => {
-        axios.get(`http://localhost:5000/api/course/getLecturerCourse/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.get(`/api/course/getLecturerCourse/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -243,7 +243,7 @@ export function getLecturerById(id) {
 
 export function updateCourse(id, newCourse) {
     return new Promise( (resolve, reject) => {
-        axios.patch(`http://localhost:5000/api/course/${id}`,
+        axios.patch(`/api/course/${id}`,
         newCourse,
         {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
@@ -271,6 +271,25 @@ export function sendCommentToCourse( payload ) {
         .catch((error) => {
             // handle error
             reject(error);
+            getRFT();
+        })
+    })
+}
+
+
+export function disabledRequest(id, data) {
+    return new Promise( (resolve, reject) => {
+        axios.patch(`http://localhost:5000/api/course/disabled/${id}`,
+        data,
+        {headers:{'x-access-token':Cookies.get('aToken')}})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+            // reject(error);
+            console.log("bcd");
             getRFT();
         })
     })
