@@ -38,14 +38,6 @@ class CourseTable extends React.Component {
                         }}/> 
                     )
                 },
-                {
-                    title: 'Remove',
-                    render: (item) => (
-                        <Button onClick={() => {}}>
-                            <Icon type="delete" />
-                        </Button>
-                    )
-                }
             ]
         );
     }

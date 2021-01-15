@@ -209,10 +209,13 @@ class MyForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      values.url = this.state.url;
+      values.URL = this.state.url;
       values.lecturerID = (JSON.parse(localStorage.getItem('userData'))).uid;
       values.rating = 0;
       values.status = "Not complete";
+      values.views = 0;
+      values.categoryID = Number(values.categoryID)
+      console.log(values);
       if (!err) {
         this.setState({status: 'done'});
         this.props.dispatch({type: 'course/add', payload: values});

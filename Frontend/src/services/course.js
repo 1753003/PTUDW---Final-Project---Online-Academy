@@ -83,7 +83,7 @@ export function deleteCourse(id) {
 }
 
 export function addCourse(course) {
-    console.log("Add course api");
+    console.log("Add course api", course);
     return new Promise( (resolve, reject) => {
         axios.post(`/api/course`,course,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {

@@ -1,7 +1,19 @@
 {
   "additionalProperties": false,
+  "type": "object",
   "required": [
-    
+    "name",
+    "categoryID",
+    "lecturerID",
+    "URL",
+    "price",
+    "salePrice",
+    "briefDescription",
+    "detailDescription",
+    "saleInformation",
+    "status",
+    "rating",
+    "views"
   ],
   "properties": {
     "name": {
@@ -34,7 +46,7 @@
     "detailDescription": {
       "type": "string"
     },
-    "saleInfomation": {
+    "saleInformation": {
       "type": "string"
     },
     "views": {
