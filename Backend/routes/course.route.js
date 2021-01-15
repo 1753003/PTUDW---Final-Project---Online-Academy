@@ -17,8 +17,6 @@ router.get('/:id([0-9]+)', async function (req, res, next) {
   res.json(course);
 })
 
-const courseSchema = require('../schemas/course.json');
-const validation = require('../middleware/validation.mdw');
 router.post('/', validation(courseSchema), async function (req, res) {
   const id = await courseModel.add(req.body);
   res.status(201).json(await courseModel.getAll());
