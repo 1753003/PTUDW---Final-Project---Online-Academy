@@ -1,12 +1,12 @@
 {
+  "type": "object",
   "additionalProperties": false,
   "required": [
-    
+    "username",
+    "password",
+    "email"
   ],
   "properties": {
-    "name": {
-      "type": "string"
-    },
     "username":{
       "type": "string"
     },
@@ -17,7 +17,8 @@
       "type": "string"
     },
     "type":{
-      "type": "string"
+      "type": "string",
+      "default":"student"
     },
     "token":{
       "type": "string"
