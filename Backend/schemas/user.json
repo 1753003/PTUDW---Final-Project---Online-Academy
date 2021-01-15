@@ -1,0 +1,32 @@
+{
+  "additionalProperties": false,
+  "required": [
+    
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "username":{
+      "type": "string"
+    },
+    "password":{
+      "type": "string"
+    },
+    "email":{
+      "type": "string"
+    },
+    "type":{
+      "type": "string"
+    },
+    "token":{
+      "type": "string"
+    },
+    "avatarURL":{
+      "type": "string"
+    },
+    "isLock":{
+      "type": "boolean"
+    }
+  }
+}

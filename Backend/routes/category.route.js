@@ -1,7 +1,8 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
 const router = express.Router();
-
+const categorySchema = require('../schemas/category.json');
+const validation = require('../middleware/validation.mdw');
 router.get('/', async function(req, res) {
     const list = await categoryModel.getAll();
     res.json(list);
@@ -37,7 +38,7 @@ router.get('/getHot', async function(req, res) {
     const result = await categoryModel.getHot();
     res.json(result);
 })
-           
+
 router.get('/hot', async function(req, res) {
     const result = await categoryModel.getHot();
     // console.log(typeof(result));
@@ -51,10 +52,7 @@ router.get('/:id', async function(req, res) {
     res.json(category);
 })
 
-
-const schema = require('../schemas/category.json');
-
-router.post('/', async function(req, res) {
+router.post('/', validation(categorySchema), async function(req, res) {
     const list = await categoryModel.add(req.body);
     res.json(await categoryModel.getAll());
 })

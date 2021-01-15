@@ -1,0 +1,23 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "courseID",
+    "week",
+    "lesson",
+    "videoLink"
+  ],
+  "properties": {
+    "courseID": {
+      "type": "number"
+    },
+    "week": {
+      "type": "number"
+    },
+    "lesson": {
+      "type": "string"
+    },
+    "videoLink": {
+      "type": "string"
+    }
+  }
+}

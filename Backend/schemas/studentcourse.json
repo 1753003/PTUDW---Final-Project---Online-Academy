@@ -1,0 +1,35 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "courseID",
+    "studentID",
+    "rate",
+    "comments",
+    "progress",
+    "registerDate",
+    "sylabus"
+  ],
+  "properties": {
+    "courseID":{
+      "type": "number"
+    },
+    "studentID":{
+      "type": "number"
+    },
+    "rate":{
+      "type": "number"
+    },
+    "comments":{
+      "type": "string"
+    },
+    "progress":{
+      "type": "number"
+    },
+    "registerDate":{
+      "type": "date"
+    },
+    "sylabus":{
+      "type": "json"
+    }
+  }
+}

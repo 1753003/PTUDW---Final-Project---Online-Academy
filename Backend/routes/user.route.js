@@ -4,10 +4,11 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 const e = require('express');
 const { response } = require('express');
-
+const userSchema = require('../schemas/user.json');
+const validation = require('../middleware/validation.mdw');
 const router = express.Router({mergeParams: true});
 
-router.post('/', async function (req, res) {
+router.post('/',validation(userSchema), async function (req, res) {
   const check = await userModel.singleByMail(req.body.email);
   if (check != null) {
     return res.status(200).json("Exist");
@@ -289,9 +290,9 @@ router.post('/forgotPassword', async function(req, res){
   });
   
   var token = user.token;
-  console.log(token);
+  // console.log(token);
   var result = token[0] + token[1] + token[2] + token[3] + token[4] + token[5];
-  console.log(result);
+  // console.log(result);
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
     to: email,
@@ -402,7 +403,7 @@ router.post('/confirmCodeWithEmail', async function(req, res) {
     res.json(false);
 })
 
-router.post('/changePassword/:uid' ,async function(req, res) {
+router.post('/changePassword/:uid' ,validation(userSchema),async function(req, res) {
   const password = bcrypt.hashSync(req.body.password, 10);
   try {
     await userModel.edit(req.params.uid, {password: password});
@@ -413,7 +414,7 @@ router.post('/changePassword/:uid' ,async function(req, res) {
   }
 })
 
-router.post('/changePasswordWithEmail' ,async function(req, res) {
+router.post('/changePasswordWithEmail' ,validation(userSchema),async function(req, res) {
   const password = bcrypt.hashSync(req.body.password, 10);
   console.log(req.body);
   const user = await userModel.singleByMail(req.body.email);
@@ -427,7 +428,7 @@ router.post('/changePasswordWithEmail' ,async function(req, res) {
   }
 })
 
-router.post('/resetConfirm', async function(req,res){
+router.post('/resetConfirm',validation(userSchema), async function(req,res){
   console.log(req.body)
   const password = bcrypt.hashSync(req.body.password, 10);
   const user = await userModel.singleByMail(req.body.email);

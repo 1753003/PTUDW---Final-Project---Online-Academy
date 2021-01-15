@@ -1,0 +1,59 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "categoryID",
+    "lecturerID",
+    "rating",
+    "numRate",
+    "URL",
+    "price",
+    "salePrice",
+    "briefDescription",
+    "detailDescription",
+    "saleInfomation",
+    "views",
+    "status"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "categoryID": {
+      "type": "number"
+    },
+    "lecturerID": {
+      "type": "number"
+    },
+    "rating": {
+      "type": "number"
+    },
+    "numRate": {
+      "type": "number"
+    },
+    "URL": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "salePrice": {
+      "type": "number"
+    },
+    "briefDescription": {
+      "type": "string"
+    },
+    "detailDescription": {
+      "type": "string"
+    },
+    "saleInfomation": {
+      "type": "string"
+    },
+    "views": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "courseId",
+    "studentId"
+  ],
+  "properties": {
+    "courseId": {
+      "type": "number"
+    },
+    "studentId": {
+      "type": "number"
+    }
+  }
+}

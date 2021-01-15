@@ -1,7 +1,7 @@
-const ajv = require('ajv');
+const Ajv = require('ajv');
 
 module.exports = schema => (req, res, next) => {
-  const ajvObj = new ajv({ allErrors: true });
+  const ajvObj = new Ajv.default({ allErrors: true,useDefaults: true });
   const validator = ajvObj.compile(schema);
   const valid = validator(req.body);
   if (!valid) {

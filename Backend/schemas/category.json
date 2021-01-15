@@ -1,19 +1,24 @@
 {
+  "type": "object",
   "additionalProperties": false,
   "required": [
     "name",
-    "isNull",
-    "idTopic"
+    "isNull"
   ],
   "properties": {
     "name": {
       "type": "string"
     },
     "isNull": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "idTopic": {
       "type": "number"
+    },
+    "backgroundURL":{
+      "type":"string",
+      "default":"https://www.todayshospitalist.com/wp-content/uploads/2020/03/getty-poll-globe-300x350.jpg"
     }
   }
 }
