@@ -106,7 +106,7 @@ router.get('/:id/relate', async function (req, res) {
 })
 
 const sylabusSchema = require('../schemas/sylabus.json');
-router.post('/:id/sylabus', async function (req, res) {
+router.post('/:id/sylabus', validation(sylabusSchema), async function (req, res) {
   const id = await courseModel.addSylabus(req.params.id, req.body);
   res.status(201).json({ id: id });
 })
