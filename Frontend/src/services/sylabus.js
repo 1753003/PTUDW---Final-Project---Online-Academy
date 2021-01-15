@@ -16,6 +16,7 @@ export function getList(lecturerID) {
 }
 
 export function addSylabus(courseID, newSylabus) {
+    console.log(newSylabus);
     return new Promise( (resolve, reject) => {
         axios.post(`/api/sylabus/${courseID}`,newSylabus,{headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
