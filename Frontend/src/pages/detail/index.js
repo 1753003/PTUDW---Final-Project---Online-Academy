@@ -211,7 +211,7 @@ const Detail = ({ listHot, loading, location, detail, history, dispatch, current
 
                     
                     <div className="CardContent" style={{ marginTop: '30px', }}>
-                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Detail Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Brief Infomation</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         <Row type='flex' justify='bottom' align='middle' style={{verticalAlign: 'baseline', fontWeight:'bolder', color:'peru'}}>
                             {detail?.courseInfo?.rating}
                             <Rate disabled defaultValue={detail?.courseInfo?.rating} style={{fontSize:'11pt'}}/>
@@ -221,12 +221,13 @@ const Detail = ({ listHot, loading, location, detail, history, dispatch, current
                         </Row>
                         <Typography style={{fontStyle: 'italic'}}>Create by {detail?.courseInfo?.lecturerName}</Typography>
                         <Typography> <Icon type="info-circle" /> Last Updated {detail?.courseInfo?.updatedDate}</Typography>
+                        <Typography> <Icon type="info-circle" /> Sale information: {detail?.courseInfo?.saleInformation}</Typography>
                         <Typography><Icon type="global" /> English</Typography>
                     </Card>
                     </div>
 
                     <div className="CardContent" style={{ marginTop: '30px'}}>
-                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Sylabus</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
+                    <Card title={<Typography.Title level={3} style={{color: "white"}}>Syl   labus</Typography.Title>} headStyle={{backgroundColor:'#1DA57A'}}>
                         {
                             detail?.courseSylabus?.map((item) =>
                                 <ShowMore title={`Week ${item.week}`} info={item.lesson} />)

@@ -14,9 +14,9 @@ router.get('/:id([0-9]+)', async function (req, res, next) {
   res.json(course);
 })
 
-// const courseSchema = require('../schemas/course.json');
-// const validation = require('../middleware/validation.mdw');
-router.post('/', async function (req, res) {
+const courseSchema = require('../schemas/course.json');
+const validation = require('../middleware/validation.mdw');
+router.post('/', validation(courseSchema), async function (req, res) {
   const id = await courseModel.add(req.body);
   res.status(201).json(await courseModel.getAll());
 })
@@ -68,6 +68,7 @@ router.patch('/:id', async function (req, res) {
   res.status(201).json({id : id});
   
 })
+
 router.get('/search', async function(req, res){
   console.log(req.query.q)
   const keyword = req.query.q
@@ -78,6 +79,7 @@ router.get('/search', async function(req, res){
   })
   res.json(list[0].filter(item => item.disabled === 1));
 })
+
 router.get('/hot', async function (req, res) {
   const list = await courseModel.hot();
   res.json(list.filter(item => item.disabled === 1));
@@ -102,6 +104,8 @@ router.get('/:id/relate', async function (req, res) {
   const list = await courseModel.relate(req.params.id);
   res.json(list.filter(item => item.disabled === 1));
 })
+
+const sylabusSchema = require('../schemas/sylabus.json');
 router.post('/:id/sylabus', async function (req, res) {
   const id = await courseModel.addSylabus(req.params.id, req.body);
   res.status(201).json({ id: id });
