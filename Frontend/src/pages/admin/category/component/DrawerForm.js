@@ -58,6 +58,7 @@ export class DrawerForm extends React.Component {
 
   onSubmit = () => {
     const returnData = [this.state.newName, this.state.newIDTopic == -1 ? null : this.state.newIDTopic ];
+    console.log(returnData);
     this.props.onSubmit(returnData);
     this.setState({
       visible: false,

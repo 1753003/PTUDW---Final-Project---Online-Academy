@@ -1,9 +1,10 @@
 {
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": [
     "name",
-    "isNull"
+    "isNull",
+    "idTopic"
   ],
   "properties": {
     "name": {
@@ -14,7 +15,7 @@
       "default": false
     },
     "idTopic": {
-      "type": "number"
+      "type": ["string","null"]
     },
     "backgroundURL":{
       "type":"string",

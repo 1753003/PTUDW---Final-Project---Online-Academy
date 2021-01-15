@@ -5,20 +5,32 @@
     "courseID",
     "week",
     "lesson",
-    "videoLink"
+    "videoLink",
+    "description",
+    "isDone",
+    "name"
   ],
   "properties": {
     "courseID": {
       "type": "number"
     },
     "week": {
-      "type": "number"
+      "type": "string"
     },
     "lesson": {
       "type": "string"
     },
     "videoLink": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "isDone": {
+      "type": "boolean"
     }
   }
 }

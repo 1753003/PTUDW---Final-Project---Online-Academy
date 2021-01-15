@@ -56,7 +56,7 @@ export function getListCategory() {
 
 export function removeCategory(id) {
     return new Promise( (resolve, reject) => {
-        axios.delete(`/api/category/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}})
+        axios.delete(`/api/category/${id}`,{headers:{'x-access-token':Cookies.get('aToken')}},)
         .then((response) => {
             // handle success
             resolve(response.data)
@@ -84,7 +84,8 @@ export function editCategory(id, newName) {
 
 export function addCategory(newName, topic) {
     return new Promise( (resolve, reject) => {
-        axios.post('/api/category/', {name: newName, isNull: true, idTopic: topic})
+        axios.post('/api/category/', {name: newName, isNull: true, idTopic: topic},
+        {headers:{'x-access-token':Cookies.get('aToken')}})
         .then((response) => {
             // handle success
             resolve(response.data)
