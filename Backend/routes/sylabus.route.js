@@ -4,7 +4,8 @@ const courseModel = require('../models/course.model');
 const sylabusModel = require('../models/sylabus.model');
 const router = express.Router();
 
-
+const sylabusSchema = require('../schemas/sylabus.json');
+const validation = require('../middleware/validation.mdw');
 router.get('/lecturer/:id', async function(req, res) {
     const lecturerID = req.params.id;
     const listCourse = await courseModel.getLecturerCourse(lecturerID);
@@ -21,7 +22,7 @@ router.get('/lecturer/:id', async function(req, res) {
     res.json(result);
 })
 
-router.post('/:courseID', async function(req, res) {
+router.post('/:courseID',validation(sylabusSchema), async function(req, res) {
     const newSylabus = req.body;
     const courseID = req.params.courseID;
     const list = await studentCourseModel.getSylabus(courseID);

@@ -4,6 +4,9 @@ const studentCourseModel = require('../models/student_course.model')
 const router = express.Router({mergeParams: true});
 const sylabusModel = require('../models/sylabus.model');
 const favoriteCourseModel = require('../models/favorite_course.model');
+
+const courseSchema = require('../schemas/course.json');
+const validation = require('../middleware/validation.mdw');
 router.get('/:id([0-9]+)', async function (req, res, next) {
   const id = req.params.id || -1;
   const course = await courseModel.singleById(id);
@@ -16,7 +19,7 @@ router.get('/:id([0-9]+)', async function (req, res, next) {
 
 // const courseSchema = require('../schemas/course.json');
 // const validation = require('../middleware/validation.mdw');
-router.post('/', async function (req, res) {
+router.post('/',validation(courseSchema), async function (req, res) {
   const id = await courseModel.add(req.body);
   res.status(201).json(await courseModel.getAll());
 })

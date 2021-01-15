@@ -1,19 +1,7 @@
 {
   "additionalProperties": false,
   "required": [
-    "name",
-    "categoryID",
-    "lecturerID",
-    "rating",
-    "numRate",
-    "URL",
-    "price",
-    "salePrice",
-    "briefDescription",
-    "detailDescription",
-    "saleInfomation",
-    "views",
-    "status"
+    
   ],
   "properties": {
     "name": {
