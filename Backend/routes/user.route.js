@@ -4,11 +4,13 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 const e = require('express');
 const { response } = require('express');
-const userSchema = require('../schemas/user.json');
+const userSignUpSchema = require('../schemas/userSignUp.json');
+const userCourseSchema = require('../schemas/userCourse.json');
+const userChangePasswordSchema = require('../schemas/userChangePassword.json');
 const validation = require('../middleware/validation.mdw');
 const router = express.Router({mergeParams: true});
 
-router.post('/',validation(userSchema), async function (req, res) {
+router.post('/',validation(userSignUpSchema), async function (req, res) {
   const check = await userModel.singleByMail(req.body.email);
   if (check != null) {
     return res.status(200).json("Exist");
@@ -65,7 +67,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
   // console.log(temp,available)
   if (existed ) {
     try {
-      await userModel.addFavorite(req.params.uid, req.params.cid, req.body);
+      await userModel.addFavorite(req.params.uid, req.params.cid);
     }
     catch(err) {
       console.log("ERROR:",err);
@@ -74,7 +76,7 @@ router.post('/:uid/favorite/:cid', async function(req, res){
   res.status(201).json({available: existed,temp});
 }),
 
-router.post('/:uid/courseRegister/:cid', async function(req, res){
+router.post('/:uid/courseRegister/:cid',validation(userCourseSchema), async function(req, res){
   const temp = await userModel.getRegisterCourseDetail(req.params.uid, req.params.cid);
   let available = false;
   if (temp[0].length == 0)
@@ -403,7 +405,7 @@ router.post('/confirmCodeWithEmail', async function(req, res) {
     res.json(false);
 })
 
-router.post('/changePassword/:uid' ,validation(userSchema),async function(req, res) {
+router.post('/changePassword/:uid' ,validation(userChangePasswordSchema),async function(req, res) {
   const password = bcrypt.hashSync(req.body.password, 10);
   try {
     await userModel.edit(req.params.uid, {password: password});
@@ -414,7 +416,7 @@ router.post('/changePassword/:uid' ,validation(userSchema),async function(req, r
   }
 })
 
-router.post('/changePasswordWithEmail' ,validation(userSchema),async function(req, res) {
+router.post('/changePasswordWithEmail' ,validation(userChangePasswordSchema),async function(req, res) {
   const password = bcrypt.hashSync(req.body.password, 10);
   console.log(req.body);
   const user = await userModel.singleByMail(req.body.email);
@@ -428,7 +430,7 @@ router.post('/changePasswordWithEmail' ,validation(userSchema),async function(re
   }
 })
 
-router.post('/resetConfirm',validation(userSchema), async function(req,res){
+router.post('/resetConfirm',validation(userChangePasswordSchema), async function(req,res){
   console.log(req.body)
   const password = bcrypt.hashSync(req.body.password, 10);
   const user = await userModel.singleByMail(req.body.email);

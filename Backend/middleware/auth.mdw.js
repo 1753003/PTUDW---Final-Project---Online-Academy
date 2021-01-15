@@ -8,6 +8,7 @@ module.exports = function (req, res, next) {
   const accessToken = req.headers['x-access-token'];
   const aToken = req.headers['Cookie'];
   if(req.method == "POST" && req.originalUrl =='/api/user'){
+    console.log('signup')
     next()
   }
   else if (req.method == "POST" && req.originalUrl =='/api/user/confirmEmail') 

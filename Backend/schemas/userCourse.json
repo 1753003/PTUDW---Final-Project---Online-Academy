@@ -1,0 +1,11 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "sylabus"
+  ],
+  "properties": {
+    "sylabus": {
+      "type": "object"
+    }
+  }
+}

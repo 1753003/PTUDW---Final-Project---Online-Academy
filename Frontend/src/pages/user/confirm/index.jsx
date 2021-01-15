@@ -91,9 +91,10 @@ class ConfirmPasswordForm extends Component {
         this.getConfirmStatus() ?
         (
           <div className={styles.main} >
-          <h4 >Please think twice before type your new password<Icon style={{paddingLeft:'10px'}} type="smile" theme="outlined" /></h4>
+          
           
           <Form onSubmit={this.handleSubmit} className="register-form">
+          <h4 >Please think twice before type your new password<Icon style={{paddingLeft:'10px'}} type="smile" theme="outlined" /></h4>
           <Form.Item hasFeedback validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
               {getFieldDecorator('password', {
                 rules: [{ required: true, message: 'Please input your Password!' },{validator:this.validateToNextPassword}],
